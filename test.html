@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeArt Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #040816;
+            color: #E5F6FF;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Cosmic Background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #040816 0%, #0A1F43 100%);
+            overflow: hidden;
+        }
+        
+        .stars-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/stars.png');
+            background-size: cover;
+            opacity: 0.6;
+        }
+        
+        .nebula-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/nebula.png');
+            background-size: cover;
+            opacity: 0.3;
+        }
+        
+        /* Main Layout */
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(10, 20, 40, 0.5);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        -bottom: 40px;
+            text-align: center;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .nav-menu {
+            flex: 1;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(229, 246, 255, 0.7);
+        }
+        
+        .nav-item:hover {
+            background: rgba(0, 171, 255, 0.1);
+            color: #E5F6FF;
+        }
+        
+        .nav-item.active {
+            background: rgba(0, 171, 255, 0.15);
+            color: #00ABFF;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            opacity: 0.8;
+        }
+        
+        .nav-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 20px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #E5F6FF;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: rgba(229, 246, 255, 0.6);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar {
+            position: relative;
+            margin-right: 20px;
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px 16px 10px 40px;
+            width: 240px;
+            font-size: 14px;
+            color: #E5F6FF;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: rgba(0, 171, 255, 0.5);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+        
+        .notification-bell {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 16px;
+        }
+        
+        .notification-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+        
+        .notification-badge {
+            position: absolute;right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #FF3B5C;
+            border-radius: 50%;
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto;
+            gap: 24px;
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 171, 255, 0.1);
+            border-color: rgba(0, 171, 255, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 171, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-icon img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+        
+        /* Stats Card */
+        .stats-card {
+            grid-column: span 1;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #00ABFF, #9B5FFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: rgba(229, 246, 255, 0.6);
+        }
+        
+        /* Progress Card */
+        .progress-card {
+            grid-column: span 1;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ABFF, #9B5FFF);
+            border-radius: 4px;
+            width: 65%;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .progress-stat {
+            text-align: center;
+        }
+        
+        .progress-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .progress-label {
+            font-size: 12px;
+            color: rgba(229, 246, 255, 0.6);
+        }
+        
+        /* Chart Card */
+        .chart-card {
+            grid-column: span 1;
+        }
+        
+        .chart-container {
+            height: 180px;
+            margin-top: 20px;
+        }
+        
+        /* Recent Activity Card */
+        .activity-card {
+            grid-column: span 2;
+        }
+        
+        .activity-list {
+            margin-top: 20px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 171, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon img {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: rgba(229, 246, 255, 0.5);
+        }
+        
+        /* Recommendations Card */
+        .recommendations-card {
+            grid-column: span 1;
+        }
+        
+        .recommendation-list {
+            margin-top: 20px;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .recommendation-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .recommendation-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .recommendation-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .recommendation-content {
+            flex: 1;
+        }
+        
+        .recommendation-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .recommendation-author {
+            font-size: 12px;
+            color: rgba(229, 246, 255, 0.5);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-card {
+                grid-column: span 1;
+            }
+            
+            .activity-card {
+                grid-column: span 2;
+            }
+            
+            .recommendations-card {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+            
+            .logo img {
+                height: 30px;
+            }
+            
+            .nav-text {
+                display: none;
+            }
+            
+            .nav-icon {
+                margin-right: 0;
+            }
+            
+            .nav-item {
+                justify-content: center;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .user-profile {
+                justify-content: center;
+            }
+            
+            .avatar {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-card, .progress-card, .chart-card, .activity-card, .recommendations-card {
+                grid-column: span 1;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                margin-top: 16px;
+                width: 100%;
+            }
+            
+            .search-bar {
+                flex: 1;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+        
+        /* Animation for particles */
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-10px) translateX(5px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ABFF;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        /* Chart styles */
+        .chart-line {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+        
+        .chart-dot {
+            fill: #00ABFF;
+        }
+        
+        .chart-area {
+            fill: url(#areaGradient);
+            opacity: 0.2;
+        }
+        
+        .chart-grid-line {
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 1;
+        }
+        
+        .chart-label {
+            font-size: 10px;
+            fill: rgba(229, 246, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic background -->
+    <div class="cosmic-background">
+        <div class="stars-layer"></div>
+        <div class="nebula-layer"></div>
+        <div id="particles"></div>
+    </div>
+    
+    <!-- Main dashboard layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="assets/weart-logo.svg" alt="WeArt Logo">
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active">
+                    <img src="assets/icons/dashboard.svg" alt="Dashboard" class="nav-icon">
+                    <span class="nav-text">Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <img src="assets/icons/explore.svg" alt="Explore" class="nav-icon">
+                    <span class="nav-text">Explore</span>
+                </div>
+                <div class="nav-item">
+                    <img src="assets/icons/learn.svg" alt="Learn" class="nav-icon">
+                    <span class="nav-text">Learn</span>
+                </div>
+                <div class="nav-item">
+                    <img src="assets/icons/create.svg" alt="Create" class="nav-icon">
+                    <span class="nav-text">Create</span>
+                </div>
+                <div class="nav-item">
+                    <img src="assets/icons/community.svg" alt="Community" class="nav-icon">
+                    <span class="nav-text">Community</span>
+                </div>
+                <div class="nav-item">
+                    <img src="assets/icons/settings.svg" alt="Settings" class="nav-icon">
+                    <span class="nav-text">Settings</span>
+                </div>
+            </div>
+            
+            <div class="user-profile">
+                <div class="avatar">
+                    <img src="assets/user-avatar.jpg" alt="User Avatar">
+                </div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-role">Co-Founder CTO</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <img src="assets/icons/search.svg" alt="Search" class="search-icon">
+                        <input type="text" class="search-input" placeholder="Search...">
+                    </div>
+                    
+                    <div class="notification-bell">
+                        <img src="assets/icons/bell.svg" alt="Notifications" class="notification-icon">
+                        <div class="notification-badge"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Stats Card 1 -->
+                <div class="dashboard-card stats-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Total Projects</h2>
+                        <div class="card-icon">
+                            <img src="assets/icons/projects.svg" alt="Projects">
+                        </div>
+                    </div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">+12% from last month</div>
+                </div>
+                
+                <!-- Stats Card 2 -->
+                <div class="dashboard-card stats-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Learning Hours</h2>
+                        <div class="card-icon">
+                            <img src="assets/icons/clock.svg" alt="Clock">
+                        </div>
+                    </div>
+                    <div class="stat-value">128</div>
+                    <div class="stat-label">+8% from last month</div>
+                </div>
+                
+                <!-- Progress Card -->
+                <div class="dashboard-card progress-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Current Progress</h2>
+                        <div class="card-icon">
+                            <img src="assets/icons/progress.svg" alt="Progress">
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="progress-stat">
+                            <div class="progress-value">65%</div>
+                            <div class="progress-label">Completed</div>
+                        </div>
+                        <div class="progress-stat">
+                            <div class="progress-value">24</div>
+                            <div class="progress-label">Days Left</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chart Card -->
+                <div class="dashboard-card chart-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Activity Overview</h2>
+                        <div class="card-icon">
+                            <img src="assets/icons/chart.svg" alt="Chart">
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <svg width="100%" height="100%" viewBox="0 0 300 180">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="0" x2="300" y2="0" class="chart-grid-line" />
+                            <line x1="0" y1="45" x2="300" y2="45" class="chart-grid-line" />
+                            <line x1="0" y1="90" x2="300" y2="90" class="chart-grid-line" />
+                            <line x1="0" y1="135" x2="300" y2="135" class="chart-grid-line" />
+                            <line x1="0" y1="180" x2="300" y2="180" class="chart-grid-line" />
+                            
+                            <!-- X-axis labels -->
+                            <text x="0" y="195" class="chart-label">Mon</text>
+                            <text x="50" y="195" class="chart-label">Tue</text>
+                            <text x="100" y="195" class="chart-label">Wed</text>
+                            <text x="150" y="195" class="chart-label">Thu</text>
+                            <text x="200" y="195" class="chart-label">Fri</text>
+                            <text x="250" y="195" class="chart-label">Sat</text>
+                            <text x="300" y="195" class="chart-label">Sun</text>
+                            
+                            <!-- Gradients -->
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#00ABFF" />
+                                    <stop offset="100%" stop-color="#9B5FFF" />
+                                </linearGradient>
+                                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#00ABFF" stop-opacity="0.5" />
+                                    <stop offset="100%" stop-color="#9B5FFF" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                            
+                            <!-- Chart line -->
+                            <path d="M0,120 C20,100 40,110 50,80 C60,60 80,40 100,60 C120,80 140,30 160,40 C180,50 200,20 220,40 C240,60 260,80 300,30" class="chart-line" />
+                            
+                            <!-- Area under the line -->
+                            <path d="M0,120 C20,100 40,110 50,80 C60,60 80,40 100,60 C120,80 140,30 160,40 C180,50 200,20 220,40 C240,60 260,80 300,30 L300,180 L0,180 Z" class="chart-area" />
+                            
+                            <!-- Data points -->
+                            <circle cx="0" cy="120" r="4" class="chart-dot" />
+                            <circle cx="50" cy="80" r="4" class="chart-dot" />
+                            <circle cx="100" cy="60" r="4" class="chart-dot" />
+                            <circle cx="160" cy="40" r="4" class="chart-dot" />
+                            <circle cx="220" cy="40" r="4" class="chart-dot" />
+                            <circle cx="300" cy="30" r="4" class="chart-dot" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity Card -->
+                <div class="dashboard-card activity-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Activity</h2>
+                        <div class="card-icon">
+                            <img src="assets/icons/activity.svg" alt="Activity">
+                        </div>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <img src="assets/icons/brush.svg" alt="Brush">
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">You completed "Digital Painting Basics" course</div>
+                                <div class="activity-time">Today, 10:30 AM</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <img src="assets/icons/comment.svg" alt="Comment">
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Sarah commented on your artwork "Cosmic Dreams"</div>
+                                <div class="activity-time">Yesterday, 4:15 PM</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <img src="assets/icons/like.svg" alt="Like">
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Your project received 24 new likes</div>
+                                <div class="activity-time">Yesterday, 2:30 PM</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <img src="assets/icons/upload.svg" alt="Upload">
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">You uploaded a new artwork "Nebula Exploration"</div>
+                                <div class="activity-time">Jun 20, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommendations Card -->
+                <div class="dashboard-card recommendations-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recommended for You</h2>
+                        <div class="card-icon">
+                            <img src="assets/icons/star.svg" alt="Star">
+                        </div>
+                    </div>
+                    <div class="recommendation-list">
+                        <div class="recommendation-item">
+                            <div class="recommendation-image">
+                                <img src="assets/recommendations/course1.jpg" alt="Course 1">
+                            </div>
+                            <div class="recommendation-content">
+                                <div class="recommendation-title">Advanced Color Theory</div>
+                                <div class="recommendation-author">By Michael Chen</div>
+                            </div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="recommendation-image">
+                                <img src="assets/recommendations/course2.jpg" alt="Course 2">
+                            </div>
+                            <div class="recommendation-content">
+                                <div class="recommendation-title">Digital Illustration Masterclass</div>
+                                <div class="recommendation-author">By Emma Rodriguez</div>
+                            </div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="recommendation-image">
+                                <img src="assets/recommendations/course3.jpg" alt="Course 3">
+                            </div>
+                            <div class="-title">AI Art Fundamentals</div>
+                                <div class="recommendation-author">By David Kim</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create floating particles
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                
+                // Random size
+                const size = Math.random() * 2 + 1;
+                
+                // Random animation delay
+                const delay = Math.random() * 8;
+                
+                // Random color (blue or purple)
+                const colors = ['#00ABFF', '#9B5FFF', '#00F2C3'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.left = `${posX}px`;
+                particle.style.top = `${posY}px`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = color;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+        
+        // Sidebar toggle for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Add responsive behavior if needed
+            if (window.innerWidth <= 992) {
+                sidebar.classList.add('collapsed');
+            }
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.add('collapsed');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                }
+            });
+        });
+        
+        // Simulated data for the chart
+        document.addEventListener('DOMContentLoaded', function() {
+            // You can replace this with actual data from your backend
+            const chartData = [
+                { day: 'Mon', value: 120 },
+                { day: 'Tue', value: 80 },
+                { day: 'Wed', value: 60 },
+                { day: 'Thu', value: 40 },
+                { day: 'Fri', value: 40 },
+                { day: 'Sat', value: 80 },
+                { day: 'Sun', value: 30 }
+            ];
+            
+            // Update user info
+            document.querySelector('.user-name').textContent = 'WeArt Team';
+            document.querySelector('.user-role').textContent = 'Co-Founder CTO';
+            
+            // You can add more dynamic functionality here
+            // For example, fetching real data from your API
+            // and updating the dashboard elements
+        });
+    </script>
+</body>
+</html>

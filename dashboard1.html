@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeArt Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-container">
+                <img src="assets/logo-icon.svg" alt="WeArt Icon" class="logo-icon">
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                        </svg>
+                        <span>Explore</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"></path>
+                        </svg>
+                        <span>Courses</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path>
+                        </svg>
+                        <span>Community</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M19 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h4l3 3 3-3h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-5 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+                        </svg>
+                        <span>Resources</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"></path>
+                        </svg>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="top-bar">
+                <div class="brand">
+                    <h1 class="brand-name">WeArt</h1>
+                </div>
+                <div class="search-container">
+                    <svg class="search-icon" viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                    </svg>
+                    <input type="text" placeholder="Search..." class="search-input">
+                </div>
+                <div class="top-actions">
+                    <button class="create-prompt-btn">
+                        <span>Create Prompt</span>
+                    </button>
+                    <div class="user-profile">
+                        <img src="assets/avatar.jpg" alt="User Avatar" class="avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Progress Section -->
+                <section class="progress-section">
+                    <div class="progress-container">
+                        <h2 class="section-title">Your Creative Journey Today</h2>
+                        <div class="progress-ring-container">
+                            <div class="progress-ring">
+                                <svg class="progress-ring__circle" width="160" height="160">
+                                    <circle class="progress-ring__circle-bg" cx="80" cy="80" r="70"></circle>
+                                    <circle class="progress-ring__circle-progress" cx="80" cy="80" r="70"></circle>
+                                </svg>
+                                <div class="progress-ring__text">
+                                    <span class="progress-ring__percentage">68%</span>
+                                    <span class="progress-ring__label">Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-stats">
+                            <div class="stat-item">
+                                <span class="stat-value">7</span>
+                                <span class="stat-label">Day Streak</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">250</span>
+                                <span class="stat-label">XP Earned</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="streak-container">
+                        <div class="glass-card">
+                            <h3 class="card-title">Weekly Progress</h3>
+                            <div class="streak-chart">
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>M</span>
+                                </div>
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>T</span>
+                                </div>
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>W</span>
+                                </div>
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>T</span>
+                                </div>
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>F</span>
+                                </div>
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>S</span>
+                                </div>
+                                <div class="streak-day active">
+                                    <div class="streak-dot"></div>
+                                    <span>S</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Preferences Cards -->
+                <section class="preferences-section">
+                    <div class="preferences-grid">
+                        <div class="glass-card preference-card">
+                            <div class="card-icon commercial-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Commercial Illustration</h3>
+                            <p class="card-description">Explore techniques for creating marketable illustrations</p>
+                            <div class="card-action">
+                                <span>Edit</span>
+                            </div>
+                        </div>
+                        <div class="glass-card preference-card">
+                            <div class="card-icon environment-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Environment & Architecture</h3>
+                            <p class="card-description">Learn to design immersive spaces and structures</p>
+                            <div class="card-action">
+                                <span>Edit</span>
+                            </div>
+                        </div>
+                        <div class="glass-card preference-card">
+                            <div class="card-icon global-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Global Art Styles</h3>
+                            <p class="card-description">Discover artistic traditions from around the world</p>
+                            <div class="card-action">
+                                <span>Edit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="continue-learning">
+                        <div class="glass-card learning-card">
+                            <h3 class="card-title">Continue Learning</h3>
+                            <div class="course-preview">
+                                <div class="course-image">
+                                    <img src="assets/abstract-course.jpg" alt="Abstract Color Theory">
+                                </div>
+                                <div class="course-info">
+                                    <h4 class="course-title">Abstract Color Theory</h4>
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" style="width: 45%"></div>
+                                    </div>
+                                    <span class="progress-text">45% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Trending Prompts -->
+                <section class="trending-section">
+                    <h2 class="section-title">Trending Prompts</h2>
+                    <div class="trending-carousel">
+                        <div class="glass-card trending-card">
+                            <div class="trending-image">
+                                <img src="assets/trending1.jpg" alt="Trending Prompt 1">
+                            </div>
+                            <div class="trending-info">
+                                <h4 class="trending-title">Cyberpunk Cityscape</h4>
+                                <div class="trending-stats">
+                                    <span class="trending-likes">245 ♥</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card trending-card">
+                            <div class="trending-image">
+                                <img src="assets/trending2.jpg" alt="Trending Prompt 2">
+                            </div>
+                            <div class="trending-info">
+                                <h4 class="trending-title">Watercolor Portrait</h4>
+                                <div class="trending-stats">
+                                    <span class="trending-likes">187 ♥</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card trending-card">
+                            <div class="trending-image">
+                                <img src="assets/trending3.jpg" alt="Trending Prompt 3">
+                            </div>
+                            <div class="trending-info">
+                                <h4 class="trending-title">Abstract Patterns</h4>
+                                <div class="trending-stats">
+                                    <span class="trending-likes">132 ♥</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card trending-card">
+                            <div class="trending-image">
+                                <img src="assets/trending4.jpg" alt="Trending Prompt 4">
+                            </div>
+                            <div class="trending-info">
+                                <h4 class="trending-title">Fantasy Landscape</h4>
+                                <div class="trending-stats">
+                                    <span class="trending-likes">98 ♥</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+/* styles.css */
+:root {
+    /* Color Variables */
+    --color-bg-deep: #0B0C3F;
+    --color-bg-mid: #112074;
+    --color-bg-light: #4E33D9;
+    --color-accent-pink: #FF4EC1;
+    --color-accent-cyan: #37E5E5;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #D1D4FF;
+    --color-text-tertiary: #8F91C3;
+    --color-glass-bg: rgba(255, 255, 255, 0.08);
+    --color-glass-border: rgba(255, 255, 255, 0.12);
+    --color-glass-hover: rgba(255, 255, 255, 0.12);
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-circle: 50%;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.25);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--color-bg-deep), var(--color-bg-mid), var(--color-bg-light), #9B62FF);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+}
+
+/* App Container */
+.app-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 240px;
+    background: rgba(11, 12, 63, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-glass-border);
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+}
+
+.logo-container {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.nav-item {
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-fast);
+}
+
+.nav-item.active {
+    background: rgba(55, 229, 229, 0.1);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.nav-item.active .nav-link {
+    color: var(--color-accent-cyan);
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: var(--spacing-md);
+    fill: currentColor;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 240px;
+    padding: var(--spacing-lg);
+    max-width: calc(100% - 240px);
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-shadow: 0 0 10px rgba(55, 229, 229, 0.6);
+}
+
+.search-container {
+    position: relative;
+    width: 400px;
+}
+
+.search-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    fill: var(--color-text-tertiary);
+}
+
+.search-input {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) calc(var(--spacing-md) * 3);
+    border-radius: var(--radius-md);
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    color: var(--color-text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.search-input::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--color-accent-cyan);
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.create-prompt-btn {
+    background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-pink));
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--color-text-primary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.create-prompt-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(55, 229, 229, 0.3);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-circle);
+    object-fit: cover;
+    border: 2px solid var(--color-accent-cyan);
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+/* Progress Section */
+.progress-section {
+    display: grid;
+    grid-template-columns: 6fr 4fr;
+    gap: var(--spacing-lg);
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-primary);
+}
+
+.progress-ring-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.progress-ring {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+.progress-ring__circle {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle-bg {
+    fill: transparent;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 8;
+}
+
+.progress-ring__circle-progress {
+    fill: transparent;
+    stroke: url(#progressGradient);
+    stroke-width: 8;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 140; /* Adjusted for 68% progress */
+    stroke-linecap: round;
+}
+
+.progress-ring__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-ring__percentage {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: block;
+}
+
+.progress-ring__label {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.progress-stats {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.streak-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.streak-chart {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-lg);
+}
+
+.streak-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.streak-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-circle);
+    background-color: var(--color-text-tertiary);
+}
+
+.streak-day.active .streak-dot {
+    background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-pink));
+}
+
+/* Glass Card */
+.glass-card {
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-glass-border);
+    padding: var(--spacing-lg);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-glass-hover);
+    border-color: var(--color-accent-cyan);
+}
+
+.card-title {
+    font-size: 18px;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+
+/* Preferences Section */
+.preferences-section {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.preference-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.card-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color-text-primary);
+}
+
+.commercial-icon {
+    background: rgba(
+I'll continue providing the CSS code for the WeArt dashboard interface:
+
+/* Continuing from previous CSS */
+.commercial-icon {
+    background: rgba(255, 78, 193, 0.1);
+}
+
+.environment-icon {
+    background: rgba(55, 229, 229, 0.1);
+}
+
+.global-icon {
+    background: rgba(155, 98, 255, 0.1);
+}
+
+.card-description {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+    flex-grow: 1;
+}
+
+.card-action {
+    font-size: 14px;
+    color: var(--color-accent-cyan);
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.card-action:hover {
+    text-decoration: underline;
+}
+
+/* Continue Learning */
+.learning-card {
+    height: 100%;
+}
+
+.course-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.course-image {
+    width: 100%;
+    height: 120px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.course-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.course-title {
+    font-size: 16px;
+    color: var(--color-text-primary);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-pink));
+    border-radius: var(--radius-sm);
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+/* Trending Section */
+.trending-section {
+    margin-top: var(--spacing-lg);
+}
+
+.trending-carousel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+    overflow-x: auto;
+    padding-bottom: var(--spacing-md);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent-cyan) transparent;
+}
+
+.trending-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.trending-carousel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.trending-carousel::-webkit-scrollbar-thumb {
+    background-color: var(--color-accent-cyan);
+    border-radius: var(--radius-sm);
+}
+
+.trending-card {
+    min-width: 240px;
+}
+
+.trending-image {
+    width: 100%;
+    height: 160px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+}
+
+.trending-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.trending-title {
+    font-size: 16px;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.trending-stats {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .preferences-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .preferences-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .trending-carousel {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .progress-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .trending-carousel {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80px;
+        padding: var(--spacing-md);
+    }
+    
+    .nav-link span {
+        display: none;
+    }
+    
+    .nav-icon {
+        margin-right: 0;
+    }
+    
+    .main-content {
+        margin-left: 80px;
+        max-width: calc(100% - 80px);
+    }
+    
+    .preferences-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-container {
+        width: 200px;
+    }
+}
+
+/* Animation Keyframes */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* SVG Definitions */
+svg {
+    overflow: visible;
+}
+
+/* Add this to the HTML head */
+/* 
+<svg width="0" height="0">
+    <defs>
+        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#37E5E5" />
+            <stop offset="100%" stop-color="#FF4EC1" />
+        </linearGradient>
+    </defs>
+</svg>
+*/
+Now let me provide the JavaScript code to make the dashboard interactive:
+
+// scripts.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Progress Ring Animation
+    const circle = document.querySelector('.progress-ring__circle-progress');
+    const radius = circle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+    
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    
+    function setProgress(percent) {
+        const offset = circumference - (percent / 100 * circumference);
+        circle.style.strokeDashoffset = offset;
+    }
+    
+    // Animate progress from 0 to 68%
+    let progress = 0;
+    const targetProgress = 68;
+    const duration = 1500; // 1.5 seconds
+    const interval = 10; // Update every 10ms
+    const steps = duration / interval;
+    const increment = targetProgress / steps;
+    
+    const progressAnimation = setInterval(() => {
+        progress += increment;
+        setProgress(progress);
+        
+        if (progress >= targetProgress) {
+            clearInterval(progressAnimation);
+            setProgress(targetProgress);
+        }
+    }, interval);
+    
+    // Parallax Star Effect
+    const starfield = createStarfield();
+    document.body.appendChild(starfield);
+    
+    document.addEventListener('mousemove', function(e) {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        starfield.style.transform = `translate(${-x * 20}px, ${-y * 20}px)`;
+    });
+    
+    // Glass Card Hover Effects
+    const glassCards = document.querySelectorAll('.glass-card');
+    
+    glassCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+            this.style.boxShadow = '0 8px 32px rgba(55, 229, 229, 0.2)';
+            this.style.borderColor = 'var(--color-accent-cyan)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+            this.style.boxShadow = '';
+            this.style.borderColor = '';
+        });
+    });
+    
+    // Create Starfield
+    function createStarfield() {
+        const starfield = document.createElement('div');
+        starfield.classList.add('starfield');
+        starfield.style.position = 'fixed';
+        starfield.style.top = '0';
+        starfield.style.left = '0';
+        starfield.style.width = '100%';
+        starfield.style.height = '100%';
+        starfield.style.pointerEvents = 'none';
+        starfield.style.zIndex = '-1';
+        
+        // Create stars
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.position = 'absolute';
+            star.style.width = `${Math.random() * 2 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            star.style.borderRadius = '50%';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.5)';
+            star.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            // Random twinkle animation
+            const animationDuration = Math.random() * 3 + 2;
+            star.style.animation = `twinkle ${animationDuration}s infinite ease-in-out`;
+            
+            starfield.appendChild(star);
+        }
+        
+        return starfield;
+    }
+    
+    // Add twinkle animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Shooting Star Animation
+    function createShootingStar() {
+        const shootingStar = document.createElement('div');
+        shootingStar.classList.add('shooting-star');
+        shootingStar.style.position = 'fixed';
+        shootingStar.style.width = '100px';
+        shootingStar.style.height = '2px';
+        shootingStar.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        shootingStar.style.borderRadius = '50%';
+        shootingStar.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.8)';
+        
+        // Random position and angle
+        const top = Math.random() * 50;
+        const left = Math.random() * 100;
+        const angle = Math.random() * 60 - 30; // -30 to 30 degrees
+        
+        shootingStar.style.top = `${top}%`;
+        shootingStar.style.left = `${left}%`;
+        shootingStar.style.transform = `rotate(${angle}deg)`;
+        
+        // Animation
+        shootingStar.style.animation = 'shootingStarAnimation 1s linear forwards';
+        
+        document.body.appendChild(shootingStar);
+        
+        // Remove after animation
+        setTimeout(() => {
+            shootingStar.remove();
+        }, 1000);
+    }
+    
+    // Add shooting star animation
+    const shootingStarStyle = document.createElement('style');
+    shootingStarStyle.textContent = `
+        @keyframes shootingStarAnimation {
+            0% { transform: translateX(0) translateY(0) rotate(var(--angle)); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateX(200px) translateY(100px) rotate(var(--angle)); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(shootingStarStyle);
+    
+    // Trigger shooting star randomly
+    setInterval(() => {
+        if (Math.random() > 0.7) {
+            createShootingStar();
+        }
+    }, 3000);
+    
+    // Add SVG definitions for gradients
+    const svgDefs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgDefs.setAttribute('width', '0');
+    svgDefs.setAttribute('height', '0');
+    svgDefs.innerHTML = `
+        <defs>
+            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#37E5E5" />
+                <stop offset="100%" stop-color="#FF4EC1" />
+            </linearGradient>
+        </defs>
+    `;
+    document.body.appendChild(svgDefs);
+});

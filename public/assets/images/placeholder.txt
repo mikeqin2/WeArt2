@@ -1,0 +1,17 @@
+ This directory will contain image assets for the WeArt dashboard:
+
+- landscape-course.jpg - Course thumbnail for landscape painting
+- character-course.jpg - Course thumbnail for character design  
+- color-course.jpg - Course thumbnail for color theory
+- user-avatar.jpg - User profile avatar
+- favicon.ico - Website favicon
+
+You can add your own images here or use placeholder images from services like:
+- https://picsum.photos/
+- https://placeholder.com/
+- https://via.placeholder.com/
+
+Example URLs for placeholder images:
+- Landscape course: https://picsum.photos/400/240?nature
+- Character course: https://picsum.photos/400/240?people
+- Color course: https://picsum.photos/400/240?abstract
