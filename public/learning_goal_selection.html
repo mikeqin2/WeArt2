@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Your Artistic Constellation | WeArt</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #040B22;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Cosmic background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0A1F43 0%, #040B22 70%);
+            overflow: hidden;
+        }
+        
+        .stars-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .weart-logo {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        
+        .title {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .subtitle {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Central orbital system */
+        .constellation-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 40px auto;
+        }
+        
+        /* Central core */
+        .central-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+        }
+        
+        .core-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 226, 255, 0.4);
+            animation: rotate 30s linear infinite;
+        }
+        
+        .core-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-width: 2px;
+            border-color: rgba(0, 226, 255, 0.6);
+        }
+        
+        .core-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            animation-duration: 20s;
+            animation-direction: reverse;
+        }
+        
+        .core-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            animation-duration: 15s;
+        }
+        
+        .core-ring:nth-child(4) {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            animation-duration: 10s;
+            animation-direction: reverse;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .core-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(0, 226, 255, 0.4) 0%, rgba(0, 226, 255, 0) 70%);
+            pointer-events: none;
+        }
+        
+        /* Goal planets */
+        .goal-planet {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .goal-planet:hover {
+            transform: scale(1.1);
+        }
+        
+        .planet {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .planet-glow {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            border-radius: 50%;
+            filter: blur(8px);
+            opacity: 0.6;
+        }
+        
+        .goal-label {
+            font-size: 16px;
+            color: #ffffff;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        
+        .goal-label-en {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+        
+        /* Planet colors and positions */
+        .goal-abroad {
+            top: 10%;
+            right: 15%;
+        }
+        .goal-abroad .planet {
+            background: linear-gradient(135deg, #FF6B35, #FF8E53);
+        }
+        .goal-abroad .planet-glow {
+            background: rgba(255, 107, 53, 0.5);
+        }
+        
+        .goal-collection {
+            top: 25%;
+            right: 5%;
+        }
+        .goal-collection .planet {
+            background: linear-gradient(135deg, #FFD93D, #FFE66D);
+        }
+        .goal-collection .planet-glow {
+            background: rgba(255, 217, 61, 0.5);
+        }
+        
+        .goal-sentiment {
+            top: 50%;
+            right: 8%;
+        }
+        .goal-sentiment .planet {
+            background: linear-gradient(135deg, #6BCF7F, #4D9DE0);
+        }
+        .goal-sentiment .planet-glow {
+            background: rgba(107, 207, 127, 0.5);
+        }
+        
+        .goal-direction {
+            bottom: 25%;
+            right: 15%;
+        }
+        .goal-direction .planet {
+            background: linear-gradient(135deg, #15AABF, #00E2FF);
+        }
+        .goal-direction .planet-glow {
+            background: rgba(21, 170, 191, 0.5);
+        }
+        
+        .goal-expression {
+            bottom: 10%;
+            right: 35%;
+        }
+        .goal-expression .planet {
+            background: linear-gradient(135deg, #9B59B6, #C39BD3);
+        }
+        .goal-expression .planet-glow {
+            background: rgba(155, 89, 182, 0.5);
+        }
+        
+        .goal-product {
+            bottom: 20%;
+            left: 15%;
+        }
+        .goal-product .planet {
+            background: linear-gradient(135deg, #3498DB, #5DADE2);
+        }
+        .goal-product .planet-glow {
+            background: rgba(52, 152, 219, 0.5);
+        }
+        
+        .goal-appreciation {
+            bottom: 45%;
+            left: 5%;
+        }
+        .goal-appreciation .planet {
+            background: linear-gradient(135deg, #2E86C1, #5499C7);
+        }
+        .goal-appreciation .planet-glow {
+            background: rgba(46, 134, 193, 0.5);
+        }
+        
+        .goal-education {
+            top: 35%;
+            left: 10%;
+        }
+        .goal-education .planet {
+            background: linear-gradient(135deg, #8E44AD, #BB8FCE);
+        }
+        .goal-education .planet-glow {
+            background: rgba(142, 68, 173, 0.5);
+        }
+        
+        /* Connection lines */
+        .connection-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0, 226, 255, 0), rgba(0, 226, 255, 0.3), rgba(0, 226, 255, 0));
+            opacity: 0.4;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: #00E2FF;
+            box-shadow: 0 0 10px rgba(0, 226, 255, 0.5);
+        }
+        
+        .progress-dot.completed {
+            background: #6BCF7F;
+        }
+        
+        /* Continue button */
+        .continue-button {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(90deg, #00ABFF, #0077FF);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 171, 255, 0.4);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .continue-button.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .continue-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 171, 255, 0.6);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .constellation-container {
+                width: 600px;
+                height: 450px;
+            }
+            
+            .planet {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .goal-label {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .weart-logo {
+                font-size: 36px;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 24px;
+            }
+            
+            .constellation-container {
+                width: 400px;
+                height: 300px;
+            }
+            
+            .planet {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .goal-label {
+                font-size: 12px;
+            }
+        }
+        
+        /* Particles animation */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+        
+        /* Selection state */
+        .goal-planet.selected .planet {
+            box-shadow: 0 0 30px rgba(0, 226, 255, 0.8);
+            border: 2px solid rgba(0, 226, 255, 0.6);
+        }
+        
+        .goal-planet.selected .goal-label {
+            color: #00E2FF;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic background -->
+    <div class="cosmic-background">
+        <div class="stars-layer"></div>
+        <div class="particles-container" id="particles"></div>
+    </div>
+    
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="weart-logo">WeArt</div>
+            <h1 class="title">Map Your Artistic Constellation</h1>
+            <h2 class="subtitle">规划你的艺术星图</h2>
+        </div>
+        
+        <!-- Constellation -->
+        <div class="constellation-container">
+            <!-- Central core -->
+            <div class="central-core">
+                <div class="core-ring"></div>
+                <div class="core-ring"></div>
+                <div class="core-ring"></div>
+                <div class="core-ring"></div>
+                <div class="core-glow"></div>
+            </div>
+            
+            <!-- Connection lines -->
+            <div class="connection-line" style="top: 20%; left: 40%; width: 200px; transform: rotate(25deg);"></div>
+            <div class="connection-line" style="top: 35%; right: 30%; width: 150px; transform: rotate(-15deg);"></div>
+            <div class="connection-line" style="bottom: 30%; left: 35%; width: 180px; transform: rotate(35deg);"></div>
+            <div class="connection-line" style="bottom: 25%; right: 40%; width: 160px; transform: rotate(-25deg);"></div>
+            
+            <!-- Goal planets -->
+            <div class="goal-planet goal-abroad" data-goal="abroad">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">艺术留学</div>
+                    <div class="goal-label-en">Art Abroad</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-collection" data-goal="collection">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">艺术收藏</div>
+                    <div class="goal-label-en">Art Collection</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-sentiment" data-goal="sentiment">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">陶冶情操</div>
+                    <div class="goal-label-en">Cultivating Sentiment</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-direction" data-goal="direction">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">寻找人生方向</div>
+                    <div class="goal-label-en">Finding Life Direction</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-expression" data-goal="expression">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">创意表达</div>
+                    <div class="goal-label-en">Creative Expression</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-product" data-goal="product">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">自主创作产品</div>
+                    <div class="goal-label-en">Independent Product</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-appreciation" data-goal="appreciation">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">学习鉴赏</div>
+                    <div class="goal-label-en">Learning Appreciation</div>
+                </div>
+            </div>
+            
+            <div class="goal-planet goal-education" data-goal="education">
+                <div class="planet">
+                    <div class="planet-glow"></div>
+                </div>
+                <div>
+                    <div class="goal-label">机构教育</div>
+                    <div class="goal-label-en">Institutional Education</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress indicator -->
+        <div class="progress-container">
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+        </div>
+        
+        <!-- Continue button -->
+        <button class="continue-button" id="continue-btn">Continue</button>
+    </div>
+    
+    <script src="js/onboarding.js"></script>
+    <script>
+        // Add at the top of script section
+        const onboardingData = new OnboardingData();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 80;
+            
+            // Create floating particles
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const opacity = Math.random() * 0.5 + 0.1;
+                
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.opacity = opacity;
+                
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 10;
+                particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Goal selection handling
+            const goalPlanets = document.querySelectorAll('.goal-planet');
+            const continueBtn = document.getElementById('continue-btn');
+            let selectedGoals = [];
+            
+            goalPlanets.forEach(planet => {
+                planet.addEventListener('click', function() {
+                    const goalValue = this.getAttribute('data-goal');
+                    
+                    if (this.classList.contains('selected')) {
+                        // Deselect
+                        this.classList.remove('selected');
+                        selectedGoals = selectedGoals.filter(goal => goal !== goalValue);
+                    } else {
+                        // Select
+                        this.classList.add('selected');
+                        selectedGoals.push(goalValue);
+                    }
+                    
+                    // Enable continue button if at least one goal is selected
+                    if (selectedGoals.length > 0) {
+                        continueBtn.classList.add('enabled');
+                    } else {
+                        continueBtn.classList.remove('enabled');
+                    }
+                });
+            });
+            
+            // Replace the continue button click handler:
+            continueBtn.addEventListener('click', function() {
+                if (selectedGoals.length > 0) {
+                    console.log('Selected goals:', selectedGoals);
+                    
+                    // Save to onboarding data
+                    onboardingData.updateLearningGoals(selectedGoals);
+                    
+                    // Navigate to art medium selection page
+                    window.location.href = 'art_medium_selection.html';
+                }
+            });
+        });
+        
+        // Define float animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translate(0, 0); }
+                50% { transform: translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px); }
+                100% { transform: translate(0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

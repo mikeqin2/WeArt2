@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Art Medium | WeArt</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #040B22;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Cosmic background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0A1F43 0%, #040B22 70%);
+            overflow: hidden;
+        }
+        
+        .stars-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .weart-logo {
+            font-size: 72px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            margin-bottom: 40px;
+            color: #4DF8FF;
+            text-shadow: 0 0 20px rgba(77, 248, 255, 0.5);
+        }
+        
+        .title {
+            font-size: 42px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #ffffff;
+        }
+        
+        /* Medium grid */
+        .medium-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 60px;
+            margin-bottom: 80px;
+            max-width: 900px;
+        }
+        
+        .medium-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 20px;
+            border-radius: 20px;
+        }
+        
+        .medium-option:hover {
+            transform: translateY(-10px);
+        }
+        
+        .medium-sphere {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .medium-sphere:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .medium-icon {
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .medium-label {
+            font-size: 18px;
+            color: #ffffff;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        /* Medium colors */
+        .medium-painting {
+            background: linear-gradient(135deg, #FF4757, #FF6B7A);
+        }
+        
+        .medium-digital {
+            background: linear-gradient(135deg, #FF6B35, #FF8E53);
+        }
+        
+        .medium-photography {
+            background: linear-gradient(135deg, #00D2FF, #4ECDC4);
+        }
+        
+        .medium-music {
+            background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+        }
+        
+        .medium-sculpture {
+            background: linear-gradient(135deg, #06B6D4, #67E8F9);
+        }
+        
+        .medium-sculpture2 {
+            background: linear-gradient(135deg, #10B981, #34D399);
+        }
+        
+        .medium-mixed {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        }
+        
+        /* Selection state */
+        .medium-option.selected .medium-sphere {
+            box-shadow: 0 0 40px rgba(77, 248, 255, 0.8);
+            border: 3px solid rgba(77, 248, 255, 0.6);
+        }
+        
+        .medium-option.selected .medium-label {
+            color: #4DF8FF;
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: #4DF8FF;
+            box-shadow: 0 0 10px rgba(77, 248, 255, 0.5);
+        }
+        
+        .progress-dot.completed {
+            background: #10B981;
+        }
+        
+        /* Continue button */
+        .continue-button {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(90deg, #4DF8FF, #00B4D8);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(77, 248, 255, 0.4);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .continue-button.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .continue-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(77, 248, 255, 0.6);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .medium-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 40px;
+            }
+            
+            .medium-sphere {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .medium-icon {
+                font-size: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .weart-logo {
+                font-size: 48px;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+            
+            .medium-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            
+            .medium-sphere {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .medium-icon {
+                font-size: 32px;
+            }
+            
+            .medium-label {
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .medium-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        /* Particles animation */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+        
+        /* Glow effects */
+        .medium-sphere::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: inherit;
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic background -->
+    <div class="cosmic-background">
+        <div class="stars-layer"></div>
+        <div class="particles-container" id="particles"></div>
+    </div>
+    
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="weart-logo">WeArt</div>
+            <h1 class="title">Select Your Art Medium</h1>
+        </div>
+        
+        <!-- Medium grid -->
+        <div class="medium-grid">
+            <div class="medium-option" data-medium="painting">
+                <div class="medium-sphere medium-painting">
+                    <div class="medium-icon">🖌️</div>
+                </div>
+                <div class="medium-label">Traditional Painting</div>
+            </div>
+            
+            <div class="medium-option" data-medium="digital">
+                <div class="medium-sphere medium-digital">
+                    <div class="medium-icon">🖊️</div>
+                </div>
+                <div class="medium-label">Digital Art</div>
+            </div>
+            
+            <div class="medium-option" data-medium="photography">
+                <div class="medium-sphere medium-photography">
+                    <div class="medium-icon">📷</div>
+                </div>
+                <div class="medium-label">Photography</div>
+            </div>
+            
+            <div class="medium-option" data-medium="music">
+                <div class="medium-sphere medium-music">
+                    <div class="medium-icon">🎵</div>
+                </div>
+                <div class="medium-label">Music</div>
+            </div>
+            
+            <div class="medium-option" data-medium="sculpture">
+                <div class="medium-sphere medium-sculpture">
+                    <div class="medium-icon">🔨</div>
+                </div>
+                <div class="medium-label">Sculpture</div>
+            </div>
+            
+            <div class="medium-option" data-medium="sculpture2">
+                <div class="medium-sphere medium-sculpture2">
+                    <div class="medium-icon">⚒️</div>
+                </div>
+                <div class="medium-label">Sculpture</div>
+            </div>
+            
+            <div class="medium-option" data-medium="mixed">
+                <div class="medium-sphere medium-mixed">
+                    <div class="medium-icon">∞</div>
+                </div>
+                <div class="medium-label">Mixed Media</div>
+            </div>
+        </div>
+        
+        <!-- Progress indicator -->
+        <div class="progress-container">
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot completed"></div>
+            <div class="progress-dot active"></div>
+        </div>
+        
+        <!-- Continue button -->
+        <button class="continue-button" id="continue-btn">Continue</button>
+    </div>
+    
+    <script src="js/onboarding.js"></script>
+    <script>
+        // Add at the top of script section
+        const onboardingData = new OnboardingData();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 60;
+            
+            // Create floating particles
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const opacity = Math.random() * 0.5 + 0.1;
+                
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.opacity = opacity;
+                
+                const duration = Math.random() * 25 + 15;
+                const delay = Math.random() * 10;
+                particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Medium selection handling
+            const mediumOptions = document.querySelectorAll('.medium-option');
+            const continueBtn = document.getElementById('continue-btn');
+            let selectedMediums = [];
+            
+            mediumOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const mediumValue = this.getAttribute('data-medium');
+                    
+                    if (this.classList.contains('selected')) {
+                        // Deselect
+                        this.classList.remove('selected');
+                        selectedMediums = selectedMediums.filter(medium => medium !== mediumValue);
+                    } else {
+                        // Select
+                        this.classList.add('selected');
+                        selectedMediums.push(mediumValue);
+                    }
+                    
+                    // Enable continue button if at least one medium is selected
+                    if (selectedMediums.length > 0) {
+                        continueBtn.classList.add('enabled');
+                    } else {
+                        continueBtn.classList.remove('enabled');
+                    }
+                });
+            });
+            
+            // continueBtn.addEventListener('click', function() {
+            //     if (selectedMediums.length > 0) {
+            //         console.log('Selected mediums:', selectedMediums);
+            //         // Navigate to next page or dashboard
+            //         window.location.href = 'index.html';
+            //     }
+            // });
+            // Add at the top of script section
+            const onboardingData = new OnboardingData();
+
+            // Replace the continue button click handler:
+            continueBtn.addEventListener('click', function() {
+                if (selectedMediums.length > 0) {
+                    console.log('Selected mediums:', selectedMediums);
+                    
+                    // Save to onboarding data and mark as complete
+                    onboardingData.updateArtMediums(selectedMediums);
+                    onboardingData.completeOnboarding();
+                    
+                    console.log('Onboarding completed! Data:', onboardingData.getData());
+                    
+                    // Navigate to AI chat page
+                    window.location.href = 'ai.html';
+                }
+            });
+        });
+        
+        // Define float animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translate(0, 0); }
+                50% { transform: translate(${Math.random() * 8 - 4}px, ${Math.random() * 8 - 4}px); }
+                100% { transform: translate(0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

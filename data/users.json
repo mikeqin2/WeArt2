@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "mike qin",
+    "email": "mikeqin22@outlook.com",
+    "phone": "15827154746",
+    "password": null,
+    "preferences": {
+      "colorSelection": "connections",
+      "pathSelection": "parent",
+      "learningGoals": [],
+      "artMediums": []
+    },
+    "onboardingCompleted": false,
+    "createdAt": "2025-07-05T11:53:28.498Z",
+    "lastLogin": "2025-07-05T12:06:36.289Z",
+    "resume": {
+      "filename": "1_1751717795922_____________-1.pdf",
+      "originalName": "ä¸­æç®å-1.pdf",
+      "path": "/home/mikeqin2/WeArt2/uploads/1_1751717795922_____________-1.pdf",
+      "size": 336300,
+      "mimetype": "application/pdf",
+      "uploadedAt": "2025-07-05T12:16:35.928Z"
+    }
+  }
+]

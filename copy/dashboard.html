@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeArt Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #040816;
+            color: #E5F6FF;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Cosmic background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #040816 0%, #0A1F43 100%);
+            overflow: hidden;
+        }
+        
+        .stars-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0)),
+                              radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0)),
+                              radial-gradient(2px 2px at 50px 160px, rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0)),
+                              radial-gradient(2px 2px at 90px 40px, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0)),
+                              radial-gradient(2px 2px at 130px 80px, rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0));
+            background-repeat: repeat;
+            opacity: 0.6;
+        }
+        
+        .nebula-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(155, 95, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%),
+                        radial-gradient(ellipse at 70% 60%, rgba(0, 171, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            opacity: 0.3;
+        }
+        
+        /* Layout */
+        .container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            flex: 0 0 240px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        
+        .logo {
+            padding: 0 24px;
+            margin-bottom: 40px;
+        }
+        
+        .logo img {
+            height: 36px;
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #7BA0C4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #E5F6FF;
+        }
+        
+        .nav-link.active {
+            background: rgba(0, 171, 255, 0.1);
+            color: #00ABFF;
+            border-left: 3px solid #00ABFF;
+        }
+        
+        .nav-link-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            opacity: 0.8;
+        }
+        
+        .user-profile {
+            margin-top: auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 12px;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-info {
+            flex-grow: 1;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #E5F6FF;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: #7BA0C4;
+        }
+        
+        /* Main content */
+        .main-content {
+            flex-grow: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 10px 16px 10px 40px;
+            font-size: 14px;
+            color: #E5F6FF;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00ABFF;
+            box-shadow: 0 0 0 2px rgba(0, 171, 255, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+        
+        /* Dashboard grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 171, 255, 0.1);
+            border-color: rgba(0, 171, 255, 0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 171, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-icon img {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+        
+        .card-value {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .card-subtitle {
+            font-size: 14px;
+            color: #7BA0C4;
+        }
+        
+        /* Recent activity section */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .activity-list {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon.blue {
+            background: rgba(0, 171, 255, 0.1);
+        }
+        
+        .activity-icon.purple {
+            background: rgba(155, 95, 255, 0.1);
+        }
+        
+        .activity-icon.green {
+            background: rgba(0, 242, 195, 0.1);
+        }
+        
+        .activity-icon img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+        
+        .activity-content {
+            flex-grow: 1;
+        }
+        
+        .activity-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .activity-meta {
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: #7BA0C4;
+        }
+        
+        .activity-status {
+            margin-left: auto;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .activity-status.completed {
+            background: rgba(0, 242, 195, 0.1);
+            color: #00F2C3;
+        }
+        
+        .activity-status.in-progress {
+            background: rgba(0, 171, 255, 0.1);
+            color: #00ABFF;
+        }
+        
+        /* Recommended courses section */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        .course-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 171, 255, 0.1);
+            border-color: rgba(0, 171, 255, 0.2);
+        }
+        
+        .course-image {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+        }
+        
+        .course-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .course-content {
+            padding: 16px;
+        }
+        
+        .course-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .course-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .course-author {
+            font-size: 12px;
+            color: #7BA0C4;
+        }
+        
+        .course-rating {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .rating-star {
+            color: #FFB400;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+        
+        .rating-value {
+            font-size: 12px;
+            color: #E5F6FF;
+        }
+        
+        .course-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ABFF, #9B5FFF);
+            border-radius: 2px;
+        }
+        
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #7BA0C4;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .dashboard-grid, .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                flex: 0 0 80px;
+            }
+            
+            .logo {
+                padding: 0 16px;
+                text-align: center;
+            }
+            
+            .nav-link span {
+                display: none;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .nav-link-icon {
+                margin-right: 0;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .user-profile {
+                justify-content: center;
+                padding: 16px;
+            }
+            
+            .user-avatar {
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid, .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+                margin-top: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic background -->
+    <div class="cosmic-background">
+        <div class="stars-layer"></div>
+        <div class="nebula-layer"></div>
+    </div>
+    
+    <!-- Main container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="path/to/weart-logo.png" alt="WeArt Logo">
+            </div>
+            
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link active">
+                    <img src="path/to/dashboard-icon.svg" alt="Dashboard" class="nav-link-icon">
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <img src="path/to/explore-icon.svg" alt="Explore" class="nav-link-icon">
+                    <span>Explore</span>
+                </a>
+                <a href="course.html" class="nav-link">
+                    <img src="path/to/courses-icon.svg" alt="Courses" class="nav-link-icon">
+                    <span>Courses</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <img src="path/to/community-icon.svg" alt="Community" class="nav-link-icon">
+                    <span>Community</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <img src="path/to/gallery-icon.svg" alt="Gallery" class="nav-link-icon">
+                    <span>Gallery</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <img src="path/to/settings-icon.svg" alt="Settings" class="nav-link-icon">
+                    <span>Settings</span>
+                </a>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="path/to/user-avatar.jpg" alt="User Avatar">
+                </div>
+                <div class="user-info">
+                    <div class="user-name">WeArtLab</div>
+                    <div class="user-role">Co-Founder CTO</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="search-container">
+                    <img src="path/to/search-icon.svg" alt="Search" class="search-icon">
+                    <input type="text" class="search-input" placeholder="Search courses, artists, resources...">
+                </div>
+            </div>
+            
+            <!-- Dashboard stats -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Courses Completed</h3>
+                        <div class="card-icon">
+                            <img src="path/to/course-icon.svg" alt="Courses">
+                        </div>
+                    </div>
+                    <div class="card-value">12</div>
+                    <div class="card-subtitle">+3 this month</div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Artworks Created</h3>
+                        <div class="card-icon">
+                            <img src="path/to/artwork-icon.svg" alt="Artworks">
+                        </div>
+                    </div>
+                    <div class="card-value">47</div>
+                    <div class="card-subtitle">+8 this month</div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Community Engagement</h3>
+                        <div class="card-icon">
+                            <img src="path/to/community-icon.svg" alt="Community">
+                        </div>
+                    </div>
+                    <div class="card-value">85%</div>
+                    <div class="card-subtitle">Top 15% of users</div>
+                </div>
+            </div>
+            
+            <!-- Recent activity -->
+            <h2 class="section-title">Recent Activity</h2>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon blue">
+                        <img src="path/to/course-icon.svg" alt="Course">
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Digital Painting Fundamentals</h3>
+                        <div class="activity-meta">
+                            <div class="activity-time">2 hours ago</div>
+                            <div class="activity-status completed">Completed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon purple">
+                        <img src="path/to/artwork-icon.svg" alt="Artwork">
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Cosmic Landscape - Project Submission</h3>
+                        <div class="activity-meta">
+                            <div class="activity-time">Yesterday</div>
+                            <div class="activity-status in-progress">In Review</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon green">
+                        <img src="path/to/community-icon.svg" alt="Community">
+                    </div>
+                    <div class="activity-content">
+                        <h3 class="activity-title">Joined Digital Art Discussion Group</h3>
+                        <div class="activity-meta">
+                            <div class="activity-time">3 days ago</div>
+                            <div class="activity-status completed">Active Member</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recommended courses -->
+            <h2 class="section-title">Recommended Courses</h2>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-image">
+                        <img src="path/to/course1.jpg" alt="Course 1">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Advanced Color Theory</h3>
+                        <div class="course-info">
+                            <div class="course-author">By Sarah Johnson</div>
+                            <div class="course-rating">
+                                <span class="rating-star">★</span>
+                                <span class="rating-value">4.8</span>
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="course-stats">
+                            <div>8 Lessons</div>
+                            <div>3.5 Hours</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-image">
+                        <img src="path/to/course2.jpg" alt="Course 2">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">Character Design Masterclass</h3>
+                        <div class="course-info">
+                            <div class="course-author">By Michael Chen</div>
+                            <div class="course-rating">
+                                <span class="rating-star">★</span>
+                                <span class="rating-value">4.9</span>
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="course-stats">
+                            <div>12 Lessons</div>
+                            <div>6 Hours</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-image">
+                        <img src="path/to/course3.jpg" alt="Course 3">
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">AI-Assisted Art Creation</h3>
+                        <div class="course-info">
+                            <div class="course-author">By Alex Rivera</div>
+                            <div class="course-rating">
+                                <span class="rating-star">★</span>
+                                <span class="rating-value">4.7</span>
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="course-stats">
+                            <div>10 Lessons</div>
+                            <div>4 Hours</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parallax effect for cosmic background
+            document.addEventListener('mousemove', function(e) {
+                const starsLayer = document.querySelector('.stars-layer');
+                const nebulaLayer = document.querySelector('.nebula-layer');
+                
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                starsLayer.style.transform = `translate(${-x * 20}px, ${-y * 20}px)`;
+                nebulaLayer.style.transform = `translate(${-x * 40}px, ${-y * 40}px)`;
+            });
+            
+            // Update user info
+            const userInfo = {
+                name: 'WeArtLab',
+                role: 'Co-Founder CTO',
+                email: 'WeArtLab@outlook.com'
+            };
+            
+            document.querySelector('.user-name').textContent = userInfo.name;
+            document.querySelector('.user-role').textContent = userInfo.role;
+            
+            // Simulate course progress animation
+            setTimeout(() => {
+                const progressBars = document.querySelectorAll('.progress-bar');
+                progressBars[0].style.width = '0%';
+                progressBars[1].style.width = '0%';
+                progressBars[2].style.width = '0%';
+            }, 500);
+        });
+    </script>
+</body>
+</html>

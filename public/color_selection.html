@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeArt - Choose Your Cosmic Path</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030d1c;
+            color: rgba(247, 250, 255, 0.8);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Star background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        /* Header */
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 1.5rem;
+            color: rgba(247, 250, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .menu-icon:hover {
+            opacity: 1;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: calc(100vh - 100px);
+            justify-content: center;
+        }
+        
+        .title-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 2.5rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: rgba(247, 250, 255, 0.9);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(247, 250, 255, 0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Planets section */
+        .planets-container {
+            display: flex;
+            justify-content: center;
+            gap: 8rem;
+            position: relative;
+            width: 100%;
+        }
+        
+        .energy-beam {
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 400px;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            z-index: -1;
+        }
+        
+        .planet {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        box-shadow 0.5s ease;
+        }
+        
+        .planet::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.7;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .planet::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: calc(100% + 40px);
+            height: calc(100% + 40px);
+            border-radius: 50%;
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .planet:hover {
+            transform: scale(1.08);
+        }
+        
+        .planet:hover::before {
+            opacity: 0.9;
+        }
+        
+        .planet:hover::after {
+            opacity: 0.3;
+        }
+        
+        .planet.selected {
+            transform: translateY(-40px) scale(1.1);
+        }
+        
+        .planet.selected::before {
+            opacity: 1;
+        }
+        
+        .planet.selected::after {
+            opacity: 0.5;
+        }
+        
+        .planet.dimmed {
+            opacity: 0.25;
+        }
+        
+        .planet-prosperity {
+            background: radial-gradient(circle at 30% 30%, #ff2755 0%, #890019 100%);
+        }
+        
+        .planet-prosperity::before {
+            box-shadow: 0 0 60px 10px rgba(255, 39, 85, 0.4);
+        }
+        
+        .planet-prosperity::after {
+            box-shadow: 0 0 100px 20px rgba(255, 39, 85, 0.2);
+        }
+        
+        .planet-connections {
+            background: radial-gradient(circle at 30% 30%, #32ffd5 0%, #0039e6 100%);
+        }
+        
+        .planet-connections::before {
+            box-shadow: 0 0 60px 10px rgba(50, 255, 213, 0.4);
+        }
+        
+        .planet-connections::after {
+            box-shadow: 0 0 100px 20px rgba(50, 255, 213, 0.2);
+        }
+        
+        .planet-exploration {
+            background: radial-gradient(circle at 30% 30%, #ffc736 0%, #ff9500 100%);
+        }
+        
+        .planet-exploration::before {
+            box-shadow: 0 0 60px 10px rgba(255, 199, 54, 0.4);
+        }
+        
+        .planet-exploration::after {
+            box-shadow: 0 0 100px 20px rgba(255, 199, 54, 0.2);
+        }
+        
+        .planet-ring {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: calc(100% + 30px);
+            height: calc(100% + 30px);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            transition: border-color 0.3s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .planet-ring:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .planet.selected .planet-ring {
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            .planets-container {
+                gap: 4rem;
+            }
+            
+            .planet {
+                width: 150px;
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .planets-container {
+                gap: 2rem;
+            }
+            
+            .planet {
+                width: 120px;
+                height: 120px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .planets-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .energy-beam {
+                height: 600px;
+            }
+            
+            .planet.selected {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Progress indicator */
+        .progress-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: #4DF8FF;
+            box-shadow: 0 0 10px rgba(77, 248, 255, 0.5);
+        }
+        
+        .progress-dot.completed {
+            background: #10B981;
+        }
+
+        /* Continue button */
+        .continue-button {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(90deg, #4DF8FF, #00B4D8);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(77, 248, 255, 0.4);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .continue-button.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .continue-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(77, 248, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Star background -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">WeArt</a>
+        <div class="menu-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </div>
+    </header>
+    
+    <!-- Main content -->
+    <div class="container">
+        <div class="title-section">
+            <h1>Choose Your Cosmic Path</h1>
+            <p class="subtitle">Select the vision that resonates with your artistic journey</p>
+        </div>
+        
+        <div class="planets-container">
+            <div class="energy-beam"></div>
+            
+            <div class="planet planet-prosperity" data-path="prosperity">
+                <div class="planet-ring"></div>
+            </div>
+            
+            <div class="planet planet-connections" data-path="connections">
+                <div class="planet-ring"></div>
+            </div>
+            
+            <div class="planet planet-exploration" data-path="exploration">
+                <div class="planet-ring"></div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Progress indicator -->
+    <div class="progress-container">
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+    </div>
+    
+    <!-- Continue button -->
+    <button class="continue-button" id="continue-btn">Continue</button>
+    
+    <!-- Debug button for testing -->
+    <!-- <button style="position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px; background: red; color: white;" id="debug-btn">Debug Auth</button> -->
+    
+    <script src="js/auth.js"></script>
+    <script src="js/onboarding.js"></script>
+    <script>
+        const onboardingData = new OnboardingData();
+        // Create stars
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait a bit for auth.js to load if needed
+            setTimeout(function() {
+                // Check authentication first (but don't redirect immediately for debugging)
+                if (!window.weartAuth) {
+                    console.log('weartAuth not loaded yet');
+                } else if (!window.weartAuth.isAuthenticated()) {
+                    console.log('Not authenticated, should redirect to register');
+                    console.log('Token:', window.weartAuth.getToken());
+                    console.log('User:', window.weartAuth.getUser());
+                    // Uncomment the line below to enable redirect
+                    // window.location.href = 'register.html';
+                    // return;
+                } else {
+                    console.log('User authenticated:', window.weartAuth.getUser());
+                }
+            }, 100);
+
+            const starsContainer = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1-3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random opacity
+                star.style.opacity = Math.random() * 0.7 + 0.1;
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // Add twinkling effect to some stars
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index % 3 === 0) {
+                    const duration = 3 + Math.random() * 5;
+                    star.style.animation = `twinkle ${duration}s infinite ease-in-out`;
+                }
+            });
+            
+            // Add keyframes for twinkling
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes twinkle {
+                    0% { opacity: ${Math.random() * 0.5 + 0.1}; }
+                    50% { opacity: ${Math.random() * 0.3 + 0.5}; }
+                    100% { opacity: ${Math.random() * 0.5 + 0.1}; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // Planet selection
+        const planets = document.querySelectorAll('.planet');
+        const continueButton = document.getElementById('continue-btn');
+        let selectedPlanet = null;
+        
+        planets.forEach(planet => {
+            planet.addEventListener('click', function() {
+                // Remove selected class from all planets
+                planets.forEach(p => {
+                    p.classList.remove('selected');
+                    p.classList.remove('dimmed');
+                });
+                
+                // Add selected class to clicked planet
+                this.classList.add('selected');
+                selectedPlanet = this.dataset.path;
+                
+                // Dim other planets
+                planets.forEach(p => {
+                    if (p !== this) {
+                        p.classList.add('dimmed');
+                    }
+                });
+                
+                // Enable continue button
+                continueButton.classList.add('enabled');
+            });
+        });
+        
+        // Replace the continue button click handler with:
+        continueButton.addEventListener('click', async function() {
+            if (selectedPlanet) {
+                console.log(`Selected path: ${selectedPlanet}`);
+                
+                // Show loading state
+                this.innerHTML = 'Saving...';
+                this.disabled = true;
+                
+                try {
+                    // Save to onboarding data
+                    onboardingData.updateColorSelection(selectedPlanet);
+                    
+                    // Also save to user preferences if authenticated
+                    if (window.weartAuth && window.weartAuth.isAuthenticated()) {
+                        await window.weartAuth.updatePreferences({
+                            colorSelection: selectedPlanet
+                        });
+                    }
+                    
+                    console.log('Color selection saved successfully');
+                    
+                    // Navigate to path selection
+                    window.location.href = 'path_selection.html';
+                    
+                } catch (error) {
+                    console.error('Error saving color selection:', error);
+                    
+                    // Save locally even if API fails
+                    onboardingData.updateColorSelection(selectedPlanet);
+                    
+                    // Still continue to next page
+                    window.location.href = 'path_selection.html';
+                }
+            }
+        });
+        
+        // Parallax effect on stars
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const stars = document.getElementById('stars');
+            const moveX = mouseX * 20;
+            const moveY = mouseY * 20;
+            
+            stars.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+        });
+        
+        // // Debug function
+        // document.getElementById('debug-btn').addEventListener('click', function() {
+        //     console.log('=== DEBUG AUTH ===');
+        //     console.log('window.weartAuth exists:', !!window.weartAuth);
+            
+        //     if (window.weartAuth) {
+        //         console.log('Token from localStorage:', localStorage.getItem('authToken'));
+        //         console.log('User from localStorage:', localStorage.getItem('user'));
+        //         console.log('weartAuth.getToken():', window.weartAuth.getToken());
+        //         console.log('weartAuth.getUser():', window.weartAuth.getUser());
+        //         console.log('weartAuth.isAuthenticated():', window.weartAuth.isAuthenticated());
+                
+        //         // Test making a direct API call
+        //         const token = window.weartAuth.getToken();
+        //         console.log('Testing direct API call with token:', token);
+                
+        //         if (token) {
+        //             fetch('/api/auth/preferences', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                     'Authorization': `Bearer ${token}`
+        //                 },
+        //                 body: JSON.stringify({ colorSelection: 'test' })
+        //             })
+        //             .then(response => {
+        //                 console.log('Direct API response status:', response.status);
+        //                 return response.json();
+        //             })
+        //             .then(data => {
+        //                 console.log('Direct API response data:', data);
+        //             })
+        //             .catch(error => {
+        //                 console.error('Direct API error:', error);
+        //             });
+        //         } else {
+        //             console.log('No token available for API test');
+        //         }
+        //     } else {
+        //         console.log('weartAuth not loaded');
+        //     }
+        //     console.log('=== END DEBUG ===');
+        // });
+    </script>
+</body>
+</html>

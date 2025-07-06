@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Art Education Platform - Cosmic Intro</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+        }
+        
+        /* Animation container */
+        .cosmic-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: #000;
+        }
+        
+        /* Animation frames */
+        .cosmic-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        
+        /* Platform UI that appears at the end */
+        .platform-ui {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 80%;
+            max-width: 800px;
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 10;
+        }
+        
+        .ui-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 198, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        
+        .ui-card h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #23E8FF, #9586FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .ui-card p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .start-button {
+            background: linear-gradient(90deg, #00FFC6, #23E8FF);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            color: #111827;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 198, 0.2);
+        }
+        
+        /* Animation states */
+        .cosmic-intro.complete .platform-ui {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Skip button */
+        .skip-intro {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        
+        .skip-intro:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Loading indicator */
+        .loading-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            z-index: 20;
+        }
+        
+        /* Particles effect */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        
+        .cosmic-intro.frame-3 #particles-js,
+        .cosmic-intro.frame-4 #particles-js,
+        .cosmic-intro.frame-5 #particles-js,
+        .cosmic-intro.frame-6 #particles-js {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-intro">
+        <!-- Animation frames -->
+        <div class="cosmic-frame frame-1" id="frame-1"></div>
+        <div class="cosmic-frame frame-2" id="frame-2"></div>
+        <div class="cosmic-frame frame-3" id="frame-3"></div>
+        <div class="cosmic-frame frame-4" id="frame-4"></div>
+        <div class="cosmic-frame frame-5" id="frame-5"></div>
+        <div class="cosmic-frame frame-6" id="frame-6"></div>
+        
+        <!-- Particles effect for enhanced animation -->
+        <div id="particles-js"></div>
+        
+        <!-- Platform UI that appears at the end -->
+        <div class="platform-ui">
+            <div class="ui-card">
+                <h1>Welcome to ArtMind</h1>
+                <p>Your journey into the universe of AI-powered art education begins here</p>
+                <button class="start-button" id="enter-platform">Begin Your Journey</button>
+            </div>
+        </div>
+        
+        <!-- Skip button -->
+        <div class="skip-intro" id="skip-intro">Skip Intro</div>
+        
+        <!-- Loading indicator -->
+        <div class="loading-indicator">Loading cosmic universe...</div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Frame image URLs - replace these with your actual image URLs from backend
+            const frameImages = [
+                '/path/to/frame1.jpg', // Replace with actual URL from your backend
+                '/path/to/frame2.jpg',
+                '/path/to/frame3.jpg',
+                '/path/to/frame4.jpg',
+                '/path/to/frame5.jpg',
+                '/path/to/frame6.jpg'
+            ];
+            
+            // Get elements
+            const cosmicIntro = document.querySelector('.cosmic-intro');
+            const frames = document.querySelectorAll('.cosmic-frame');
+            const skipIntro = document.getElementById('skip-intro');
+            const enterPlatform = document.getElementById('enter-platform');
+            const loadingIndicator = document.querySelector('.loading-indicator');
+            
+            // Preload images
+            let loadedImages = 0;
+            const preloadImages = () => {
+                frameImages.forEach((src, index) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        loadedImages++;
+                        frames[index].style.backgroundImage = `url(${src})`;
+                        
+                        if (loadedImages === frameImages.length) {
+                            loadingIndicator.style.display = 'none';
+                            startAnimation();
+                        }
+                    };
+                    img.onerror = () => {
+                        console.error(`Failed to load image: ${src}`);
+                        // Use fallback or continue anyway
+                        loadedImages++;
+                        if (loadedImages === frameImages.length) {
+                            loadingIndicator.style.display = 'none';
+                            startAnimation();
+                        }
+                    };
+                    img.src = src;
+                });
+            };
+            
+            // Animation sequence
+            const startAnimation = () => {
+                // Frame 1: Initial faint cosmic dust
+                setTimeout(() => {
+                    frames[0].style.opacity = '1';
+                    cosmicIntro.classList.add('frame-1');
+                }, 500);
+                
+                // Frame 2: Small bright star appears
+                setTimeout(() => {
+                    frames[0].style.opacity = '0';
+                    frames[1].style.opacity = '1';
+                    cosmicIntro.classList.remove('frame-1');
+                    cosmicIntro.classList.add('frame-2');
+                }, 3000);
+                
+                // Frame 3: Star begins to expand
+                setTimeout(() => {
+                    frames[1].style.opacity = '0';
+                    frames[2].style.opacity = '1';
+                    cosmicIntro.classList.remove('frame-2');
+                    cosmicIntro.classList.add('frame-3');
+                    initParticles(); // Initialize particle effect
+                }, 5500);
+                
+                // Frame 4: Star continues expanding
+                setTimeout(() => {
+                    frames[2].style.opacity = '0';
+                    frames[3].style.opacity = '1';
+                    cosmicIntro.classList.remove('frame-3');
+                    cosmicIntro.classList.add('frame-4');
+                }, 8000);
+                
+                // Frame 5: Maximum brightness
+                setTimeout(() => {
+                    frames[3].style.opacity = '0';
+                    frames[4].style.opacity = '1';
+                    cosmicIntro.classList.remove('frame-4');
+                    cosmicIntro.classList.add('frame-5');
+                }, 10500);
+                
+                // Frame 6: Final cosmic scene with UI
+                setTimeout(() => {
+                    frames[4].style.opacity = '0';
+                    frames[5].style.opacity = '1';
+                    cosmicIntro.classList.remove('frame-5');
+                    cosmicIntro.classList.add('frame-6');
+                }, 13000);
+                
+                // Show UI
+                setTimeout(() => {
+                    cosmicIntro.classList.add('complete');
+                }, 15000);
+            };
+            
+            // Initialize particles.js
+            const initParticles = () => {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: {
+                            value: 120,
+                            density: {
+                                enable: true,
+                                value_area: 800
+                            }
+                        },
+                        color: {
+                            value: ['#23E8FF', '#4BA4FF', '#2634FF', '#6C1AFF']
+                        },
+                        shape: {
+                            type: 'circle',
+                        },
+                        opacity: {
+                            value: 0.6,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 1,
+                                opacity_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        size: {
+                            value: 3,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 2,
+                                size_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        line_linked: {
+                            enable: false
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: 'none',
+                            random: true,
+                            straight: false,
+                            out_mode: 'out',
+                            bounce: false,
+                        }
+                    },
+                    interactivity: {
+                        detect_on: 'canvas',
+                        events: {
+                            onhover: {
+                                enable: true,
+                                mode: 'bubble'
+                            },
+                            onclick: {
+                                enable: false
+                            },
+                            resize: true
+                        },
+                        modes: {
+                            bubble: {
+                                distance: 100,
+                                size: 5,
+                                duration: 2,
+                                opacity: 0.8,
+                                speed: 3
+                            }
+                        }
+                    },
+                    retina_detect: true
+                });
+            };
+            
+            // Skip intro handler
+            skipIntro.addEventListener('click', () => {
+                // Navigate directly to register page
+                window.location.href = 'register.html';
+            });
+            
+            // Enter platform button handler
+            enterPlatform.addEventListener('click', () => {
+                // Fade out the intro
+                cosmicIntro.style.opacity = '0';
+                
+                // Navigate to register page
+                setTimeout(() => {
+                    window.location.href = 'register.html';
+                }, 1000);
+            });
+            
+            // Start preloading images
+            preloadImages();
+        });
+        
+    </script>
+    
+    <!-- Main application content (initially hidden) -->
+    <div id="main-app-content" style="display: none;">
+        <!-- Your main application content goes here -->
+        <!-- This will be shown after the intro animation completes -->
+    </div>
+</body>
+</html>

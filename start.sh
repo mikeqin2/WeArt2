@@ -25,7 +25,7 @@ fi
 
 # Start the server
 echo "🚀 Starting WeArt Dashboard server..."
-node server.js &
+NO_PROXY="*" http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" node server.js &
 
 # Wait a moment for server to start
 sleep 3

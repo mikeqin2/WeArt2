@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择你的路径 | WeArt</title>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #040B22;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Cosmic background */
+        .cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0A1F43 0%, #040B22 70%);
+            overflow: hidden;
+        }
+        
+        .stars-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('path/to/stars.png'); /* Replace with actual starfield image */
+            background-size: cover;
+            opacity: 0.6;
+        }
+        
+        .nebula-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('path/to/nebula.png'); /* Replace with actual nebula image */
+            background-size: cover;
+            opacity: 0.2;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 40px;
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header */
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        /* Left section - Upload */
+        .upload-section {
+            flex: 0 0 45%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-right: 40px;
+        }
+        
+        .wormhole-uploader {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .wormhole-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 226, 255, 0.3);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .wormhole-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .wormhole-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+        
+        .wormhole-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            animation-duration: 10s;
+        }
+        
+        .wormhole-ring:nth-child(4) {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            animation-duration: 7s;
+            animation-direction: reverse;
+        }
+        
+        .wormhole-ring:nth-child(5) {
+            width: 20%;
+            height: 20%;
+            top: 40%;
+            left: 40%;
+            animation-duration: 5s;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .wormhole-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(0, 226, 255, 0.3) 0%, rgba(0, 226, 255, 0) 70%);
+            pointer-events: none;
+        }
+        
+        .upload-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 2;
+        }
+        
+        .upload-area.dragover {
+            background: rgba(0, 226, 255, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: rgba(0, 226, 255, 0.8);
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            text-align: center;
+            max-width: 70%;
+        }
+        
+        .upload-button {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #00ABFF, #0077FF);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 171, 255, 0.4);
+        }
+        
+        .upload-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 171, 255, 0.6);
+        }
+        
+        /* Divider */
+        .divider {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .divider-line {
+            width: 1px;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+        }
+        
+        .divider-text {
+            margin: 20px 0;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Right section - Identity selection */
+        .identity-section {
+            flex: 0 0 55%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 40px;
+        }
+        
+        .orbit-line {
+            position: absolute;
+            left: 45%;
+            top: 50%;
+            height: 80%;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            transform: translateY(-50%);
+        }
+        
+        .planets-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .planet-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .planet-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(10px);
+        }
+        
+        .planet {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+            position: relative;
+        }
+        
+        .planet-glow {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            border-radius: 50%;
+            filter: blur(5px);
+            opacity: 0.7;
+        }
+        
+        .planet-elementary {
+            background: #FFB941;
+        }
+        
+        .planet-elementary .planet-glow {
+            background: rgba(255, 185, 65, 0.5);
+        }
+        
+        .planet-middle {
+            background: #FFD84D;
+        }
+        
+        .planet-middle .planet-glow {
+            background: rgba(255, 216, 77, 0.5);
+        }
+        
+        .planet-high {
+            background: #7BFF93;
+        }
+        
+        .planet-high .planet-glow {
+            background: rgba(123, 255, 147, 0.5);
+        }
+        
+        .planet-parent {
+            background: #4DF8FF;
+        }
+        
+        .planet-parent .planet-glow {
+            background: rgba(77, 248, 255, 0.5);
+        }
+        
+        .planet-elderly {
+            background: #4C7BFF;
+        }
+        
+        .planet-elderly .planet-glow {
+            background: rgba(76, 123, 255, 0.5);
+        }
+        
+        .planet-boss {
+            background: #A96CFF;
+        }
+        
+        .planet-boss .planet-glow {
+            background: rgba(169, 108, 255, 0.5);
+        }
+        
+        .planet-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .planet-option.selected {
+            background: rgba(77, 248, 255, 0.15);
+            transform: translateX(15px) scale(1.05);
+            border: 1px solid rgba(77, 248, 255, 0.4);
+        }
+
+        .planet-option.selected .planet {
+            box-shadow: 0 0 30px rgba(77, 248, 255, 0.8);
+            border: 2px solid rgba(77, 248, 255, 0.6);
+            transform: scale(1.1);
+        }
+
+        .planet-option.selected .planet-glow {
+            opacity: 1;
+            filter: blur(8px);
+        }
+
+        .planet-option.selected .planet-label {
+            color: #4DF8FF;
+            font-weight: 600;
+        }
+
+        /* Hover effects for non-selected items */
+        .planet-option:not(.selected):hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(10px);
+        }
+
+        /* Ensure non-selected items are slightly dimmed when something is selected */
+        .planet-option:not(.selected) {
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .has-selection .planet-option:not(.selected) {
+            opacity: 0.6;
+        }
+
+        .has-selection .planet-option.selected {
+            opacity: 1;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .header {
+                position: relative;
+                top: 0;
+                margin-bottom: 40px;
+            }
+            
+            .upload-section, .identity-section {
+                flex: 0 0 auto;
+                padding: 20px 0;
+                width: 100%;
+            }
+            
+            .divider {
+                flex-direction: row;
+                margin: 20px 0;
+            }
+            
+            .divider-line {
+                width: 100px;
+                height: 1px;
+            }
+            
+            .orbit-line {
+                display: none;
+            }
+            
+            .wormhole-uploader {
+                width: 300px;
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 28px;
+            }
+            
+            .wormhole-uploader {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .planets-container {
+                gap: 20px;
+            }
+            
+            .planet {
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        /* File input styling */
+        .file-input {
+            display: none;
+        }
+        
+        /* Animation for particles */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+
+        /* Progress indicator */
+        .progress-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background: #4DF8FF;
+            box-shadow: 0 0 10px rgba(77, 248, 255, 0.5);
+        }
+        
+        .progress-dot.completed {
+            background: #10B981;
+        }
+
+        /* Continue button */
+        .continue-button {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(90deg, #4DF8FF, #00B4D8);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(77, 248, 255, 0.4);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .continue-button.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .continue-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(77, 248, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic background -->
+    <div class="cosmic-background">
+        <div class="stars-layer"></div>
+        <div class="nebula-layer"></div>
+        <div class="particles-container" id="particles"></div>
+    </div>
+    
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">选择你的路径</h1>
+        </div>
+        
+        <!-- Left section - Upload -->
+        <div class="upload-section">
+            <div class="wormhole-uploader" id="upload-area">
+                <div class="wormhole-ring"></div>
+                <div class="wormhole-ring"></div>
+                <div class="wormhole-ring"></div>
+                <div class="wormhole-ring"></div>
+                <div class="wormhole-ring"></div>
+                <div class="wormhole-glow"></div>
+                <div class="upload-area">
+                    <div class="upload-icon">⬆</div>
+                    <div class="upload-text">点击或拖拽文件至此处</div>
+                </div>
+                <input type="file" id="file-input" class="file-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+            </div>
+            <button class="upload-button">上传简历</button>
+        </div>
+        
+        <!-- Divider -->
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">或</div>
+            <div class="divider-line"></div>
+        </div>
+        
+        <!-- Right section - Identity selection -->
+        <div class="identity-section">
+            <div class="orbit-line"></div>
+            <div class="planets-container">
+                <div class="planet-option" data-value="elementary">
+                    <div class="planet planet-elementary">
+                        <div class="planet-glow"></div>
+                    </div>
+                    <div class="planet-label">小学生</div>
+                </div>
+                <div class="planet-option" data-value="middle">
+                    <div class="planet planet-middle">
+                        <div class="planet-glow"></div>
+                    </div>
+                    <div class="planet-label">初中生</div>
+                </div>
+                <div class="planet-option" data-value="high">
+                    <div class="planet planet-high">
+                        <div class="planet-glow"></div>
+                    </div>
+                    <div class="planet-label">高中生</div>
+                </div>
+                <div class="planet-option" data-value="parent">
+                    <div class="planet planet-parent">
+                        <div class="planet-glow"></div>
+                    </div>
+                    <div class="planet-label">家长</div>
+                </div>
+                <div class="planet-option" data-value="elderly">
+                    <div class="planet planet-elderly">
+                        <div class="planet-glow"></div>
+                    </div>
+                    <div class="planet-label">中老年人</div>
+                </div>
+                <div class="planet-option" data-value="boss">
+                    <div class="planet planet-boss">
+                        <div class="planet-glow"></div>
+                    </div>
+                    <div class="planet-label">老板</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress indicator -->
+    <div class="progress-container">
+        <div class="progress-dot completed"></div>
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+    </div>
+    
+    <!-- Continue button -->
+    <button class="continue-button" id="continue-btn">Continue</button>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/onboarding.js"></script>
+    <script>
+        // Add at the top of script section
+        const onboardingData = new OnboardingData();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication first
+            if (!window.weartAuth || !window.weartAuth.isAuthenticated()) {
+                console.log('Not authenticated, redirecting to register');
+                window.location.href = 'register.html';
+                return;
+            }
+
+            console.log('User authenticated:', window.weartAuth.getUser());
+
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 2 + 1;
+                
+                // Random opacity
+                const opacity = Math.random() * 0.5 + 0.1;
+                
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.opacity = opacity;
+                
+                // Add animation with random duration and delay
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 10;
+                particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // File upload handling
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const uploadButton = document.querySelector('.upload-button');
+            
+            // Planet/Role selection handling
+            const planetOptions = document.querySelectorAll('.planet-option');
+            const continueBtn = document.getElementById('continue-btn');
+            const planetsContainer = document.querySelector('.planets-container');
+
+            let selectedRole = null;
+            let uploadedFile = null;
+
+            planetOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    planetOptions.forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Add class to container to dim non-selected items
+                    planetsContainer.classList.add('has-selection');
+                    
+                    // Get selected value
+                    selectedRole = this.getAttribute('data-value');
+                    console.log('Selected role:', selectedRole);
+                    
+                    // Check if we can enable continue button
+                    checkContinueButton();
+                    
+                    // Add a subtle animation effect
+                    this.style.transform = 'translateX(15px) scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+
+            function checkContinueButton() {
+                // Enable continue button if role is selected (file upload is optional)
+                if (selectedRole) {
+                    continueBtn.classList.add('enabled');
+                } else {
+                    continueBtn.classList.remove('enabled');
+                }
+            }
+            
+            // File upload functionality
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            uploadButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            });
+            
+            // Drag and drop handling
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleFileUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Planet/Role selection handling
+            planetOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    planetOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Get selected value
+                    selectedRole = this.getAttribute('data-value');
+                    console.log('Selected role:', selectedRole);
+                    
+                    // Check if we can enable continue button
+                    checkContinueButton();
+                });
+            });
+            
+            // Replace the continue button click handler:
+            continueBtn.addEventListener('click', async function() {
+                if (selectedRole) {
+                    console.log('Continuing with role:', selectedRole);
+                    
+                    // Show loading state
+                    this.innerHTML = 'Saving...';
+                    this.disabled = true;
+                    
+                    try {
+                        // Save to onboarding data
+                        onboardingData.updatePathSelection(selectedRole);
+                        
+                        // Also save to user preferences if authenticated
+                        if (window.weartAuth && window.weartAuth.isAuthenticated()) {
+                            await window.weartAuth.updatePreferences({
+                                pathSelection: selectedRole
+                            });
+                        }
+                        
+                        console.log('Path selection saved successfully');
+                        
+                        // Navigate to learning goal selection
+                        window.location.href = 'learning_goal_selection.html';
+                        
+                    } catch (error) {
+                        console.error('Error saving path selection:', error);
+                        
+                        // Save locally even if API fails
+                        onboardingData.updatePathSelection(selectedRole);
+                        
+                        // Still continue to next page
+                        window.location.href = 'learning_goal_selection.html';
+                    }
+                }
+            });
+            
+            async function handleFileUpload(file) {
+                console.log('File selected:', file.name);
+                
+                // Validate file type
+                const allowedTypes = ['application/pdf', 'application/msword', 
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'image/jpeg', 'image/png', 'image/jpg'];
+                
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Please upload only PDF, DOC, DOCX, or image files.');
+                    return;
+                }
+                
+                // Validate file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB.');
+                    return;
+                }
+                
+                // Create FormData for upload
+                const formData = new FormData();
+                formData.append('resume', file);
+                
+                // Show upload progress
+                uploadButton.textContent = '上传中...';
+                uploadButton.disabled = true;
+                
+                try {
+                    const response = await window.weartAuth.makeAuthenticatedRequest('/api/upload/resume', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {} // Don't set Content-Type, let browser set it for FormData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        uploadedFile = data.file;
+                        uploadButton.textContent = '上传成功!';
+                        uploadButton.style.background = 'linear-gradient(90deg, #00D97E, #00A896)';
+                        
+                        console.log('File uploaded successfully:', data);
+                        
+                        // Check if we can enable continue button
+                        checkContinueButton();
+                        
+                    } else {
+                        throw new Error(data.error || 'Upload failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('File upload error:', error);
+                    uploadButton.textContent = '上传失败，请重试';
+                    uploadButton.style.background = 'linear-gradient(90deg, #FF3B5C, #FF6F91)';
+                    uploadButton.disabled = false;
+                    
+                    let errorMessage = 'File upload failed. Please try again.';
+                    if (error.message.includes('Invalid file type')) {
+                        errorMessage = 'Invalid file type. Please upload PDF, DOC, DOCX, or image files only.';
+                    } else if (error.message.includes('File too large')) {
+                        errorMessage = 'File is too large. Please upload files smaller than 10MB.';
+                    }
+                    
+                    alert(errorMessage);
+                }
+            }
+            
+            function checkContinueButton() {
+                // Enable continue button if role is selected (file upload is optional)
+                if (selectedRole) {
+                    continueBtn.classList.add('enabled');
+                } else {
+                    continueBtn.classList.remove('enabled');
+                }
+            }
+        });
+        
+        // Define float animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translate(0, 0); }
+                50% { transform: translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px); }
+                100% { transform: translate(0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
