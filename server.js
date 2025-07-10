@@ -65,7 +65,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "https://assets-persist.lovart.ai", "https://cdnjs.cloudflare.com"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
       scriptSrcAttr: ["'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https:"],
     },
@@ -557,7 +557,13 @@ app.get('/api/mentors/meta/institutions', (req, res) => {
 // AI Chat Routes
 app.post('/api/ai/chat', async (req, res) => {
   try {
-    const { message, chatHistory = [] } = req.body;
+    const { 
+      message, 
+      chatHistory = [], 
+      maxTokens, 
+      temperature,
+      isOnboardingIntro = false 
+    } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
@@ -572,6 +578,12 @@ app.post('/api/ai/chat', async (req, res) => {
         demo: true
       });
     }
+
+    // Set defaults based on request type
+    const finalMaxTokens = maxTokens || (isOnboardingIntro ? 2048 : 1000);
+    const finalTemperature = temperature || 0.7;
+
+    console.log(`Using maxTokens: ${finalMaxTokens}, temperature: ${finalTemperature}, isOnboarding: ${isOnboardingIntro}`);
 
     // Prepare messages for DeepSeek API
     const messages = [
@@ -593,15 +605,15 @@ app.post('/api/ai/chat', async (req, res) => {
 
     // Make request to DeepSeek API with timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased to 30 seconds for longer responses
 
     const deepseekResponse = await axios.post(
       process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/chat/completions',
       {
         model: 'deepseek-chat',
         messages: messages,
-        max_tokens: 1000,
-        temperature: 0.7,
+        max_tokens: finalMaxTokens,     // Now uses frontend parameter!
+        temperature: finalTemperature,  // Now uses frontend parameter!
         stream: false
       },
       {
@@ -609,7 +621,7 @@ app.post('/api/ai/chat', async (req, res) => {
           'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
           'Content-Type': 'application/json'
         },
-        timeout: 10000, // 10 second timeout
+        timeout: 30000, // Increased timeout for longer responses
         signal: controller.signal,
         proxy: false // Bypass proxy settings
       }

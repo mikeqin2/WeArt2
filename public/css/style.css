@@ -19,70 +19,76 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    width: 80px;
+    width: 220px;
     background: rgba(15, 15, 35, 0.8);
     backdrop-filter: blur(20px);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 24px 0;
+    padding: 24px 20px;
     position: fixed;
     height: 100vh;
     z-index: 100;
 }
 
 .logo {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 32px;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
+    margin-bottom: 40px;
+    padding: 16px 20px;
 }
 
-.logo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+.logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .nav-item {
-    width: 44px;
-    height: 44px;
-    margin: 6px 0;
+    padding: 14px 20px;
     border-radius: 12px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.04);
+    background: transparent;
     color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .nav-item:hover {
     background: rgba(255, 255, 255, 0.08);
-    transform: translateX(2px);
     color: rgba(255, 255, 255, 0.9);
 }
 
 .nav-item.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-    color: white;
+    background: rgba(102, 126, 234, 0.15);
+    color: #667eea;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.nav-item svg {
+    flex-shrink: 0;
+}
+
+.nav-item span {
+    font-weight: 500;
 }
 
 /* Main Content */
 .main-content {
     flex: 1;
-    margin-left: 80px;
+    margin-left: 220px;
     padding: 24px 32px;
 }
 
@@ -591,54 +597,86 @@ body {
 
 @media (max-width: 768px) {
     .sidebar {
+        width: 80px;
+        padding: 24px 0;
+        align-items: center;
+    }
+    
+    .logo {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 20px;
+        margin-bottom: 32px;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        padding: 0;
+    }
+    
+    .logo h2 {
         display: none;
     }
     
-    .main-content {
-        margin-left: 0;
-        padding: 20px;
+    .nav-menu {
+        align-items: center;
     }
     
+    .nav-item {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        justify-content: center;
+        margin: 6px 0;
+    }
+    
+    .nav-item span {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 80px;
+        padding: 16px 20px;
+    }
+
     .header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
+        gap: 20px;
+        align-items: stretch;
     }
-    
+
     .header-left {
-        flex-direction: column;
-        gap: 16px;
-        align-items: flex-start;
-        width: 100%;
+        gap: 20px;
     }
-    
+
     .search-bar {
         width: 100%;
-        max-width: 100%;
     }
-    
+
     .categories {
         grid-template-columns: 1fr;
     }
-    
+
     .trending-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .journey-card {
+        padding: 24px;
         flex-direction: column;
         text-align: center;
         gap: 24px;
-        padding: 24px;
     }
-    
+
     .progress-circle {
         margin-left: 0;
     }
-    
+
     .stats {
         justify-content: center;
-        gap: 24px;
     }
 }
 
@@ -663,4 +701,83 @@ body {
         flex-direction: column;
         gap: 16px;
     }
+} 
+
+/* Cosmic background styles */
+.cosmic-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, #040816 0%, #0A1F43 100%);
+    overflow: hidden;
+}
+
+.stars-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                      radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                      radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                      radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                      radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    opacity: 0.6;
+    animation: sparkle 8s linear infinite;
+}
+
+.nebula-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 20% 50%, rgba(0, 171, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(155, 95, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, rgba(0, 242, 195, 0.05) 0%, transparent 50%);
+    opacity: 0.3;
+    animation: nebulaDrift 20s ease-in-out infinite;
+}
+
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #00ABFF;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: float 8s infinite ease-in-out;
+}
+
+/* Animation for particles */
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-10px) translateX(5px); }
+    100% { transform: translateY(0) translateX(0); }
+}
+
+@keyframes sparkle {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-200px); }
+}
+
+@keyframes nebulaDrift {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(10px) translateY(-5px); }
+    50% { transform: translateX(-5px) translateY(10px); }
+    75% { transform: translateX(-10px) translateY(-5px); }
 } 

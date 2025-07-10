@@ -602,10 +602,10 @@
 
         <div class="ai-assistant-card">
             <div class="ai-assistant-header">
-                <div class="ai-avatar">
-                    <i class="ri-robot-line"></i>
-                </div>
-                <div class="ai-info">
+            <div class="ai-avatar">
+                <i class="ri-robot-line"></i>
+            </div>
+            <div class="ai-info">
                     <h3>AI Assistant</h3>
                     <p>Your creative mentor</p>
                 </div>
@@ -656,69 +656,85 @@
 
         <div class="chat-container">
             <div class="chat-messages">
-                <div class="message ai-message">
-                    <p>Hello Jane! Welcome to WeArt. I'm your AI art mentor. How can I help you with your artistic journey today?</p>
-                    <div class="message-time">3:30 PM</div>
-                </div>
-
-                <div class="message user-message">
-                    <p>Hi! I'm interested in learning oil painting but I'm a complete beginner. Where should I start?</p>
-                    <div class="message-time">3:31 PM</div>
-                </div>
-
-                <div class="message ai-message">
-                    <p>That's wonderful! Oil painting is a rich medium with a lot of history and techniques to explore. For beginners, I recommend starting with these basics:</p>
-                    <br>
-                    <p>1. <span class="highlight">Essential supplies</span>: Get student-grade oil paints (basic colors), a few brushes (flat and round), canvas boards, and odorless mineral spirits.</p>
-                    <br>
-                    <p>2. <span class="highlight">Fundamental techniques</span>: Learn about underpainting, layering, and basic brush strokes.</p>
-                    <br>
-                    <p>3. <span class="highlight">Simple subjects</span>: Start with still life compositions using simple objects like fruit or basic geometric shapes.</p>
-                    <br>
-                    <p>I've added some recommended courses and materials to your related info panel. Would you like me to create a personalized learning path for oil painting basics?</p>
-                    <div class="message-time">3:33 PM</div>
-                </div>
-
-                <div class="message user-message">
-                    <p>Yes, that would be great! I'd love a personalized learning path. Also, are there any famous oil painters whose techniques would be good to study as a beginner?</p>
-                    <div class="message-time">3:35 PM</div>
-                </div>
-
-                <div class="message ai-message">
-                    <p>Excellent! I'll create a personalized learning path for you. As for famous oil painters whose techniques are approachable for beginners, I recommend:</p>
-                    <br>
-                    <p>• <span class="highlight">Claude Monet</span> - His loose brushwork and focus on light and color are inspiring and relatively accessible.</p>
-                    <br>
-                    <p>• <span class="highlight">Vincent van Gogh</span> - His bold brushstrokes and expressive use of color can teach you about creating energy in your work.</p>
-                    <br>
-                    <p>• <span class="highlight">Georgia O'Keeffe</span> - Her simplified forms and smooth blending techniques are great for beginners.</p>
-                    <br>
-                    <p>I've added some art history resources to your related info panel. Would you prefer to start with landscape, still life, or abstract techniques in your learning path?</p>
-                    <div class="message-time">3:38 PM</div>
-                </div>
-
-                <div class="message user-message">
-                    <p>I think I'd like to start with still life techniques. That seems most approachable. How long would it take to develop basic proficiency?</p>
-                    <div class="message-time">3:40 PM</div>
-                </div>
-
-                <div class="message ai-message">
-                    <p>Still life is an excellent choice for beginners! Regarding the timeline for developing basic proficiency:</p>
-                    <br>
-                    <p>With consistent practice (2-3 hours per week), you can expect to develop basic proficiency in oil painting still life in about <span class="highlight">3-4 months</span>. Here's a general progression:</p>
-                    <br>
-                    <p>• <span class="highlight">Weeks 1-2</span>: Understanding materials, setting up your workspace, and basic brush handling</p>
-                    <br>
-                    <p>• <span class="highlight">Weeks 3-6</span>: Color mixing, simple compositions with 1-2 objects, understanding light and shadow</p>
-                    <br>
-                    <p>• <span class="highlight">Weeks 7-12</span>: More complex compositions, developing your own style, refining techniques</p>
-                    <br>
-                    <p>I've created a 12-week still life learning path for you and added it to your related info panel. Would you like me to recommend some specific exercises to get started this week?</p>
-                    <div class="message-time">3:43 PM</div>
-                </div>
+                <!-- Messages will be populated by JavaScript -->
             </div>
         </div>
     </div>
+
+    <!-- <div class="main-content">
+        <div class="chat-header">
+            <h1 class="chat-title">AI Art Assistant</h1>
+            <div class="chat-status">
+                <div class="status-indicator"></div>
+                <span>Online</span>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages">
+            <div class="message ai-message">
+                <p>Hello Jane! Welcome to WeArt. I'm your AI art mentor. How can I help you with your artistic journey today?</p>
+                <div class="message-time">3:30 PM</div>
+            </div>
+
+            <div class="message user-message">
+                <p>Hi! I'm interested in learning oil painting but I'm a complete beginner. Where should I start?</p>
+                <div class="message-time">3:31 PM</div>
+            </div>
+
+            <div class="message ai-message">
+                <p>That's wonderful! Oil painting is a rich medium with a lot of history and techniques to explore. For beginners, I recommend starting with these basics:</p>
+                <br>
+                <p>1. <span class="highlight">Essential supplies</span>: Get student-grade oil paints (basic colors), a few brushes (flat and round), canvas boards, and odorless mineral spirits.</p>
+                <br>
+                <p>2. <span class="highlight">Fundamental techniques</span>: Learn about underpainting, layering, and basic brush strokes.</p>
+                <br>
+                <p>3. <span class="highlight">Simple subjects</span>: Start with still life compositions using simple objects like fruit or basic geometric shapes.</p>
+                <br>
+                <p>I've added some recommended courses and materials to your related info panel. Would you like me to create a personalized learning path for oil painting basics?</p>
+                <div class="message-time">3:33 PM</div>
+            </div>
+
+            <div class="message user-message">
+                <p>Yes, that would be great! I'd love a personalized learning path. Also, are there any famous oil painters whose techniques would be good to study as a beginner?</p>
+                <div class="message-time">3:35 PM</div>
+            </div>
+
+            <div class="message ai-message">
+                <p>Excellent! I'll create a personalized learning path for you. As for famous oil painters whose techniques are approachable for beginners, I recommend:</p>
+                <br>
+                <p>• <span class="highlight">Claude Monet</span> - His loose brushwork and focus on light and color are inspiring and relatively accessible.</p>
+                <br>
+                <p>• <span class="highlight">Vincent van Gogh</span> - His bold brushstrokes and expressive use of color can teach you about creating energy in your work.</p>
+                <br>
+                <p>• <span class="highlight">Georgia O'Keeffe</span> - Her simplified forms and smooth blending techniques are great for beginners.</p>
+                <br>
+                <p>I've added some art history resources to your related info panel. Would you prefer to start with landscape, still life, or abstract techniques in your learning path?</p>
+                <div class="message-time">3:38 PM</div>
+            </div>
+
+            <div class="message user-message">
+                <p>I think I'd like to start with still life techniques. That seems most approachable. How long would it take to develop basic proficiency?</p>
+                <div class="message-time">3:40 PM</div>
+            </div>
+
+            <div class="message ai-message">
+                <p>Still life is an excellent choice for beginners! Regarding the timeline for developing basic proficiency:</p>
+                <br>
+                <p>With consistent practice (2-3 hours per week), you can expect to develop basic proficiency in oil painting still life in about <span class="highlight">3-4 months</span>. Here's a general progression:</p>
+                <br>
+                <p>• <span class="highlight">Weeks 1-2</span>: Understanding materials, setting up your workspace, and basic brush handling</p>
+                <br>
+                <p>• <span class="highlight">Weeks 3-6</span>: Color mixing, simple compositions with 1-2 objects, understanding light and shadow</p>
+                <br>
+                <p>• <span class="highlight">Weeks 7-12</span>: More complex compositions, developing your own style, refining techniques</p>
+                <br>
+                <p>I've created a 12-week still life learning path for you and added it to your related info panel. Would you like me to recommend some specific exercises to get started this week?</p>
+                <div class="message-time">3:43 PM</div>
+            </div>
+        </div>
+    </div>
+    </div> -->
 
     <!-- Right Sidebar -->
     <div class="right-sidebar">
@@ -812,6 +828,8 @@
         </div>
     </div>
 
+    <script src="js/onboarding.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         class WeArtAI {
             constructor() {
@@ -821,106 +839,6 @@
                 this.bindEvents();
                 this.loadChatHistory();
             }
-
-            // Add this after the WeArtAI constructor
-            async function checkForOnboardingData() {
-                const onboardingData = new OnboardingData();
-                const isFirstVisit = localStorage.getItem('weart-ai-first-visit') !== 'false';
-                
-                if (isFirstVisit && onboardingData.isComplete()) {
-                    localStorage.setItem('weart-ai-first-visit', 'false');
-                    
-                    // Generate personalized introduction
-                    const aiPrompt = onboardingData.generateAIPrompt();
-                    
-                    console.log('Sending personalized intro prompt:', aiPrompt);
-                    
-                    // Send to AI and add response
-                    try {
-                        const response = await fetch('/api/ai/chat', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                message: aiPrompt,
-                                isOnboardingIntro: true
-                            })
-                        });
-
-                        const data = await response.json();
-
-                        if (response.ok) {
-                            // Add the personalized introduction message
-                            const chatMessages = document.querySelector('.chat-messages');
-                            
-                            // Clear existing welcome message
-                            chatMessages.innerHTML = '';
-                            
-                            // Add personalized intro
-                            const introDiv = document.createElement('div');
-                            introDiv.className = 'message ai-message';
-                            introDiv.innerHTML = `
-                                <p>${data.response}</p>
-                                <div class="message-time">${getCurrentTime()}</div>
-                            `;
-                            chatMessages.appendChild(introDiv);
-                            
-                            // Add dashboard link message
-                            const dashboardDiv = document.createElement('div');
-                            dashboardDiv.className = 'message ai-message';
-                            dashboardDiv.innerHTML = `
-                                <p>Ready to start your artistic journey? <a href="index.html" style="color: #22d3ee; text-decoration: none; font-weight: 500;">Visit your main dashboard</a> to explore courses, connect with mentors, and join our vibrant community!</p>
-                                <div class="message-time">${getCurrentTime()}</div>
-                            `;
-                            chatMessages.appendChild(dashboardDiv);
-                            
-                        } else {
-                            console.error('Failed to get personalized intro:', data);
-                            // Fall back to default welcome message
-                            addDefaultWelcome();
-                        }
-                    } catch (error) {
-                        console.error('Error getting personalized intro:', error);
-                        // Fall back to default welcome message  
-                        addDefaultWelcome();
-                    }
-                } else if (!onboardingData.isComplete()) {
-                    // User hasn't completed onboarding, show default message
-                    addDefaultWelcome();
-                }
-            }
-
-            function addDefaultWelcome() {
-                const chatMessages = document.querySelector('.chat-messages');
-                const welcomeDiv = document.createElement('div');
-                welcomeDiv.className = 'message ai-message';
-                welcomeDiv.innerHTML = `
-                    <p>Hello! Welcome to WeArt. I'm your AI art mentor. How can I help you with your artistic journey today?</p>
-                    <div class="message-time">${getCurrentTime()}</div>
-                `;
-                chatMessages.appendChild(welcomeDiv);
-            }
-
-            function getCurrentTime() {
-                const now = new Date();
-                return now.toLocaleTimeString('en-US', { 
-                    hour: 'numeric', 
-                    minute: '2-digit',
-                    hour12: true 
-                });
-            }
-
-            // Call this when the page loads
-            document.addEventListener('DOMContentLoaded', () => {
-                // Create the WeArtAI instance first
-                new WeArtAI();
-                
-                // Then check for onboarding data
-                setTimeout(() => {
-                    checkForOnboardingData();
-                }, 500);
-            });
 
             initializeElements() {
                 this.chatContainer = document.querySelector('.chat-messages');
@@ -960,10 +878,33 @@
                 this.setLoadingState(true);
 
                 try {
-                    // Create abort controller for timeout
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 35000); // 35 second timeout
-
+                    // Send to DeepSeek API
+                    const response = await this.callDeepSeekAPI(message);
+                    this.addMessage(response, 'ai');
+                    
+                    // Update chat history
+                    this.chatHistory.push(
+                        { role: 'user', content: message },
+                        { role: 'assistant', content: response }
+                    );
+                    
+                    // Keep only last 20 messages
+                    if (this.chatHistory.length > 20) {
+                        this.chatHistory = this.chatHistory.slice(-20);
+                    }
+    
+                    this.saveChatHistory();
+                    
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    this.addMessage('Sorry, I\'m having trouble connecting. Please try again.', 'ai');
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+    
+            async callDeepSeekAPI(message) {
+                try {
                     const response = await fetch('/api/ai/chat', {
                         method: 'POST',
                         headers: {
@@ -971,47 +912,22 @@
                         },
                         body: JSON.stringify({
                             message: message,
-                            chatHistory: this.chatHistory
-                        }),
-                        signal: controller.signal
+                            chatHistory: this.chatHistory,
+                            maxTokens: 2048, // Request longer responses
+                            temperature: 0.7 // Add some creativity
+                        })
                     });
-
-                    clearTimeout(timeoutId);
 
                     const data = await response.json();
 
                     if (response.ok) {
-                        // Add AI response to chat
-                        this.addMessage(data.response, 'ai');
-                        
-                        // Update chat history only if it's not a demo response
-                        if (!data.demo) {
-                            this.chatHistory.push(
-                                { role: 'user', content: message },
-                                { role: 'assistant', content: data.response }
-                            );
-                            
-                            // Keep only last 20 messages to prevent API payload from getting too large
-                            if (this.chatHistory.length > 20) {
-                                this.chatHistory = this.chatHistory.slice(-20);
-                            }
-
-                            this.saveChatHistory();
-                        }
+                        return data.response;
                     } else {
-                        this.addMessage(data.response || 'Sorry, I encountered an error. Please try again.', 'ai');
+                        throw new Error(data.error || 'Failed to get AI response');
                     }
                 } catch (error) {
-                    console.error('Error sending message:', error);
-                    let errorMessage = 'Sorry, I\'m having trouble connecting. Please check your internet connection and try again.';
-                    
-                    if (error.name === 'AbortError') {
-                        errorMessage = 'The request timed out. Please try with a shorter question or try again.';
-                    }
-                    
-                    this.addMessage(errorMessage, 'ai');
-                } finally {
-                    this.setLoadingState(false);
+                    console.error('DeepSeek API error:', error);
+                    throw error;
                 }
             }
 
@@ -1019,7 +935,7 @@
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${type}-message`;
 
-                const messageContent = document.createElement('p');
+                const messageContent = document.createElement('div');
                 messageContent.innerHTML = this.formatMessage(content);
 
                 const messageTime = document.createElement('div');
@@ -1034,11 +950,8 @@
             }
 
             formatMessage(content) {
-                // Convert markdown-like formatting to HTML
-                return content
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                    .replace(/\n/g, '<br>');
+                // Use marked.js to convert markdown to HTML
+                return marked.parse(content);
             }
 
             getCurrentTime() {
@@ -1112,6 +1025,196 @@
             }
         }
 
+        // Helper functions
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+    
+        function generatePersonalizedPrompt(data) {
+            const { colorSelection, pathSelection, learningGoals, artMediums } = data;
+            
+            // Create a shorter, more focused prompt
+            let prompt = `You are WeArt's AI Assistant welcoming a new user. Based on their onboarding choices, provide a personalized greeting and learning plan.
+
+                USER PROFILE:
+                - Vision: ${colorSelection || 'exploration'}
+                - Background: ${pathSelection || 'student'}  
+                - Goals: ${learningGoals.join(', ') || 'learning'}
+                - Mediums: ${artMediums.join(', ') || 'various'}
+
+                Please provide:
+                1. A warm greeting that acknowledges their choices
+                2. A 4-week learning plan with specific goals
+                3. 2 immediate next steps for today
+                4. Direct them to the main dashboard to explore courses and community
+
+                Keep it encouraging, specific, and actionable. Use a friendly, mentor-like tone.`;
+                    
+            return prompt;
+        }
+    
+        function addDefaultWelcome() {
+            const chatMessages = document.querySelector('.chat-messages');
+            const welcomeDiv = document.createElement('div');
+            welcomeDiv.className = 'message ai-message';
+            welcomeDiv.innerHTML = `
+                <p>Hello! Welcome to WeArt. I'm your AI art mentor. How can I help you with your artistic journey today?</p>
+                <div class="message-time">${getCurrentTime()}</div>
+            `;
+            chatMessages.appendChild(welcomeDiv);
+        }
+    
+        async function sendPersonalizedIntroToAI(prompt) {
+            try {
+                console.log('🤖 Sending personalized prompt to DeepSeek...');
+                
+                const response = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: prompt,
+                        isOnboardingIntro: true,
+                        chatHistory: [],
+                        maxTokens: 2048, // Request longer responses for onboarding
+                        temperature: 0.7 // Add some creativity
+                    })
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    return data.response;
+                } else {
+                    console.error('API Error:', data);
+                    throw new Error(data.error || 'Failed to get AI response');
+                }
+            } catch (error) {
+                console.error('Error calling DeepSeek API:', error);
+                throw error;
+            }
+        }
+    
+        async function checkForOnboardingData() {
+            console.log('🔍 Checking for onboarding data...');
+            
+            if (!window.OnboardingData) {
+                console.error('❌ OnboardingData class not available');
+                addDefaultWelcome();
+                return;
+            }
+    
+            const onboardingData = new OnboardingData();
+            const data = onboardingData.getData();
+            const isOnboardingComplete = onboardingData.isComplete();
+            
+            // Check if we've shown the personalized intro for this onboarding completion
+            const onboardingTimestamp = data.completedAt;
+            const lastShownIntro = localStorage.getItem('weart-ai-intro-shown');
+            const hasShownPersonalizedIntro = lastShownIntro === onboardingTimestamp;
+            
+            console.log('📊 Onboarding data:', data);
+            console.log('✅ Onboarding complete:', isOnboardingComplete);
+            console.log('🎯 Onboarding timestamp:', onboardingTimestamp);
+            console.log('📺 Last shown intro:', lastShownIntro);
+            console.log('🔄 Has shown personalized intro for this completion:', hasShownPersonalizedIntro);
+            
+            // Clear the chat first
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.innerHTML = '';
+            
+            if (isOnboardingComplete && !hasShownPersonalizedIntro) {
+                console.log('🎨 Generating personalized AI intro...');
+                
+                // Mark that we've shown the personalized intro for this onboarding completion
+                localStorage.setItem('weart-ai-intro-shown', onboardingTimestamp);
+                
+                // Generate the personalized prompt
+                const personalizedPrompt = generatePersonalizedPrompt(data);
+                console.log('📝 Generated prompt:', personalizedPrompt);
+                
+                // Show loading indicator
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message ai-message typing-indicator';
+                loadingDiv.innerHTML = `
+                    <p>
+                        <span class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </p>
+                `;
+                chatMessages.appendChild(loadingDiv);
+                
+                try {
+                    // Send to DeepSeek API
+                    const aiResponse = await sendPersonalizedIntroToAI(personalizedPrompt);
+                    
+                    // Remove loading indicator
+                    loadingDiv.remove();
+                    
+                    // Add the AI-generated personalized introduction
+                    const introDiv = document.createElement('div');
+                    introDiv.className = 'message ai-message';
+                    
+                    const introContent = document.createElement('div');
+                    introContent.innerHTML = marked.parse(aiResponse);
+                    
+                    const introTime = document.createElement('div');
+                    introTime.className = 'message-time';
+                    introTime.textContent = getCurrentTime();
+                    
+                    introDiv.appendChild(introContent);
+                    introDiv.appendChild(introTime);
+                    chatMessages.appendChild(introDiv);
+                    
+                    // Add dashboard link message
+                    setTimeout(() => {
+                        const dashboardDiv = document.createElement('div');
+                        dashboardDiv.className = 'message ai-message';
+                        dashboardDiv.innerHTML = `
+                            <p>Ready to dive in? <a href="index.html" style="color: #22d3ee; text-decoration: none; font-weight: 500;">Visit your main dashboard</a> to explore courses, connect with mentors, and join our vibrant community! 🚀</p>
+                            <div class="message-time">${getCurrentTime()}</div>
+                        `;
+                        chatMessages.appendChild(dashboardDiv);
+                        
+                        // Scroll to bottom
+                        const chatContainer = document.querySelector('.chat-container');
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }, 1000);
+                    
+                } catch (error) {
+                    console.error('❌ Failed to get AI response:', error);
+                    
+                    // Remove loading indicator and show fallback
+                    loadingDiv.remove();
+                    
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'message ai-message';
+                    errorDiv.innerHTML = `
+                        <p>🎨 Welcome to WeArt! I'm your AI art mentor, and I'm excited to help you on your creative journey! I've seen your onboarding choices and I'm preparing a personalized learning plan for you. Let me know what artistic questions you have!</p>
+                        <div class="message-time">${getCurrentTime()}</div>
+                    `;
+                    chatMessages.appendChild(errorDiv);
+                }
+                
+            } else {
+                if (!isOnboardingComplete) {
+                    console.log('⚠️ Onboarding not complete, showing default welcome');
+                } else {
+                    console.log('✅ Onboarding complete but personalized intro already shown, showing default welcome');
+                }
+                addDefaultWelcome();
+            }
+        }
+    
         // Add CSS for animations and typing indicator
         const style = document.createElement('style');
         style.textContent = `
@@ -1158,13 +1261,116 @@
                 opacity: 0.6;
                 cursor: not-allowed;
             }
+
+            /* Markdown styling for chat messages */
+            .message h1, .message h2, .message h3, .message h4, .message h5, .message h6 {
+                color: #22d3ee;
+                font-weight: 600;
+                margin: 16px 0 8px 0;
+                line-height: 1.3;
+            }
+
+            .message h1 { font-size: 20px; }
+            .message h2 { font-size: 18px; }
+            .message h3 { font-size: 16px; }
+            .message h4 { font-size: 15px; }
+
+            .message p {
+                margin: 8px 0;
+                line-height: 1.5;
+            }
+
+            .message ul, .message ol {
+                margin: 12px 0;
+                padding-left: 20px;
+            }
+
+            .message li {
+                margin: 4px 0;
+                line-height: 1.4;
+            }
+
+            .message strong {
+                color: #ffffff;
+                font-weight: 600;
+            }
+
+            .message em {
+                color: #e0e7ff;
+                font-style: italic;
+            }
+
+            .message hr {
+                border: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                margin: 16px 0;
+            }
+
+            .message blockquote {
+                border-left: 3px solid #22d3ee;
+                padding-left: 16px;
+                margin: 12px 0;
+                color: rgba(255, 255, 255, 0.8);
+                font-style: italic;
+            }
+
+            .message code {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-family: 'Courier New', monospace;
+                font-size: 13px;
+            }
+
+            .message pre {
+                background: rgba(255, 255, 255, 0.08);
+                padding: 12px;
+                border-radius: 8px;
+                overflow-x: auto;
+                margin: 12px 0;
+            }
+
+            .message pre code {
+                background: none;
+                padding: 0;
+            }
         `;
         document.head.appendChild(style);
 
-        // Initialize the AI chat when page loads
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', () => {
-            new WeArtAI();
+            console.log('🚀 DOM loaded, initializing AI assistant...');
+            
+            // Create the WeArtAI instance first
+            const aiInstance = new WeArtAI();
+            
+            // Then check for onboarding data
+            setTimeout(() => {
+                checkForOnboardingData();
+            }, 100);
         });
+    
+        // Debug function for testing
+        window.debugOnboarding = function() {
+            console.log('🐛 Debug - Creating test onboarding data');
+            
+            const testData = new OnboardingData();
+            testData.updateColorSelection('exploration');
+            testData.updatePathSelection('boss');
+            testData.updateLearningGoals(['expression', 'product']);
+            testData.updateArtMediums(['digital', 'painting']);
+            testData.completeOnboarding();
+            
+            console.log('✅ Created test data:', testData.getData());
+            
+            // Reset the intro shown flag so we can see the personalized intro again
+            localStorage.removeItem('weart-ai-intro-shown');
+            
+            console.log('🔄 Reset intro flag - ready to test personalized intro');
+            
+            // Reload to see personalized intro
+            location.reload();
+        };
     </script>
 </body>
 </html>

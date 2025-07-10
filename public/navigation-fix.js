@@ -45,10 +45,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 case 'dashboard':
                     window.location.href = '/';
                     break;
+                case 'explore':
+                    window.location.href = '/explore.html';
+                    break;
                 case 'courses':
                     window.location.href = '/course.html';
                     break;
-                case 'mentors':
+                case 'community':
                     window.location.href = '/mentor.html';
                     break;
                 default:

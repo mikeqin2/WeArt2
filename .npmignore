@@ -1,0 +1,48 @@
+# Development files
+.git/
+.gitignore
+node_modules/
+npm-debug.log*
+.npm/
+
+# Environment and config
+.env
+.env.*
+*.log
+
+# Development artifacts
+test.html
+copy/
+art-mentor-cv/
+mentors_no_pictures.csv
+.~lock.导师总表_无照片.csv#
+convert-csv-to-json.js
+
+# Documentation (users can get this from npm/github)
+AI_SETUP.md
+
+# Runtime generated
+uploads/
+!uploads/.gitkeep
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (unless needed for the package)
+data/
+
+# Temporary files
+tmp/
+temp/ 
