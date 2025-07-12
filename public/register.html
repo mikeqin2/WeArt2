@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加入艺术社群 | WeArt</title>
+    <title data-i18n="join_art_community">加入艺术社群 | WeArt</title>
     <style>
         /* Base styles */
         * {
@@ -28,7 +28,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #070B28 0%, #0B1B3E 100%);
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
             overflow: hidden;
         }
         
@@ -38,10 +38,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('path/to/stars.png'); /* Replace with actual starfield image */
-            background-size: cover;
-            opacity: 0.8;
-            transition: transform 0.5s ease-out;
+            background: transparent;
         }
         
         .nebula-layer {
@@ -50,10 +47,68 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('path/to/nebula.png'); /* Replace with actual nebula image */
-            background-size: cover;
-            opacity: 0.6;
-            transition: transform 0.3s ease-out;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(120, 198, 255, 0.15) 0%, transparent 50%);
+            animation: drift 20s ease-in-out infinite alternate;
+        }
+        
+        @keyframes drift {
+            0% { transform: rotate(-1deg) scale(1); }
+            100% { transform: rotate(1deg) scale(1.1); }
+        }
+        
+        .cosmic-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: float 8s linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .twinkling-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
         
         .orbital-rings {
@@ -63,10 +118,163 @@
             width: 800px;
             height: 800px;
             transform: translate(-50%, -50%);
-            background-image: url('path/to/orbital-rings.png'); /* Replace with orbital rings image */
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.3;
+            opacity: 0.1;
+            border: 1px solid rgba(78, 241, 255, 0.3);
+            border-radius: 50%;
+            animation: orbit 30s linear infinite;
+        }
+        
+        .orbital-rings::before,
+        .orbital-rings::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(78, 241, 255, 0.2);
+            border-radius: 50%;
+            animation: orbit 20s linear infinite reverse;
+        }
+        
+        .orbital-rings::before {
+            width: 120%;
+            height: 120%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .orbital-rings::after {
+            width: 80%;
+            height: 80%;
+            transform: translate(-50%, -50%);
+            animation-duration: 25s;
+        }
+        
+        @keyframes orbit {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Email verification step styles */
+        .verification-step {
+            display: none;
+        }
+        
+        .verification-step.active {
+            display: block;
+        }
+        
+        .registration-step.hidden {
+            display: none;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+        
+        .step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .step.active {
+            background: #4EF1FF;
+            box-shadow: 0 0 10px rgba(78, 241, 255, 0.5);
+        }
+        
+        .step.completed {
+            background: #00F2C3;
+        }
+        
+        .step-line {
+            width: 30px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .step-line.completed {
+            background: #00F2C3;
+        }
+        
+        .verification-code-group {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .verification-digit {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #E9F4FF;
+            transition: all 0.3s ease;
+        }
+        
+        .verification-digit:focus {
+            outline: none;
+            border-color: #4EF1FF;
+            box-shadow: 0 0 0 2px rgba(78, 241, 255, 0.2);
+        }
+        
+        .verification-info {
+            text-align: center;
+            color: rgba(233, 244, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .verification-code-display {
+            background: rgba(78, 241, 255, 0.1);
+            border: 1px solid rgba(78, 241, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #4EF1FF;
+            margin: 15px 0;
+            letter-spacing: 3px;
+        }
+        
+        .resend-code {
+            color: #4EF1FF;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .resend-code:hover {
+            text-decoration: underline;
+        }
+        
+        .back-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
         }
         
         /* Main container */
@@ -414,13 +622,60 @@
             background: rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.9);
         }
+
+        /* Update social icon styles */
+        .social-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icon:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .social-icon i {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* WeArt Logo Image Styles */
+        .weart-logo-img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(78, 241, 255, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .weart-logo-img:hover {
+            filter: drop-shadow(0 0 25px rgba(78, 241, 255, 0.5));
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .weart-logo-img {
+                max-width: 250px;
+            }
+        }
     </style>
 </head>
-<body>
+<body data-page-title="join_art_community">
     <!-- Cosmic background -->
     <div class="cosmic-background">
-        <div class="stars-layer"></div>
+        <div class="stars-layer">
+            <div class="twinkling-stars" id="twinkling-stars"></div>
+        </div>
         <div class="nebula-layer"></div>
+        <div class="cosmic-particles" id="cosmic-particles"></div>
         <div class="orbital-rings"></div>
     </div>
     
@@ -429,51 +684,96 @@
         <!-- Left side with logo -->
         <div class="logo-section">
             <div class="logo-container">
-                <img src="path/to/weart-logo.png" alt="WeArt Logo">
+                <img src="assets/logo.jpg" alt="WeArt Logo" class="weart-logo-img">
             </div>
-            <p class="tagline">探索无限创意，连接艺术世界</p>
+            <p class="tagline" data-i18n="explore_infinite_creativity">探索无限创意，连接艺术世界</p>
         </div>
         
         <!-- Right side with form -->
         <div class="form-section">
             <div class="glass-card">
-                <h1 class="form-title">加入艺术社群</h1>
-                <form id="registration-form">
-                    <div class="form-group">
-                        <label for="name" class="form-label">姓名</label>
-                        <input type="text" id="name" name="name" class="form-input" placeholder="请输入您的姓名" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email" class="form-label">邮箱</label>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="请输入您的邮箱" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone" class="form-label">电话</label>
-                        <input type="tel" id="phone" name="phone" class="form-input" placeholder="请输入您的电话号码" inputmode="tel" required>
-                    </div>
-                    
-                    <button type="submit" class="submit-button">
-                        <span class="button-text">立即加入</span>
-                        <span class="spinner"></span>
-                    </button>
-                </form>
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step active" id="step1"></div>
+                    <div class="step-line" id="line1"></div>
+                    <div class="step" id="step2"></div>
+                </div>
                 
-                <div class="social-login">
-                    <div class="social-icon">
-                        <img src="path/to/wechat-icon.svg" alt="WeChat">
+                <!-- Registration Step -->
+                <div class="registration-step" id="registration-step">
+                    <h1 class="form-title" data-i18n="join_art_community">加入艺术社群</h1>
+                    <form id="registration-form">
+                        <div class="form-group">
+                            <label for="name" class="form-label" data-i18n="name">姓名</label>
+                            <input type="text" id="name" name="name" class="form-input" data-i18n-placeholder="enter_name" placeholder="请输入您的姓名" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label" data-i18n="email">邮箱</label>
+                            <input type="email" id="email" name="email" class="form-input" data-i18n-placeholder="enter_email" placeholder="请输入您的邮箱" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label" data-i18n="phone">电话</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" data-i18n-placeholder="enter_phone" placeholder="请输入您的电话号码" inputmode="tel" required>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">
+                            <span class="button-text" data-i18n="send_verification">发送验证码</span>
+                            <span class="spinner"></span>
+                        </button>
+                    </form>
+                    
+                    <div class="social-login">
+                        <div class="social-icon">
+                            <i class="ri-wechat-line"></i>
+                        </div>
+                        <div class="social-icon">
+                            <i class="ri-weibo-line"></i>
+                        </div>
+                        <div class="social-icon">
+                            <i class="ri-qq-line"></i>
+                        </div>
                     </div>
-                    <div class="social-icon">
-                        <img src="path/to/weibo-icon.svg" alt="Weibo">
-                    </div>
-                    <div class="social-icon">
-                        <img src="path/to/qq-icon.svg" alt="QQ">
+                    
+                    <div class="login-link">
+                        <span data-i18n="have_account">已有账号？</span><a href="#" id="show-login" data-i18n="login_now">立即登录</a>
                     </div>
                 </div>
                 
-                <div class="login-link">
-                    已有账号？<a href="#" id="show-login">立即登录</a>
+                <!-- Verification Step -->
+                <div class="verification-step" id="verification-step">
+                    <h1 class="form-title" data-i18n="verify_email">验证邮箱</h1>
+                    <div class="verification-info">
+                        <span data-i18n="verification_sent">我们已向</span> <strong id="verification-email"></strong> <span data-i18n="verification_sent_end">发送了验证码</span>
+                    </div>
+                    
+                    <!-- Demo Code Display -->
+                    <div class="verification-code-display" id="demo-code-display">
+                        <span data-i18n="demo_code">演示代码：</span><span id="generated-code">123456</span>
+                    </div>
+                    
+                    <div class="verification-code-group">
+                        <input type="text" class="verification-digit" maxlength="1" data-index="0">
+                        <input type="text" class="verification-digit" maxlength="1" data-index="1">
+                        <input type="text" class="verification-digit" maxlength="1" data-index="2">
+                        <input type="text" class="verification-digit" maxlength="1" data-index="3">
+                        <input type="text" class="verification-digit" maxlength="1" data-index="4">
+                        <input type="text" class="verification-digit" maxlength="1" data-index="5">
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <span data-i18n="no_code">没有收到验证码？</span>
+                        <a href="#" class="resend-code" id="resend-code" data-i18n="resend">重新发送</a>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center;">
+                        <button type="button" class="back-button" id="back-to-registration" data-i18n="back">返回</button>
+                        <button type="button" class="submit-button" id="verify-button" style="flex: 1;">
+                            <span class="button-text" data-i18n="complete_registration">完成注册</span>
+                            <span class="spinner"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -484,22 +784,22 @@
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h2>用户登录</h2>
+                <h2 data-i18n="user_login">用户登录</h2>
                 <button class="close-modal" id="close-login">&times;</button>
             </div>
             <form id="login-form">
                 <div class="form-group">
-                    <label for="login-email" class="form-label">邮箱</label>
-                    <input type="email" id="login-email" name="email" class="form-input" placeholder="请输入您的邮箱" required>
+                    <label for="login-email" class="form-label" data-i18n="email">邮箱</label>
+                    <input type="email" id="login-email" name="email" class="form-input" data-i18n-placeholder="enter_email" placeholder="请输入您的邮箱" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="login-password" class="form-label">密码（可选）</label>
-                    <input type="password" id="login-password" name="password" class="form-input" placeholder="如果您设置了密码，请输入">
+                    <label for="login-password" class="form-label" data-i18n="password_optional">密码（可选）</label>
+                    <input type="password" id="login-password" name="password" class="form-input" data-i18n-placeholder="enter_password" placeholder="如果您设置了密码，请输入">
                 </div>
                 
                 <button type="submit" class="submit-button">
-                    <span class="button-text">登录</span>
+                    <span class="button-text" data-i18n="login_now">登录</span>
                     <span class="spinner"></span>
                 </button>
             </form>
@@ -508,10 +808,303 @@
     
     <!-- Success message -->
     <div class="success-message" id="success-message">
-        注册成功！欢迎加入 WeArt 艺术社群
+        <span data-i18n="registration_success">注册成功！欢迎加入 WeArt 艺术社群</span>
     </div>
     
+    <!-- Include i18n system -->
+    <script src="js/i18n.js"></script>
     <script>
+        // Enhanced User Management System
+        class WeArtUserManager {
+            constructor() {
+                this.storageKey = 'weart_user';
+                this.chatHistoryKey = 'weart_chat_history';
+                this.currentUser = this.loadUser();
+            }
+            
+            saveUser(userData) {
+                localStorage.setItem(this.storageKey, JSON.stringify(userData));
+                this.currentUser = userData;
+            }
+            
+            loadUser() {
+                const stored = localStorage.getItem(this.storageKey);
+                return stored ? JSON.parse(stored) : null;
+            }
+            
+            isLoggedIn() {
+                return this.currentUser !== null;
+            }
+            
+            logout() {
+                localStorage.removeItem(this.storageKey);
+                this.currentUser = null;
+            }
+            
+            saveChatHistory(history) {
+                localStorage.setItem(this.chatHistoryKey, JSON.stringify(history));
+            }
+            
+            loadChatHistory() {
+                const stored = localStorage.getItem(this.chatHistoryKey);
+                return stored ? JSON.parse(stored) : [];
+            }
+            
+            addChatMessage(message) {
+                const history = this.loadChatHistory();
+                history.push({
+                    ...message,
+                    timestamp: new Date().toISOString(),
+                    userId: this.currentUser?.id
+                });
+                this.saveChatHistory(history);
+            }
+        }
+        
+        // Initialize user manager
+        const userManager = new WeArtUserManager();
+        
+        // Cosmic Animation System
+        function createCosmicAnimations() {
+            createTwinklingStars();
+            createFloatingParticles();
+        }
+        
+        function createTwinklingStars() {
+            const starsContainer = document.getElementById('twinkling-stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Random animation delay
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        function createFloatingParticles() {
+            const particlesContainer = document.getElementById('cosmic-particles');
+            const particleCount = 30;
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random horizontal position
+                particle.style.left = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random color
+                const colors = ['#4EF1FF', '#188DF7', '#00F2C3', '#ffffff'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random animation duration
+                particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                
+                particlesContainer.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, (Math.random() * 10 + 8) * 1000);
+            }
+            
+            // Create initial particles
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => createParticle(), Math.random() * 2000);
+            }
+            
+            // Continuously create particles
+            setInterval(() => {
+                if (particlesContainer.children.length < particleCount) {
+                    createParticle();
+                }
+            }, 1000);
+        }
+        
+        // Email Verification System
+        let currentVerificationCode = '';
+        let registrationData = {};
+        
+        function generateVerificationCode() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+        
+        function showVerificationStep(email) {
+            currentVerificationCode = generateVerificationCode();
+            registrationData.email = email;
+            
+            // Update UI
+            document.getElementById('verification-email').textContent = email;
+            document.getElementById('generated-code').textContent = currentVerificationCode;
+            
+            // Switch steps
+            document.getElementById('registration-step').classList.add('hidden');
+            document.getElementById('verification-step').classList.add('active');
+            
+            // Update step indicator
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('line1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+            
+            // Focus first digit input
+            document.querySelector('.verification-digit').focus();
+            
+            console.log('Demo verification code:', currentVerificationCode);
+        }
+        
+        function hideVerificationStep() {
+            document.getElementById('verification-step').classList.remove('active');
+            document.getElementById('registration-step').classList.remove('hidden');
+            
+            // Reset step indicator
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step1').classList.remove('completed');
+            document.getElementById('line1').classList.remove('completed');
+            document.getElementById('step2').classList.remove('active');
+            
+            // Clear verification inputs
+            document.querySelectorAll('.verification-digit').forEach(input => input.value = '');
+        }
+        
+        // Verification code input handling
+        function setupVerificationInputs() {
+            const inputs = document.querySelectorAll('.verification-digit');
+            
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', function(e) {
+                    const value = e.target.value;
+                    
+                    if (value.length === 1 && /^\d$/.test(value)) {
+                        // Move to next input
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                        
+                        // Check if all inputs are filled
+                        checkVerificationComplete();
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                    
+                    if (e.key === 'ArrowLeft' && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                    
+                    if (e.key === 'ArrowRight' && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                
+                // Allow paste
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const paste = e.clipboardData.getData('text');
+                    if (/^\d{6}$/.test(paste)) {
+                        paste.split('').forEach((digit, i) => {
+                            if (inputs[i]) {
+                                inputs[i].value = digit;
+                            }
+                        });
+                        checkVerificationComplete();
+                    }
+                });
+            });
+        }
+        
+        function checkVerificationComplete() {
+            const inputs = document.querySelectorAll('.verification-digit');
+            const code = Array.from(inputs).map(input => input.value).join('');
+            
+            if (code.length === 6) {
+                document.getElementById('verify-button').style.opacity = '1';
+                document.getElementById('verify-button').disabled = false;
+            } else {
+                document.getElementById('verify-button').style.opacity = '0.7';
+                document.getElementById('verify-button').disabled = true;
+            }
+        }
+        
+        function getEnteredCode() {
+            const inputs = document.querySelectorAll('.verification-digit');
+            return Array.from(inputs).map(input => input.value).join('');
+        }
+        
+        // Add translation keys for dynamic messages
+        if (window.weartI18n) {
+            // Add additional translations for form validation and success messages
+            window.weartI18n.translations.en = {
+                ...window.weartI18n.translations.en,
+                'fill_required_fields': 'Please fill in all required fields',
+                'registration_success': 'Registration successful! Welcome to WeArt art community',
+                'login_success': 'Login successful! Welcome back',
+                'registration_failed': 'Registration failed. Please try again.',
+                'email_exists': 'An account with this email already exists. Please try logging in instead.',
+                'login_failed': 'Login failed. Please check your credentials and try again.',
+                'invalid_email': 'No account found with this email. Please register first.',
+                'enter_email_address': 'Please enter your email address',
+                'send_verification': 'Send Verification Code',
+                'verify_email': 'Verify Email',
+                'verification_sent': 'We have sent a verification code to',
+                'verification_sent_end': '',
+                'demo_code': 'Demo Code: ',
+                'no_code': 'Did not receive the code?',
+                'resend': 'Resend',
+                'back': 'Back',
+                'complete_registration': 'Complete Registration',
+                'invalid_code': 'Invalid verification code. Please try again.',
+                'code_sent': 'Verification code sent!'
+            };
+            
+            window.weartI18n.translations.zh = {
+                ...window.weartI18n.translations.zh,
+                'fill_required_fields': '请填写所有必填字段',
+                'registration_success': '注册成功！欢迎加入 WeArt 艺术社群',
+                'login_success': '登录成功！欢迎回来',
+                'registration_failed': '注册失败，请重试',
+                'email_exists': '该邮箱已存在账户，请尝试登录',
+                'login_failed': '登录失败，请检查您的凭据后重试',
+                'invalid_email': '未找到该邮箱的账户，请先注册',
+                'enter_email_address': '请输入您的邮箱地址',
+                'send_verification': '发送验证码',
+                'verify_email': '验证邮箱',
+                'verification_sent': '我们已向',
+                'verification_sent_end': '发送了验证码',
+                'demo_code': '演示代码：',
+                'no_code': '没有收到验证码？',
+                'resend': '重新发送',
+                'back': '返回',
+                'complete_registration': '完成注册',
+                'invalid_code': '验证码错误，请重试',
+                'code_sent': '验证码已发送！'
+            };
+        }
+        
         // Parallax effect for cosmic background
         document.addEventListener('mousemove', function(e) {
             const starsLayer = document.querySelector('.stars-layer');
@@ -520,9 +1113,14 @@
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
             
-            starsLayer.style.transform = `translate(${-x * 20}px, ${-y * 20}px)`;
-            nebulaLayer.style.transform = `translate(${-x * 40}px, ${-y * 40}px)`;
+            starsLayer.style.transform = `translate(${-x * 10}px, ${-y * 10}px)`;
+            nebulaLayer.style.transform = `translate(${-x * 20}px, ${-y * 20}px)`;
         });
+        
+        // Helper function to get translated text
+        function t(key, defaultValue = key) {
+            return window.weartI18n ? window.weartI18n.t(key, defaultValue) : defaultValue;
+        }
         
         // Form submission
         document.getElementById('registration-form').addEventListener('submit', async function(e) {
@@ -539,57 +1137,93 @@
 
             // Basic validation
             if (!userData.name || !userData.email || !userData.phone) {
-                alert('Please fill in all required fields');
+                alert(t('fill_required_fields', 'Please fill in all required fields'));
+                return;
+            }
+
+            // Check if user already exists
+            if (userManager.isLoggedIn() && userManager.currentUser.email === userData.email) {
+                alert(t('email_exists', 'An account with this email already exists. Please try logging in instead.'));
                 return;
             }
 
             submitButton.classList.add('loading');
             
-            try {
-                const response = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userData)
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Store the JWT token for future requests
-                    localStorage.setItem('authToken', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    submitButton.classList.remove('loading');
-                    
-                    // Show success message
-                    document.getElementById('success-message').classList.add('show');
-                    
-                    // Clear form
-                    this.reset();
-                    
-                    // Redirect to color selection page after delay
-                    setTimeout(function() {
-                        window.location.href = 'color_selection.html';
-                    }, 2000);
-                    
-                } else {
-                    throw new Error(data.error || 'Registration failed');
-                }
-                
-            } catch (error) {
-                console.error('Registration error:', error);
+            // Simulate API delay
+            setTimeout(() => {
                 submitButton.classList.remove('loading');
                 
-                let errorMessage = 'Registration failed. Please try again.';
-                if (error.message.includes('already exists')) {
-                    errorMessage = 'An account with this email already exists. Please try logging in instead.';
-                }
+                // Store registration data
+                registrationData = userData;
                 
-                alert(errorMessage);
-            }
+                // Show verification step
+                showVerificationStep(userData.email);
+                
+                // Show success message for code sending
+                showSuccessMessage(t('code_sent', 'Verification code sent!'));
+            }, 1000);
         });
+        
+        // Verification completion
+        document.getElementById('verify-button').addEventListener('click', function() {
+            const enteredCode = getEnteredCode();
+            
+            if (enteredCode !== currentVerificationCode) {
+                alert(t('invalid_code', 'Invalid verification code. Please try again.'));
+                return;
+            }
+            
+            this.classList.add('loading');
+            
+            // Simulate verification delay
+            setTimeout(() => {
+                this.classList.remove('loading');
+                
+                // Create user object
+                const newUser = {
+                    id: 'user_' + Date.now(),
+                    ...registrationData,
+                    registeredAt: new Date().toISOString(),
+                    onboardingCompleted: false
+                };
+                
+                // Save user
+                userManager.saveUser(newUser);
+                
+                // Show success message
+                showSuccessMessage(t('registration_success', 'Registration successful! Welcome to WeArt art community'));
+                
+                // Redirect to onboarding
+                setTimeout(() => {
+                    window.location.href = 'color_selection.html';
+                }, 2000);
+            }, 1000);
+        });
+        
+        // Back button
+        document.getElementById('back-to-registration').addEventListener('click', function() {
+            hideVerificationStep();
+        });
+        
+        // Resend code
+        document.getElementById('resend-code').addEventListener('click', function(e) {
+            e.preventDefault();
+            currentVerificationCode = generateVerificationCode();
+            document.getElementById('generated-code').textContent = currentVerificationCode;
+            showSuccessMessage(t('code_sent', 'Verification code sent!'));
+            console.log('New demo verification code:', currentVerificationCode);
+        });
+        
+        // Success message helper
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('success-message');
+            successMsg.querySelector('span').textContent = message;
+            successMsg.classList.add('show');
+            
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
         
         // Login Modal Functionality
         const showLoginBtn = document.getElementById('show-login');
@@ -624,128 +1258,56 @@
             };
 
             if (!loginData.email) {
-                alert('Please enter your email address');
+                alert(t('enter_email_address', 'Please enter your email address'));
                 return;
             }
 
             submitButton.classList.add('loading');
             
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(loginData)
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Store the JWT token for future requests
-                    localStorage.setItem('authToken', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    submitButton.classList.remove('loading');
-                    hideLoginModal();
-                    
-                    // Show success message
-                    const successMsg = document.getElementById('success-message');
-                    successMsg.textContent = '登录成功！欢迎回来';
-                    successMsg.classList.add('show');
-                    
-                    // Check if user has completed onboarding
-                    if (data.user.onboardingCompleted) {
-                        // Redirect to dashboard if onboarding is complete
-                        setTimeout(function() {
-                            window.location.href = 'ai.html';
-                        }, 2000);
-                    } else {
-                        // Continue with onboarding flow
-                        setTimeout(function() {
-                            window.location.href = 'color_selection.html';
-                        }, 2000);
-                    }
-                    
-                } else {
-                    throw new Error(data.error || 'Login failed');
-                }
-                
-            } catch (error) {
-                console.error('Login error:', error);
+            // Simulate login delay
+            setTimeout(() => {
                 submitButton.classList.remove('loading');
                 
-                let errorMessage = 'Login failed. Please check your credentials and try again.';
-                if (error.message.includes('Invalid email')) {
-                    errorMessage = 'No account found with this email. Please register first.';
+                // Check if user exists in localStorage (simple demo logic)
+                if (userManager.currentUser && userManager.currentUser.email === loginData.email) {
+                    hideLoginModal();
+                    showSuccessMessage(t('login_success', 'Login successful! Welcome back'));
+                    
+                    // Redirect based on onboarding status
+                    setTimeout(() => {
+                        if (userManager.currentUser.onboardingCompleted) {
+                            window.location.href = 'index.html';
+                        } else {
+                            window.location.href = 'color_selection.html';
+                        }
+                    }, 2000);
+                } else {
+                    alert(t('invalid_email', 'No account found with this email. Please register first.'));
                 }
-                
-                alert(errorMessage);
-            }
+            }, 1000);
         });
 
-        // Check if user is already logged in - but don't auto-redirect on register page
-        // TODO: do we want the auto redirect?
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const token = localStorage.getItem('authToken');
-            const user = localStorage.getItem('user');
+            // Create cosmic animations
+            createCosmicAnimations();
             
-            // Only redirect if user is coming from a specific flow, not when they directly visit register page
+            // Setup verification inputs
+            setupVerificationInputs();
+            
+            // Check if user is already logged in
             const urlParams = new URLSearchParams(window.location.search);
-            const fromIntro = urlParams.get('fromIntro');
             const autoRedirect = urlParams.get('redirect') === 'true';
             
-            if (token && user && autoRedirect) {
-                try {
-                    const userData = JSON.parse(user);
-                    // User is already logged in, redirect appropriately
-                    if (userData.onboardingCompleted) {
-                        window.location.href = 'ai.html';
-                    } else {
-                        window.location.href = 'color_selection.html';
-                    }
-                } catch (error) {
-                    // Invalid stored data, clear it
-                    localStorage.removeItem('authToken');
-                    localStorage.removeItem('user');
+            if (userManager.isLoggedIn() && autoRedirect) {
+                // User is already logged in, redirect appropriately
+                if (userManager.currentUser.onboardingCompleted) {
+                    window.location.href = 'index.html';
+                } else {
+                    window.location.href = 'color_selection.html';
                 }
             }
-            
-            if (fromIntro === 'true') {
-                // Add special entrance animation if coming from intro
-                document.querySelector('.glass-card').style.animationDelay = '0s';
-            }
         });
-
-        // // Check if user is already logged in
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const token = localStorage.getItem('authToken');
-        //     const user = localStorage.getItem('user');
-            
-        //     if (token && user) {
-        //         try {
-        //             const userData = JSON.parse(user);
-        //             // User is already logged in, redirect appropriately
-        //             if (userData.onboardingCompleted) {
-        //                 window.location.href = 'ai.html';
-        //             } else {
-        //                 window.location.href = 'color_selection.html';
-        //             }
-        //         } catch (error) {
-        //             // Invalid stored data, clear it
-        //             localStorage.removeItem('authToken');
-        //             localStorage.removeItem('user');
-        //         }
-        //     }
-
-        //     const params = new URLSearchParams(window.location.search);
-        //     const fromIntro = params.get('fromIntro');
-            
-        //     if (fromIntro === 'true') {
-        //         // Add special entrance animation if coming from intro
-        //         document.querySelector('.glass-card').style.animationDelay = '0s';
-        //     }
-        // });
     </script>
 </body>
 </html>

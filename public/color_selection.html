@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeArt - Choose Your Cosmic Path</title>
+    <title data-i18n="choose_cosmic_path">Choose Your Cosmic Path | WeArt</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -354,20 +354,13 @@
     <!-- Header -->
     <header>
         <a href="#" class="logo">WeArt</a>
-        <div class="menu-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </div>
     </header>
     
     <!-- Main content -->
     <div class="container">
         <div class="title-section">
-            <h1>Choose Your Cosmic Path</h1>
-            <p class="subtitle">Select the vision that resonates with your artistic journey</p>
+            <h1 data-i18n="choose_cosmic_path">Choose Your Cosmic Path</h1>
+            <p class="subtitle" data-i18n="select_vision">Select the vision that resonates with your artistic journey</p>
         </div>
         
         <div class="planets-container">
@@ -397,33 +390,26 @@
     </div>
     
     <!-- Continue button -->
-    <button class="continue-button" id="continue-btn">Continue</button>
+    <button class="continue-button" id="continue-btn" data-i18n="continue">Continue</button>
     
-    <!-- Debug button for testing -->
-    <!-- <button style="position: fixed; top: 20px; right: 20px; z-index: 1000; padding: 10px; background: red; color: white;" id="debug-btn">Debug Auth</button> -->
-    
-    <script src="js/auth.js"></script>
+    <!-- Include user management and i18n systems -->
+    <script src="js/user-manager.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/onboarding.js"></script>
     <script>
+        // Initialize user manager and onboarding data
         const onboardingData = new OnboardingData();
+        
         // Create stars
         document.addEventListener('DOMContentLoaded', function() {
-            // Wait a bit for auth.js to load if needed
-            setTimeout(function() {
-                // Check authentication first (but don't redirect immediately for debugging)
-                if (!window.weartAuth) {
-                    console.log('weartAuth not loaded yet');
-                } else if (!window.weartAuth.isAuthenticated()) {
-                    console.log('Not authenticated, should redirect to register');
-                    console.log('Token:', window.weartAuth.getToken());
-                    console.log('User:', window.weartAuth.getUser());
-                    // Uncomment the line below to enable redirect
-                    // window.location.href = 'register.html';
-                    // return;
-                } else {
-                    console.log('User authenticated:', window.weartAuth.getUser());
-                }
-            }, 100);
+            // Check if user is authenticated
+            if (!userManager.isLoggedIn()) {
+                console.log('Not authenticated, redirecting to register');
+                window.location.href = 'register.html';
+                return;
+            } else {
+                console.log('User authenticated:', userManager.getUserProfile());
+            }
 
             const starsContainer = document.getElementById('stars');
             const starCount = 200;
@@ -496,10 +482,10 @@
             });
         });
         
-        // Replace the continue button click handler with:
+        // Save color selection and navigate to path selection
         continueButton.addEventListener('click', async function() {
             if (selectedPlanet) {
-                console.log(`Selected path: ${selectedPlanet}`);
+                console.log(`🎨 Selected color path: ${selectedPlanet}`);
                 
                 // Show loading state
                 this.innerHTML = 'Saving...';
@@ -509,14 +495,13 @@
                     // Save to onboarding data
                     onboardingData.updateColorSelection(selectedPlanet);
                     
-                    // Also save to user preferences if authenticated
-                    if (window.weartAuth && window.weartAuth.isAuthenticated()) {
-                        await window.weartAuth.updatePreferences({
-                            colorSelection: selectedPlanet
-                        });
-                    }
+                    // Save color selection to user manager
+                    userManager.saveOnboardingData('colorSelection', { 
+                        colorSelection: selectedPlanet,
+                        timestamp: new Date().toISOString()
+                    });
                     
-                    console.log('Color selection saved successfully');
+                    console.log('✅ Color selection saved successfully');
                     
                     // Navigate to path selection
                     window.location.href = 'path_selection.html';
@@ -524,7 +509,7 @@
                 } catch (error) {
                     console.error('Error saving color selection:', error);
                     
-                    // Save locally even if API fails
+                    // Save locally even if there's an error
                     onboardingData.updateColorSelection(selectedPlanet);
                     
                     // Still continue to next page
@@ -544,50 +529,6 @@
             
             stars.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
         });
-        
-        // // Debug function
-        // document.getElementById('debug-btn').addEventListener('click', function() {
-        //     console.log('=== DEBUG AUTH ===');
-        //     console.log('window.weartAuth exists:', !!window.weartAuth);
-            
-        //     if (window.weartAuth) {
-        //         console.log('Token from localStorage:', localStorage.getItem('authToken'));
-        //         console.log('User from localStorage:', localStorage.getItem('user'));
-        //         console.log('weartAuth.getToken():', window.weartAuth.getToken());
-        //         console.log('weartAuth.getUser():', window.weartAuth.getUser());
-        //         console.log('weartAuth.isAuthenticated():', window.weartAuth.isAuthenticated());
-                
-        //         // Test making a direct API call
-        //         const token = window.weartAuth.getToken();
-        //         console.log('Testing direct API call with token:', token);
-                
-        //         if (token) {
-        //             fetch('/api/auth/preferences', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'Authorization': `Bearer ${token}`
-        //                 },
-        //                 body: JSON.stringify({ colorSelection: 'test' })
-        //             })
-        //             .then(response => {
-        //                 console.log('Direct API response status:', response.status);
-        //                 return response.json();
-        //             })
-        //             .then(data => {
-        //                 console.log('Direct API response data:', data);
-        //             })
-        //             .catch(error => {
-        //                 console.error('Direct API error:', error);
-        //             });
-        //         } else {
-        //             console.log('No token available for API test');
-        //         }
-        //     } else {
-        //         console.log('weartAuth not loaded');
-        //     }
-        //     console.log('=== END DEBUG ===');
-        // });
     </script>
 </body>
 </html>

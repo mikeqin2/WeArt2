@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Your Artistic Constellation | WeArt</title>
+    <title data-i18n="map_artistic_constellation">Map Your Artistic Constellation | WeArt</title>
     <style>
         /* Base styles */
         * {
@@ -274,7 +274,7 @@
         
         .goal-appreciation {
             bottom: 45%;
-            left: 5%;
+            left: 2%;
         }
         .goal-appreciation .planet {
             background: linear-gradient(135deg, #2E86C1, #5499C7);
@@ -284,8 +284,8 @@
         }
         
         .goal-education {
-            top: 35%;
-            left: 10%;
+            top: 30%;
+            left: 18%;
         }
         .goal-education .planet {
             background: linear-gradient(135deg, #8E44AD, #BB8FCE);
@@ -453,9 +453,9 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="weart-logo">WeArt</div>
-            <h1 class="title">Map Your Artistic Constellation</h1>
-            <h2 class="subtitle">规划你的艺术星图</h2>
+            <div class="weart-logo" data-i18n="weart">WeArt</div>
+            <h1 class="title" data-i18n="map_artistic_constellation">Map Your Artistic Constellation</h1>
+            <h2 class="subtitle" data-i18n="plan_art_constellation">规划你的艺术星图</h2>
         </div>
         
         <!-- Constellation -->
@@ -481,7 +481,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">艺术留学</div>
+                    <div class="goal-label" data-i18n="art_abroad">艺术留学</div>
                     <div class="goal-label-en">Art Abroad</div>
                 </div>
             </div>
@@ -491,7 +491,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">艺术收藏</div>
+                    <div class="goal-label" data-i18n="art_collection">艺术收藏</div>
                     <div class="goal-label-en">Art Collection</div>
                 </div>
             </div>
@@ -501,7 +501,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">陶冶情操</div>
+                    <div class="goal-label" data-i18n="cultivating_sentiment">陶冶情操</div>
                     <div class="goal-label-en">Cultivating Sentiment</div>
                 </div>
             </div>
@@ -511,7 +511,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">寻找人生方向</div>
+                    <div class="goal-label" data-i18n="finding_life_direction">寻找人生方向</div>
                     <div class="goal-label-en">Finding Life Direction</div>
                 </div>
             </div>
@@ -521,7 +521,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">创意表达</div>
+                    <div class="goal-label" data-i18n="creative_expression">创意表达</div>
                     <div class="goal-label-en">Creative Expression</div>
                 </div>
             </div>
@@ -531,7 +531,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">自主创作产品</div>
+                    <div class="goal-label" data-i18n="independent_product">自主创作产品</div>
                     <div class="goal-label-en">Independent Product</div>
                 </div>
             </div>
@@ -541,7 +541,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">学习鉴赏</div>
+                    <div class="goal-label" data-i18n="learning_appreciation">学习鉴赏</div>
                     <div class="goal-label-en">Learning Appreciation</div>
                 </div>
             </div>
@@ -551,7 +551,7 @@
                     <div class="planet-glow"></div>
                 </div>
                 <div>
-                    <div class="goal-label">机构教育</div>
+                    <div class="goal-label" data-i18n="institutional_education">机构教育</div>
                     <div class="goal-label-en">Institutional Education</div>
                 </div>
             </div>
@@ -566,15 +566,24 @@
         </div>
         
         <!-- Continue button -->
-        <button class="continue-button" id="continue-btn">Continue</button>
+        <button class="continue-button" id="continue-btn" data-i18n="continue">Continue</button>
     </div>
     
+    <!-- Include user management and i18n systems -->
+    <script src="js/user-manager.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/onboarding.js"></script>
     <script>
-        // Add at the top of script section
+        // Initialize user manager and onboarding data
         const onboardingData = new OnboardingData();
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is authenticated
+            if (!userManager.isLoggedIn()) {
+                window.location.href = 'register.html';
+                return;
+            }
+
             const particlesContainer = document.getElementById('particles');
             const particleCount = 80;
             
@@ -629,13 +638,21 @@
                 });
             });
             
-            // Replace the continue button click handler:
+            // Save learning goals and navigate to art medium selection
             continueBtn.addEventListener('click', function() {
                 if (selectedGoals.length > 0) {
-                    console.log('Selected goals:', selectedGoals);
+                    console.log('🎯 Selected goals:', selectedGoals);
                     
                     // Save to onboarding data
                     onboardingData.updateLearningGoals(selectedGoals);
+                    
+                    // Save learning goals to user manager
+                    userManager.saveOnboardingData('learningGoals', { 
+                        learningGoals: selectedGoals,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    console.log('✅ Learning goals saved successfully');
                     
                     // Navigate to art medium selection page
                     window.location.href = 'art_medium_selection.html';

@@ -3,28 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeArt - Course Video</title>
+    <title>WeArt - Courses</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <style>
-        /* Course-specific styles */
-        .course-content {
-            max-width: none;
+        /* Course browser styles */
+        .course-browser {
+            display: block;
         }
         
-        /* Video player */
+        .course-player-view {
+            display: none;
+        }
+        
+        .course-browser.hidden {
+            display: none;
+        }
+        
+        .course-player-view.active {
+            display: block;
+        }
+        
+        /* Hero section */
+        .courses-hero {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+        }
+        
+        .courses-hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .courses-hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Course grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .course-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .course-card:hover::before {
+            opacity: 1;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        .course-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .course-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .course-level {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .course-duration {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .course-content {
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .course-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .course-instructor {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+        
+        .course-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .course-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .course-tag {
+            padding: 4px 10px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .course-progress {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .start-course-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .start-course-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Video player styles (wider and more horizontal) */
         .video-container {
             position: relative;
             height: 0;
-            padding-bottom: 56.25%;
+            padding-bottom: 35%; /* Made more horizontal (was 42.25%) */
             background: #000000;
             border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin: 30px auto;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 1000px; /* Increased max width for more horizontal feel */
+        }
+        
+        /* Course layout with sidebar */
+        .course-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .course-menu {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .course-menu h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #4EF1FF;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+        }
+        
+        .course-section {
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .section-title:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #4EF1FF;
+        }
+        
+        .section-title.active {
+            background: rgba(78, 241, 255, 0.1);
+            color: #4EF1FF;
+            border-left-color: #4EF1FF;
+        }
+        
+        .section-content {
+            display: none;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+            margin-top: 5px;
+            padding: 0 12px;
+            max-height: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .section-title.active + .section-content {
+            display: block;
+        }
+        
+        /* Lesson item styles */
+        .course-lesson {
+            margin-bottom: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .lesson-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+        
+        .lesson-item.active {
+            background: rgba(78, 241, 255, 0.15);
+            border-left: 4px solid #4EF1FF;
+        }
+        
+        .lesson-locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .lesson-locked .lesson-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            transform: none;
+        }
+        
+        .lesson-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .lesson-available .lesson-number {
+            background: linear-gradient(135deg, #00F2C3 0%, #00ABFF 100%);
+            box-shadow: 0 2px 8px rgba(0, 242, 195, 0.3);
+        }
+        
+        .lesson-locked .lesson-number {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+        
+        .lesson-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .lesson-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        
+        .lesson-locked .lesson-title {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .lesson-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .status-available {
+            color: #00F2C3;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-locked {
+            color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .lesson-play {
+            flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lesson-item:hover .lesson-play {
+            opacity: 1;
+        }
+        
+        .lesson-play svg {
+            width: 20px;
+            height: 20px;
+            fill: #4EF1FF;
+        }
+        
+        .course-progress {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4EF1FF, #188DF7);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+        
+        .course-content-area {
+            min-height: 600px;
         }
         
         .video-player {
@@ -36,141 +454,67 @@
             object-fit: cover;
         }
         
-        .video-controls {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            display: flex;
-            align-items: center;
+        /* Responsive design for course layout */
+        @media (max-width: 1024px) {
+            .course-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .course-menu {
+                order: 2;
+                max-height: 300px;
+            }
         }
         
-        .play-button {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            display: flex;
+        /* Back button */
+        .back-to-courses {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin-right: 15px;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
             transition: all 0.3s ease;
-            border: none;
+            margin-bottom: 20px;
         }
         
-        .play-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+        .back-to-courses:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
         
-        .play-icon {
+        .back-icon {
             width: 16px;
             height: 16px;
-            fill: white;
+            fill: currentColor;
         }
         
-        .progress-bar {
-            flex: 1;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            position: relative;
-            cursor: pointer;
-            margin: 0 15px;
-        }
-        
-        .progress-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 35%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-        
-        .time-display {
-            margin-left: 15px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            min-width: 100px;
-        }
-        
-        .volume-control {
-            display: flex;
-            align-items: center;
-            margin-left: 20px;
-        }
-        
-        .volume-icon {
-            width: 20px;
-            height: 20px;
-            opacity: 0.8;
-            margin-right: 10px;
-            fill: white;
-        }
-        
-        .volume-slider {
-            width: 80px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .volume-level {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 70%;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 2px;
-        }
-        
-        .fullscreen-button {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin-left: 15px;
-            border: none;
-            background: transparent;
-        }
-        
-        .fullscreen-icon {
-            width: 20px;
-            height: 20px;
-            opacity: 0.8;
-            fill: white;
-        }
-        
-        /* Course info */
+        /* Course info in player view */
         .course-info {
             margin-bottom: 30px;
+            text-align: center;
         }
         
-        .course-title {
+        .course-info .course-title {
             font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 32px;
+            margin-bottom: 15px;
         }
         
         .course-meta {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
         }
         
         .instructor {
@@ -179,11 +523,11 @@
         }
         
         .instructor-avatar {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             overflow: hidden;
-            margin-right: 10px;
+            margin-right: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
@@ -194,7 +538,7 @@
         }
         
         .instructor-name {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
         }
         
@@ -213,21 +557,62 @@
             fill: currentColor;
         }
         
-        .course-description {
+        .course-description-full {
             font-size: 16px;
             line-height: 1.6;
             color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .course-tags {
+        /* Download button */
+        .download-materials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+        
+        .download-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        /* Tags in player view */
+        .course-tags-full {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
         }
         
-        .course-tag {
-            padding: 6px 12px;
+        .course-tag-full {
+            padding: 8px 16px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -235,131 +620,9 @@
             color: rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        /* Lesson list */
-        .lessons-section {
-            margin-bottom: 30px;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .section-title {
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 20px;
-        }
-        
-        .view-all {
-            font-size: 14px;
-            color: #667eea;
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        .view-all:hover {
-            opacity: 0.8;
-        }
-        
-        .lessons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        .lesson-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-        }
-        
-        .lesson-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(103, 126, 234, 0.3);
-        }
-        
-        .lesson-thumbnail {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%;
-            overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .lesson-thumbnail img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .lesson-duration {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            padding: 4px 8px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        
-        .lesson-content {
-            padding: 15px;
-        }
-        
-        .lesson-title {
-            font-weight: 500;
-            font-size: 16px;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .lesson-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .lesson-progress {
-            display: flex;
-            align-items: center;
-        }
-        
-        .progress-indicator {
-            width: 50px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-right: 8px;
-            overflow: hidden;
-        }
-        
-        .progress-indicator-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s ease;
-        }
     </style>
 </head>
-<body>
+<body data-page-title="courses">
     <!-- Cosmic background -->
     <div class="cosmic-background">
         <div class="stars-layer"></div>
@@ -371,7 +634,7 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
-                <h2>WeArt</h2>
+                <h2 data-i18n="weart">WeArt</h2>
             </div>
             
             <div class="nav-menu">
@@ -380,32 +643,32 @@
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9,22 9,12 15,12 15,22"/>
                     </svg>
-                    <span>Dashboard</span>
+                    <span data-i18n="dashboard">Dashboard</span>
                 </div>
                 
-                <div class="nav-item" data-page="explore">
+                <div class="nav-item" data-page="community" onclick="window.location.href='/explore.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="11" cy="11" r="8"/>
                         <path d="m21 21-4.35-4.35"/>
                     </svg>
-                    <span>Explore</span>
+                    <span data-i18n="community">Community</span>
                 </div>
                 
                 <div class="nav-item active" data-page="courses">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                     </svg>
-                    <span>Courses</span>
+                    <span data-i18n="courses">Courses</span>
                 </div>
                 
-                <div class="nav-item" data-page="community" onclick="window.location.href='/mentor.html'">
+                <div class="nav-item" data-page="mentors" onclick="window.location.href='/mentor.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                         <circle cx="9" cy="7" r="4"/>
                         <path d="m22 21-3-3"/>
                         <circle cx="16" cy="11" r="3"/>
                     </svg>
-                    <span>Community</span>
+                    <span data-i18n="mentors">Mentors</span>
                 </div>
             </div>
         </nav>
@@ -415,17 +678,17 @@
             <!-- Header -->
             <header class="header">
                 <div class="header-left">
-                    <h1 class="weart-title">Course Player</h1>
+                    <h1 class="weart-title" data-i18n="courses_title">WeArt Courses</h1>
                     <div class="search-container">
                         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <circle cx="11" cy="11" r="8"/>
                             <path d="m21 21-4.35-4.35"/>
                         </svg>
-                        <input type="text" class="search-bar" placeholder="Search courses, lessons..." id="searchInput">
+                        <input type="text" class="search-bar" data-i18n-placeholder="search_courses" placeholder="Search courses..." id="searchInput">
                     </div>
                 </div>
                 <div class="header-right">
-                    <button class="create-prompt-btn" onclick="window.location.href='/'">Back to Dashboard</button>
+                    <button class="create-prompt-btn" onclick="window.location.href='/'" data-i18n="back_to_dashboard">Back to Dashboard</button>
                     <button class="profile-btn" id="profileBtn">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -435,168 +698,90 @@
                 </div>
             </header>
             
-            <!-- Video player -->
-            <div class="video-container">
-                <video class="video-player" poster="https://via.placeholder.com/800x450/667eea/ffffff?text=Course+Video">
-                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="video-controls">
-                    <button class="play-button">
-                        <svg class="play-icon" viewBox="0 0 24 24">
-                            <polygon points="5,3 19,12 5,21"/>
-                        </svg>
-                    </button>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
+            <!-- Course Browser View -->
+            <div class="course-browser" id="courseBrowser">
+                <!-- Hero Section -->
+                <div class="courses-hero">
+                    <h1 data-i18n="discover_courses">Discover Your Creative Path</h1>
+                    <p data-i18n="courses_subtitle">Unlock your artistic potential with expert-led courses designed to inspire and educate</p>
                     </div>
-                    <div class="time-display">0:00 / 0:00</div>
-                    <div class="volume-control">
-                        <svg class="volume-icon" viewBox="0 0 24 24">
-                            <polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/>
-                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-                        </svg>
-                        <div class="volume-slider">
-                            <div class="volume-level"></div>
+                
+                <!-- Courses Grid -->
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- Course cards will be generated here -->
                         </div>
                     </div>
-                    <button class="fullscreen-button">
-                        <svg class="fullscreen-icon" viewBox="0 0 24 24">
-                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            
+            <!-- Course Player View -->
+            <div class="course-player-view" id="coursePlayerView">
+                <!-- Back Button -->
+                <a href="#" class="back-to-courses" id="backToCourses">
+                    <svg class="back-icon" viewBox="0 0 24 24">
+                        <path d="M19 12H5"/>
+                        <polyline points="12,19 5,12 12,5"/>
                         </svg>
-                    </button>
+                    <span data-i18n="back_to_courses">Back to Courses</span>
+                </a>
+                
+                <!-- Course Layout with Sidebar -->
+                <div class="course-layout">
+                    <!-- Course Menu Sidebar -->
+                    <div class="course-menu">
+                        <h3 data-i18n="course_content">Course Content</h3>
+                        <div id="course-sections">
+                            <!-- Course sections will be generated here -->
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="course-progress-fill"></div>
+                            </div>
+                            <div class="progress-text" id="course-progress-text">0% Complete</div>
                 </div>
             </div>
             
-            <!-- Course info -->
-            <div class="course-info">
-                <h2 class="course-title">Advanced Digital Painting Techniques</h2>
+                    <!-- Main Course Content -->
+                    <div class="course-content-area">
+                        <!-- Course Info -->
+                        <div class="course-info" id="courseInfo">
+                            <h2 class="course-title" id="courseTitle">Course Title</h2>
                 <div class="course-meta">
                     <div class="instructor">
                         <div class="instructor-avatar">
-                            <img src="https://via.placeholder.com/32x32/764ba2/ffffff?text=SJ" alt="Instructor">
+                                        <img id="instructorAvatar" src="" alt="Instructor">
                         </div>
-                        <div class="instructor-name">Sarah Johnson</div>
+                                    <div class="instructor-name" id="instructorName">Instructor</div>
                     </div>
                     <div class="meta-item">
                         <svg class="meta-icon" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="3"/>
                             <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
                         </svg>
-                        Intermediate
+                                    <span id="courseLevel">Level</span>
                     </div>
                     <div class="meta-item">
                         <svg class="meta-icon" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="10"/>
                             <polyline points="12,6 12,12 16,14"/>
                         </svg>
-                        12 hours total
-                    </div>
-                    <div class="meta-item">
-                        <svg class="meta-icon" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14,2 14,8 20,8"/>
-                        </svg>
-                        24 lessons
-                    </div>
-                </div>
-                <p class="course-description">
-                    Learn advanced digital painting techniques from professional artist Sarah Johnson. This comprehensive course covers color theory, composition, lighting, and specialized techniques for creating stunning digital artwork.
-                </p>
-                <div class="course-tags">
-                    <div class="course-tag">Digital Art</div>
-                    <div class="course-tag">Painting</div>
-                    <div class="course-tag">Illustration</div>
-                    <div class="course-tag">Color Theory</div>
+                                    <span id="courseDuration">Duration</span>
                 </div>
             </div>
             
-            <!-- Lesson list -->
-            <div class="lessons-section">
-                <div class="section-header">
-                    <h3 class="section-title">Course Lessons</h3>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="lessons-grid">
-                    <!-- Lesson 1 -->
-                    <div class="lesson-card">
-                        <div class="lesson-thumbnail">
-                            <img src="https://via.placeholder.com/280x157/667eea/ffffff?text=Lesson+1" alt="Lesson 1">
-                            <div class="lesson-duration">15:30</div>
-                        </div>
-                        <div class="lesson-content">
-                            <h4 class="lesson-title">Introduction to Digital Painting Tools</h4>
-                            <div class="lesson-info">
-                                <div class="lesson-progress">
-                                    <div class="progress-indicator">
-                                        <div class="progress-indicator-fill" style="width: 100%;"></div>
-                                    </div>
-                                    Completed
-                                </div>
-                                <div>Lesson 1</div>
-                            </div>
+                            <p class="course-description-full" id="courseDescriptionFull">Course description</p>
+                            
+                            <div class="course-tags-full" id="courseTagsFull">
+                                <!-- Tags will be generated here -->
                         </div>
                     </div>
                     
-                    <!-- Lesson 2 -->
-                    <div class="lesson-card">
-                        <div class="lesson-thumbnail">
-                            <img src="https://via.placeholder.com/280x157/764ba2/ffffff?text=Lesson+2" alt="Lesson 2">
-                            <div class="lesson-duration">42:30</div>
+                        <!-- Video player -->
+                        <div class="video-container">
+                            <video class="video-player" id="mainVideo" controls>
+                                <source src="" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
-                        <div class="lesson-content">
-                            <h4 class="lesson-title">Advanced Color Theory for Digital Artists</h4>
-                            <div class="lesson-info">
-                                <div class="lesson-progress">
-                                    <div class="progress-indicator">
-                                        <div class="progress-indicator-fill" style="width: 35%;"></div>
                                     </div>
-                                    In progress
-                                </div>
-                                <div>Lesson 2</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Lesson 3 -->
-                    <div class="lesson-card">
-                        <div class="lesson-thumbnail">
-                            <img src="https://via.placeholder.com/280x157/667eea/ffffff?text=Lesson+3" alt="Lesson 3">
-                            <div class="lesson-duration">38:15</div>
-                        </div>
-                        <div class="lesson-content">
-                            <h4 class="lesson-title">Composition Techniques for Impactful Artwork</h4>
-                            <div class="lesson-info">
-                                <div class="lesson-progress">
-                                    <div class="progress-indicator">
-                                        <div class="progress-indicator-fill" style="width: 0%;"></div>
-                                    </div>
-                                    Not started
-                                </div>
-                                <div>Lesson 3</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Lesson 4 -->
-                    <div class="lesson-card">
-                        <div class="lesson-thumbnail">
-                            <img src="https://via.placeholder.com/280x157/764ba2/ffffff?text=Lesson+4" alt="Lesson 4">
-                            <div class="lesson-duration">51:20</div>
-                        </div>
-                        <div class="lesson-content">
-                            <h4 class="lesson-title">Lighting and Shadow Mastery</h4>
-                            <div class="lesson-info">
-                                <div class="lesson-progress">
-                                    <div class="progress-indicator">
-                                        <div class="progress-indicator-fill" style="width: 0%;"></div>
-                                    </div>
-                                    Not started
-                                </div>
-                                <div>Lesson 4</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
@@ -608,82 +793,332 @@
     </div>
     
     <script>
-        // Video player functionality
+        // Course data with Harvard-style lesson structure
+        const courses = {
+            kaiming: {
+                title: 'Modernity and Artistic Expression',
+                titleKey: 'modernity_artistic_expression',
+                instructor: 'Dr. Kaiming Zhang',
+                instructorKey: 'instructor_kaiming',
+                level: 'Advanced',
+                levelKey: 'advanced',
+                duration: '8 weeks',
+                durationKey: 'duration_8weeks',
+                video: 'assets/kaiming_zhang.mp4',
+                pdf: 'assets/kaiming_zhang.pdf',
+                description: 'Explore the relationship between modernity, trauma, and artistic expression. This advanced seminar examines how contemporary culture reflects symptoms of modern life through literary and visual analysis.',
+                descriptionKey: 'course_description_kaiming',
+                shortDescription: 'Cultural analysis of modernity and trauma in art',
+                shortDescriptionKey: 'short_desc_kaiming',
+                tags: ['Cultural Theory', 'Modern Art', 'Literary Analysis', 'Philosophy'],
+                tagKeys: ['cultural_theory', 'modern_art', 'literary_analysis', 'philosophy'],
+                profile: 'assets/discussion_board/weart_profile1.PNG',
+                thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDQwMCAyNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjQwIiBmaWxsPSJ1cmwoI2dyYWRpZW50MSkiLz4KPGR1ZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2NjdlZWEiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzY0YmEyIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHN2ZyB4PSI1MCUiIHk9IjUwJSIgb3ZlcmZsb3c9InZpc2libGUiPgo8dGV4dCB4PSIwIiB5PSIwIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCI+TW9kZXJuaXR5PC90ZXh0Pgo8L3N2Zz4KPC9zdmc+',
+                lessons: [
+                    { title: 'Introduction to Modern Aesthetics', status: 'available', video: 'assets/kaiming_zhang.mp4' },
+                    { title: 'Historical Context of Trauma in Art', status: 'locked' },
+                    { title: 'Postmodern Artistic Movements', status: 'locked' },
+                    { title: 'Cultural Symptoms in Contemporary Art', status: 'locked' },
+                    { title: 'Literary Analysis Frameworks', status: 'locked' },
+                    { title: 'Visual Culture and Modernity', status: 'locked' },
+                    { title: 'Final Project and Synthesis', status: 'locked' }
+                ]
+            },
+            duoge: {
+                title: 'Philosophy of Art and Life',
+                titleKey: 'philosophy_art_life',
+                instructor: 'Prof. Duoge Ma',
+                instructorKey: 'instructor_duoge',
+                level: 'Intermediate',
+                levelKey: 'intermediate',
+                duration: '6 weeks',
+                durationKey: 'duration_6weeks',
+                video: 'assets/duoge_ma.mp4',
+                pdf: 'assets/duoge_ma.pdf',
+                description: 'Discover what it truly means to live as an artist. This philosophical exploration examines the relationship between artistic practice and way of life.',
+                descriptionKey: 'course_description_duoge',
+                shortDescription: 'Philosophical exploration of artistic living',
+                shortDescriptionKey: 'short_desc_duoge',
+                tags: ['Philosophy', 'Art Theory', 'Life Practice', 'Self-Development'],
+                tagKeys: ['philosophy', 'art_theory', 'life_practice', 'self_development'],
+                profile: 'assets/discussion_board/weart_profile2.PNG',
+                thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDQwMCAyNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjQwIiBmaWxsPSJ1cmwoI2dyYWRpZW50MikiLz4KPGR1ZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjdiZDYiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYzI0NGJhIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHN2ZyB4PSI1MCUiIHk9IjUwJSIgb3ZlcmZsb3c9InZpc2libGUiPgo8dGV4dCB4PSIwIiB5PSIwIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCI+UGhpbG9zb3BoeTo8L3RleHQ+CjwvZW5nPgo8L3N2Zz4=',
+                lessons: [
+                    { title: 'Foundations of Artistic Philosophy', status: 'available', video: 'assets/duoge_ma.mp4' },
+                    { title: 'Foucault and Truth in Art', status: 'locked' },
+                    { title: 'Duchamp: Life as Artistic Practice', status: 'locked' },
+                    { title: 'Self-Creation Through Art', status: 'locked' },
+                    { title: 'Contemporary Artistic Living', status: 'locked' },
+                    { title: 'Integration and Practice', status: 'locked' }
+                ]
+            },
+            bing: {
+                title: 'Aesthetics and Literary Criticism',
+                titleKey: 'aesthetics_literary_criticism',
+                instructor: 'Dr. Bing Zhang',
+                instructorKey: 'instructor_bing',
+                level: 'Advanced',
+                levelKey: 'advanced',
+                duration: '10 weeks',
+                durationKey: 'duration_10weeks',
+                video: 'assets/bing_zhang1.mp4',
+                pdf: 'assets/bing_zhang.pdf',
+                description: 'A deep dive into the complex relationship between beauty and trauma in literary works. Examine aesthetic experience in contemporary Chinese literature and critical theory.',
+                descriptionKey: 'course_description_bing',
+                shortDescription: 'Critical analysis of beauty, trauma, and literature',
+                shortDescriptionKey: 'short_desc_bing',
+                tags: ['Literary Criticism', 'Aesthetics', 'Contemporary Literature', 'Critical Theory'],
+                tagKeys: ['literary_criticism', 'aesthetics', 'contemporary_lit', 'critical_theory'],
+                profile: 'assets/discussion_board/weart_profile3.PNG',
+                thumbnail: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDQwMCAyNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjQwIiBmaWxsPSJ1cmwoI2dyYWRpZW50MykiLz4KPGR1ZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjAwODAiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzkyOGY3Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHN2ZyB4PSI1MCUiIHk9IjUwJSIgb3ZlcmZsb3c9InZpc2libGUiPgo8dGV4dCB4PSIwIiB5PSIwIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCI+QWVzdGhldGljczwvdGV4dD4KPC9zdmc+Cjwvc3ZnPg==',
+                lessons: [
+                    { title: 'Introduction to Aesthetic Theory', status: 'available', video: 'assets/bing_zhang1.mp4' },
+                    { title: 'Beauty and Violence in Literature', status: 'available', video: 'assets/bing_zhang2.mp4' },
+                    { title: 'Contemporary Chinese Literary Criticism', status: 'locked' },
+                    { title: 'Trauma Studies and Aesthetic Experience', status: 'locked' },
+                    { title: 'Critical Theory Applications', status: 'locked' },
+                    { title: 'Comparative Literary Analysis', status: 'locked' },
+                    { title: 'Ethics and Aesthetic Judgment', status: 'locked' },
+                    { title: 'Final Research Project', status: 'locked' }
+                ]
+            }
+        };
+
+        let currentView = 'browser'; // 'browser' or 'player'
+        let currentCourse = null;
+        let currentLessonIndex = 0;
+
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            const videoPlayer = document.querySelector('.video-player');
-            const playButton = document.querySelector('.play-button');
-            const playIcon = document.querySelector('.play-icon');
-            const progressBar = document.querySelector('.progress-bar');
-            const progressFill = document.querySelector('.progress-fill');
-            const timeDisplay = document.querySelector('.time-display');
-            const volumeSlider = document.querySelector('.volume-slider');
-            const volumeLevel = document.querySelector('.volume-level');
-            const fullscreenButton = document.querySelector('.fullscreen-button');
+            generateCourseCards();
+            setupEventListeners();
             
-            let isPlaying = false;
-            
-            // Play/pause toggle
-            playButton.addEventListener('click', function() {
-                if (isPlaying) {
-                    videoPlayer.pause();
-                    playIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
-                } else {
-                    videoPlayer.play();
-                    playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
-                }
-                isPlaying = !isPlaying;
-            });
-            
-            // Progress bar update
-            videoPlayer.addEventListener('timeupdate', function() {
-                const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-                progressFill.style.width = `${progress}%`;
-                
-                // Update time display
-                const currentMinutes = Math.floor(videoPlayer.currentTime / 60);
-                const currentSeconds = Math.floor(videoPlayer.currentTime % 60);
-                const totalMinutes = Math.floor(videoPlayer.duration / 60);
-                const totalSeconds = Math.floor(videoPlayer.duration % 60);
-                
-                timeDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds} / ${totalMinutes}:${totalSeconds < 10 ? '0' : ''}${totalSeconds}`;
-            });
-            
-            // Click on progress bar to seek
-            progressBar.addEventListener('click', function(e) {
-                const rect = progressBar.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                videoPlayer.currentTime = pos * videoPlayer.duration;
-            });
-            
-            // Volume control
-            volumeSlider.addEventListener('click', function(e) {
-                const rect = volumeSlider.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                videoPlayer.volume = pos;
-                volumeLevel.style.width = `${pos * 100}%`;
-            });
-            
-            // Fullscreen toggle
-            fullscreenButton.addEventListener('click', function() {
-                if (videoPlayer.requestFullscreen) {
-                    videoPlayer.requestFullscreen();
-                } else if (videoPlayer.webkitRequestFullscreen) {
-                    videoPlayer.webkitRequestFullscreen();
-                } else if (videoPlayer.msRequestFullscreen) {
-                    videoPlayer.msRequestFullscreen();
-                }
-            });
-            
-            // Lesson cards click handler
-            document.querySelectorAll('.lesson-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    console.log('Loading lesson:', this.querySelector('.lesson-title').textContent);
-                    // Here you would typically load the selected lesson
-                });
-            });
+            // Hide loading overlay
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('show');
+                loadingOverlay.style.display = 'none';
+            }
         });
+
+        // Generate course menu from lessons
+        function generateCourseMenu(lessons) {
+            const container = document.getElementById('course-sections');
+            container.innerHTML = '';
+            
+            lessons.forEach((lesson, index) => {
+                const lessonDiv = document.createElement('div');
+                lessonDiv.className = `course-lesson lesson-${lesson.status}`;
+                
+                const lessonNumber = String(index + 1).padStart(2, '0');
+                
+                lessonDiv.innerHTML = `
+                    <div class="lesson-item ${index === 0 ? 'active' : ''}" data-lesson="${index}">
+                        <div class="lesson-number">${lessonNumber}</div>
+                        <div class="lesson-content">
+                            <div class="lesson-title">${lesson.title}</div>
+                            <div class="lesson-status">
+                                ${lesson.status === 'available' ? 
+                                    '<span class="status-available"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Available</span>' : 
+                                    '<span class="status-locked"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/></svg> Coming Soon</span>'
+                                }
+                            </div>
+                        </div>
+                        ${lesson.status === 'available' ? '<div class="lesson-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>' : ''}
+                    </div>
+                `;
+                
+                // Add click handler for available lessons
+                if (lesson.status === 'available') {
+                    const lessonItem = lessonDiv.querySelector('.lesson-item');
+                    lessonItem.addEventListener('click', () => {
+                        selectLesson(index);
+                    });
+                }
+                
+                container.appendChild(lessonDiv);
+            });
+            
+            updateProgress();
+        }
+
+        // Select a lesson
+        function selectLesson(index) {
+            const course = courses[currentCourse];
+            const lesson = course.lessons[index];
+            
+            if (lesson.status !== 'available') return;
+            
+            currentLessonIndex = index;
+            
+            // Update active lesson
+            document.querySelectorAll('.lesson-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            
+            // Load video if available
+            if (lesson.video) {
+                const video = document.getElementById('mainVideo');
+                video.src = lesson.video;
+                video.load();
+            }
+            
+            updateProgress();
+        }
+
+        // Update course progress
+        function updateProgress() {
+            const course = courses[currentCourse];
+            if (!course) return;
+            
+            const progressFill = document.getElementById('course-progress-fill');
+            const progressText = document.getElementById('course-progress-text');
+            
+            const availableLessons = course.lessons.filter(lesson => lesson.status === 'available').length;
+            const completedLessons = currentLessonIndex + 1;
+            const progress = (completedLessons / course.lessons.length) * 100;
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `${Math.round(progress)}% Complete (${completedLessons}/${course.lessons.length} lessons)`;
+        }
+
+        function generateCourseCards() {
+            const grid = document.getElementById('coursesGrid');
+            grid.innerHTML = '';
+
+            Object.entries(courses).forEach(([courseId, course]) => {
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.dataset.course = courseId;
+                
+                card.innerHTML = `
+                    <div class="course-thumbnail">
+                        <img src="${course.thumbnail}" alt="${course.title}">
+                        <div class="course-level">${course.level}</div>
+                        <div class="course-duration">${course.duration}</div>
+                    </div>
+                    <div class="course-content">
+                        <h3 class="course-title">${course.title}</h3>
+                        <div class="course-instructor">${course.instructor}</div>
+                        <p class="course-description">${course.shortDescription || course.description}</p>
+                        <div class="course-tags">
+                            ${course.tags.slice(0, 3).map(tag => `<span class="course-tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-progress">Ready to start</div>
+                            <button class="start-course-btn" onclick="startCourse('${courseId}')">
+                                Start Course
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function startCourse(courseId) {
+            const course = courses[courseId];
+            if (!course) return;
+
+            currentCourse = courseId;
+            currentView = 'player';
+            currentLessonIndex = 0;
+
+            // Hide browser view and show player view
+            document.getElementById('courseBrowser').classList.add('hidden');
+            document.getElementById('coursePlayerView').classList.add('active');
+
+            // Update course info
+            updateCoursePlayerInfo(course);
+
+            // Generate course menu from lessons
+            generateCourseMenu(course.lessons);
+
+            // Load first available video
+            const firstAvailableLesson = course.lessons.find(lesson => lesson.status === 'available');
+            if (firstAvailableLesson && firstAvailableLesson.video) {
+                const video = document.getElementById('mainVideo');
+                video.src = firstAvailableLesson.video;
+                video.load();
+            }
+        }
+
+        function updateCoursePlayerInfo(course) {
+            // Update title
+            document.getElementById('courseTitle').textContent = course.title;
+            
+            // Update instructor
+            document.getElementById('instructorName').textContent = course.instructor;
+            document.getElementById('instructorAvatar').src = course.profile;
+            
+            // Update meta info
+            document.getElementById('courseLevel').textContent = course.level;
+            document.getElementById('courseDuration').textContent = course.duration;
+            
+            // Update description
+            document.getElementById('courseDescriptionFull').textContent = course.description;
+            
+            // Update tags
+            const tagsContainer = document.getElementById('courseTagsFull');
+            tagsContainer.innerHTML = '';
+            course.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'course-tag-full';
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+            });
+        }
+
+        function backToCourses() {
+            currentView = 'browser';
+            currentCourse = null;
+
+            // Show browser view and hide player view
+            document.getElementById('courseBrowser').classList.remove('hidden');
+            document.getElementById('coursePlayerView').classList.remove('active');
+
+            // Pause video
+            const video = document.getElementById('mainVideo');
+            video.pause();
+            video.src = '';
+        }
+
+        function setupEventListeners() {
+            // Back to courses button
+            document.getElementById('backToCourses').addEventListener('click', function(e) {
+                e.preventDefault();
+                backToCourses();
+            });
+
+            // Video events
+            const video = document.getElementById('mainVideo');
+            video.addEventListener('loadstart', () => {
+                console.log('Loading video:', currentCourse);
+            });
+
+            video.addEventListener('error', (e) => {
+                console.error('Video error:', e);
+            });
+        }
+
+        // Language change support
+        if (window.addEventListener) {
+            window.addEventListener('languageChanged', function(e) {
+                generateCourseCards();
+                if (currentCourse && currentView === 'player') {
+                    const course = courses[currentCourse];
+                    if (course) {
+                        updateCoursePlayerInfo(course);
+                    }
+                }
+            });
+        }
     </script>
     
+    <!-- Include i18n system -->
+    <script src="js/i18n.js"></script>
+    <script src="navigation-fix.js"></script>
     <script>
         // Create floating particles
         document.addEventListener('DOMContentLoaded', function() {
@@ -718,18 +1153,5 @@
             }
         });
     </script>
-    
-    <script>
-    // Ensure loading overlay is hidden on course page
-    document.addEventListener('DOMContentLoaded', function() {
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        if (loadingOverlay) {
-            loadingOverlay.classList.remove('show');
-            loadingOverlay.style.display = 'none';
-        }
-    });
-    </script>
-    
-    <script src="navigation-fix.js"></script>
 </body>
 </html>

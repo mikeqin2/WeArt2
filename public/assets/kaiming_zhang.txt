@@ -1,0 +1,321 @@
+1. Physician work and textual analysis:
+I aim to investigate how “modernity” could be regarded as “traumatic” in the sense that
+it causes certain symptoms to persist in our culture and society. This claim is juxtaposed with the
+claim that the traumatic afflictions of modernity show symptoms like those of Post-Traumatic
+Stress Disorder that are perpetuated in “postmodernity.”
+What this Series is About:
+This series surveys a wide variety of “symptoms” in literature, newspapers, and urban
+landscapes that display a strong affinity to what clinical psychology may call “trauma.” Then, I
+will compare my observation of these symptoms in perspective to two messy, debatable terms,
+“modernity” and “postmodernity.”
+First, by surveying the writings of Charles Baudelaire, Félix Fénéon, and magazine
+articles documenting peculiar events and incidents taking place in New York at the end of the
+19th and beginning of the 20th century, I aim to sketch a type of life that is coming to shape in
+the fin-de-siècle Europe and America that finds its symptoms reflected in what we call
+“traumatic” today: an event, or a series of events whose force exceeds one’s ability to make sense
+of or emotionally process it, usually leading to symptoms of PTSD.
+Then, focusing on Sigmund Freud and Cathy Caruth’s work, I mark two traumatic
+symptoms: “impulse to repeat” and “suspension of reality,” where a patient suffering from PTSD
+experiences repetition of the traumatic event in the form of flashbacks and nightmares, and that
+the patient may suffer from dissociative episodes where reality appear “unreal.” Following this,
+I analyze, with the help of Mark Fisher’s writings, the contemporary musical scene, movie
+production, and architecture. Citing Fredric Jameson, I claim that both symptoms could be found
+in the cultural production and urban landscape of “postmodernity.” However, it must be
+emphasized that my mapping of traumatic symptoms onto the ambiguous and contested
+concepts of “modernity” and “postmodernity” must be accompanied by my insistence on these
+terms' lack of conceptual clarity. Rather, it is a strategic use of their rhetorical and historical
+strength to explore a set of symptoms.
+Justifications:
+It may be suspected that I aim to produce a grotesque patchwork of literary analysis,
+cultural studies, philosophy, and clinical psychology, or, more charitably put, interdisciplinary
+work. Yet it must be noted that the starting point of this project is strictly philosophical,
+especially when it is conceived as “a symptomatology, and a semeiology” (Deleuze, Nietzsche, 3).
+What does this mean? It means that I aim to think through a set of cultural and societal
+phenomena as symptoms “whose sense must be sought in the forces that produce them,” in the
+image of a “philosopher-physician” (Deleuze, Nietzsche, 75). To do philosophy as a
+symptomatology “is always a question of art” because, much like how Deleuze, analyzing Sadeand Masoch’s writings, claims that “the clinical specificities of sadism and masochism are not
+separable from the literary values peculiar to Sade and Masoch,” whose experience, historical,
+social, and cultural milieu all reflected in their writings as symptoms, I propose a similar kind of
+analysis for writers like Baudelaire (Coldness and Cruelty 14). Even more boldly speaking, I
+propose cityscapes, architectures also contain “senses and values” that are the primary subject
+of philosophy as symptomatology, for their construction and formation also reflect a whole
+complex relation of forces behind their coming-to-be.
+Therefore, it seems imperative that I should provide both the clinical and philosophical
+framework for the analysis, because “history of medicine” is regarded from two perspectives,
+with the first being “the history of illnesses, which may disappear, become less frequent,
+reappear or alter their form according to the state of the society and the development of
+therapeutic methods” (Deleuze, Coldness, 15). For example, how we coin the terms of “railway
+spine,” “shell-shock,” “PTSD,” and “Epigenetic Trauma.” However, these are terms or names for a
+set of symptoms that are subject to change, revision, or even cancellation. This brings us to the
+second perspective, i.e. “the history of symptomatology, which sometimes precedes and
+sometimes follows changes in therapy or in the nature of diseases”–in short–“symptoms are
+named, renamed and regrouped in various ways” (Deleuze, Coldness, 15). While finding the
+clinical history of PTSD interesting, I am more interested in how these symptoms emerge, and
+perhaps how are they grouped together, because when we take social and cultural symptoms as
+subjects of examination, even the naming and grouping of these symptoms into a term or a
+category can be a symptom in itself: why is it grouped this way? And to illustrate with a
+question: What makes a Victorian doctor think that what we would today call PTSD is due to
+pure physical shock to the spine?
+Implications:
+What this section may lead to is a general study of how philosophy as a symptomology
+could be used to read not just text, but cultural production and architecture.
+2. Modernity as Symptom 1: Literary Examination
+[Examination of Literary Works Will be Inserted Here. One from Baudelaire’s Paris
+Spleen, a general study of Félix Fénéon’s Novels in Three Lines, Newspaper excerpts from the turn
+of the century NYC about various incidents.
+All this literature captured a certain intensification of movement, almost violent. The
+surplus being used as an investment for a new batch of productive capital, the growth of profit,
+the rapidity of transportation, the growth of skyscrapers, the rising smoke of London smog of
+the Victorian era, and the overwhelming amount of sensory input that exceeds one’s capacity to
+process are all part of the modern scheme, the motifs that epitomize the modernity. It is this
+same motion of accumulation that sets the definitive character of lyric poetry in WalterBenjamin, the shock that would be the central productive and creative force of poetry, and it
+would “sterilize this incident for poetic experience” when “it were incorporated directly in the
+registry of conscious memory.”1 In a sense, the shock experienced by lyric poets is to be the libido
+of poetry creation only when it is not integrated into consciousness, only when it is represented
+as mémoire involuntaire. The question, then, is what kind of literature is created through such a
+process? What is the symptom of the literature we just surveyed?
+The question is essentially a question of what shocked the poet and how the poet was
+shocked. The action of parrying shocks assaulting one from all directions is not a privileged
+activity reserved especially for lyric poets. It is characteristic of Benjamin’s observation, which is
+that “[the] interpersonal relationships of people in big cities are characterized by a markedly
+greater emphasis on the use of the eyes than on that of the ears.” 2 You don’t wish to be blind in a
+city, for you will run into people all the time, or perhaps fall into a manhole due to the poor
+urban planning. You do not listen attentively for the sound of the bus that has its wheels
+rubbing on the ground from a far distance, you look out for the bus that is coming for you with
+the impatient driver on his third shift. You will need good eyes to make up for the ears
+obfuscated by the cars humming their engines around, by people talking, by music played in
+stores, etc. [insert again Baudelaire’s writings on a poet’s observation of the crowd in general.]
+Amongst the interwoven web of a massively complex transportation system filled with
+numerous heads, one is subjected to a continuing flow of loss. To see a car pass by with flashing
+speed, to see people getting on and off on a bus, to be with others in a hermetically sealed place
+like a subway or train, only to bid them farewell the very next second, all contribute to a sense of
+constant loss that is different from the traditional “travel from this village to the other on a slow
+cart or carriage” experience. The coincidence with trauma here is one of constant bereavement,
+where the visage, the locus of establishing an ethical and personal relation, is always in a state
+of afterimage because there is no capturing one’s image unless you dedicate yourself to a career
+of professional stalking. This bereavement is “a farewell forever which coincides in
+[Baudelaire’s] poem with the moment of enchantment.”3 The “agitated veil” of the crowd
+through which Baudelaire sees Paris is common to all city dwellers, which consists of imposed
+activities like being pushed around, or spotting a visage in a surging tide of crowd, only to have
+it lost and replaced by a new face new second. The experience in a modern city is therefore
+traumatic in the sense that one experiences physical dizziness from transportation and
+psychical dizziness, a recurring loss when being placed in a crowd that is constantly moving
+without its own telos.
+3. Modernity Diagnosis: Equalization, Homogenization, and Eternal Present
+There is a central axiom that dominates modern cities: clock time.
+1 Walter Benjamin, Illuminations (London: Cape, 1970), pp.162.
+2 Walter Benjamin, Illuminations, 191.
+3 ibid, 169.“He becomes an appendage of the machine.” 4 Is it a passage referring to Chaplin’s movie
+Modern Times? Chronologically speaking, no. Formally speaking? Yes. The proletarian condition
+described by Marx has become the collective experience of the modern era. Like works when the
+industrial revolution first ignited its engine, the subjugation to a machine rhyme became more
+and more prevalent. For young and old alike, “technology has subjected the human sensorium to
+a complex kind of training.”5 The mortar shells and the motor engines are both the contraptions
+of an industry that surrounded us and gave us a new sensation of time. A machine time.
+Lyotard’s observation of technology is more than fitting: “[technologies] don’t respond to a
+demand coming from human needs. On the contrary, human entities (individual or social) seem
+always to be destabilized by the results of this development.” 6 The human subject, henceforth, is
+rendered incapable of processing the stimuli, incapable of integrating the rapidly
+revolutionizing experience and capital models, and a permanent sense of loss attributed to this
+sense of unintergrability.
+Repetition is a central pattern for both modernism and trauma. The assembly line
+renders mass production possible through a series of adaptations to machine time, and
+technologies like photography and film allowed the affordable replication of artworks that
+were confined only to a specific group of people before. In short, what we witness in the process
+of reproduction of the artwork, according to Benjamin, is the loss of the aura, immediacy and
+authenticity of the artwork. Moreover, just as in the traumatic repetition, where “the repetition
+of the traumatic experience in the flashback can itself be retraumatizing,” the reproductive order
+of the artwork takes on the meaning on its own.7 “The work reproduced becomes the
+reproduction of a work designed for reproducibility,” just as the repeated traumatic experience
+becomes trauma in itself.8 The modern invention and reorganization of productive relations
+provide repetition of traumatic experiences. Such is essentially the modern sensation
+experienced by Baudelaire: “the disintegration of the aura in the experience of shock.” 9
+Reproduction of films, one of the most prominent modern art forms, marks the height of such
+transition from aura-infused art into the order of pure reproduction where the first paragraph of
+Debord’s Society of Spectacle perfectly captures: “[everything] that was directly lived has moved
+away into a representation.”10 The shattered graphics in Debord’s Mémoires can be read as a
+shocked psyche traversing the highly modernized cities.
+When space and time are compressed into clock time, the flow of time is suppressed. The
+notion of a mathematical time prompts intersubstitutability, where “one subordinate clause
+can be substituted for the other without harm to the truth” (Frege, Sense and Reference, 45). It
+diminishes the importance of differences for industrial efficiency and temporal linearity, which
+4 Karl Marx, The Marx-Engels Reader, ed. Robert C. Tucker (New York, New York: Norton, 1978), pp.479.
+5 Walter Benjamin, Illuminations, 175.
+6 Jean-Francois Lyotard, “Defining the Postmodern”, 1387.
+7 Cathy Caruth, Unclaimed Experience, 65.
+8 Benjamin, Walter. “The Work of Art in the Age of Its Technological Reproducibility.” In The Norton Anthology of Theory and
+Criticism, ed. Vincent B. Leitch (New York, New York: W.W. Norton & Company, 2018) pp. 981.
+9 Walter Benjamin, Illuminations, 194.
+10 Guy Debord, The Society of Spectacle (Detroit, Michigan: Black & Red, 2018), pp.1.makes history a line of progression capable of being reversed and exposed under retrospection
+by a perpetual present—We Moderns. Modernism expresses “a changed consciousness of time”
+whose icon is “the vanguard and the avant-garde,” aesthetic conquistador “invading unknown
+territory [and] conquering an as yet unoccupied future” (Habermas, Modernity - An Incomplete
+Project, 100). Modernism, then, found itself manifesting itself through the logic of “an economy
+of repression and melancholy” where “difference and difficulty must be incorporated for the
+foundation to hold” (Scandura and Thurston, America and the Phantom Modern, 7). As a
+homogeneous clock time requires the extinction of differences in duration–a city’s time, unified,
+a factory’s time, standarized–modernism is the praxis of such elimination.
+Therefore, modernism began its macabre project of integration at all fronts. In terms of
+industrialization, assembly lines as the standard model of production were made possible by
+“new conceptions of the body-as-machine … binding the corpus of the nation to the corporation
+as the worker’s body built the machinery of capital” (Scandura and Thurston 9). The slow
+accumulation and intensification where “money necessarily crystallizes out of the process of
+exchange,” thereby creating a “universal equivalent” for measuring not only use-values but also
+labor times by converting them according to exchange value (Marx, Capital Volume 1, 53). Here
+mediator became the arbitrator, and necessity became absolute axiomatic. This axiomatic made
+possible with capital “linking everyone into an identical system of market valuation and so
+procuring the reproduction of social life through an objectively grounded system of social
+bonding” (Harvey, The Condition of Postmodernity, 102). Qualitative differences, which belong
+inherently to the order of duration, were made impossible by the hegemony of quantitative
+equivalence. The same process where heterogeneous time was made measurable through
+homogeneous spatialization reveals itself in the economic realm of modernity.
+On the artistic front, the novel art form of cinema was consummated in Hollywood with
+its trademark technique of montage which transformed otherwise time-consuming story
+development by compressing “different effects out of different times (old newspapers) and
+spaces (the use of common objects)” for “a simultaneous effect” that is antithetical to durational
+unfold of the flow: it is “spatialization of time” (Harvey 21). Moreover, the crystallization of
+duration in space is most visible in the “modernist phase” of architecture. Whether it is brutalist
+structures, skyscrapers, or the monumentality of buildings like the Empire State Building and
+the Eiffel Tower, modernism aspires to communion with the eternal “by freezing time and all its
+fleeting qualities” (Harvey 21). Such eternity is but an illusion because it is a stillness that
+betrays the true everlastingness that is only to be found in perpetual motion. Envisioning itself
+to be a vanguard that conjoins “the ephemeral and the fleeting with the eternal and the
+immutable” like photography, modernist architecture is in truth “a ruthless break with any or
+all preceding historical conditions” (Harvey 10, 12).And of both artistic, architectural, and industrial fronts, America is the paragon of
+modernism. The Hollywood, New York City, and Ford T-models, all “[duck] the question of
+origins” because they have “no primitive accumulation of time” and live “in a perpetual present”
+thanks to their historical and geographical isolation from the rest of the world up to 18th and
+19th century, where modernism climbed towards its peak (Baudrillard 76). The final assault of
+modernism is expressed in Americanization as the great transnational-cultural-historical force
+of homogenization, where “what was distinctively American had to be celebrated as the essence
+of Western culture” (Harvey 37).
+4. “Postmodernism” as Symptom: [possibly adding more examples and analysis from Harvey
+and Jameson]
+[example of Vaporwave and Arctic Monkeys]
+Consider the incongruity conjured by the following image: a Greek bust, gazing skyward,
+is poised on the checkered floor of pink and black; a picture of a 1980s cityscape at dusk further
+back constitutes the mise en scène of the mysterious expression. This is the art cover of internet
+artist Macintosh Plus’ most recognized album, Floral Shoppe, which contains the song “Lisa Frank
+420/Modern Computing.” Deemed as a foundational piece in the establishment of the genre of
+vaporwave, the song is basically a remix of Diana Ross’ 1984 release “It’s Your Move.” Two major
+changes can be found in the remix: (1) there is a substantially slowed-down tempo, and (2) a
+truncation of the original lyrics. Contrasting with the intensely paced rhythm of the original,
+each note in the remix carries with it a prolonged past. The preceding notes seem to have
+forgotten their evanescence and dither around the equivocally proceeding present. Additionally,
+the coherent narrative of questioning the ambiguous affection of the singer’s lover in the
+original metamorphoses into semantic illegibility as the remix initiates its lyrical part by the
+refrain, a triple “I don’t...” that immediately vanishes and is replaced by the tune lurking in the
+background of their utterances--language dissolves in duration, differing from the prominence
+of the lyrics in the original. Inaugurated by Floral Shoppe, the vaporwave aesthetic started to
+gain an increasing presence online, and over time, it has developed into a pastiche of 1980s
+media (music and advertisement), Greek sculptures, and popular consumer icons. Blurring the
+boundaries between motley signs, vaporwave commences a journey into the depths of
+hauntological asynchronization, with memories intermingled, trespassing durational bounds
+[use the song Ghosts by the band Japan as the transition point]: Observations of
+contemporary music culture led Fisher to exclaim that the ability of art creation to “articulate
+the present” is lost because “there is no present to grasp and articulate any more.” 11 What does he
+mean by this? It is an extension of Fredric Jameson’s notion of “nostalgia mode,” as represented
+in cultural pastiche. Unlike parody, which retains sympathy for the original, pastiche is a
+“neutral practice of such mimicry… without the satirical impulse,” which is particular for
+11 Fisher, “Ghost of My Life”, 19.postmodern culture.12 For example, The Big Lebowski, as a parody of noir films, puts the hippie-like
+persona of “the dude” in contrast with the traditional masculine images carried to excess in
+detective films, which can be read as a social commentary in response to the Gulf War. 13 On the
+other hand, Star Wars can be treated as a pastiche because it refurbishes the old cultural
+narrative of the cowboy (as Han Solo) or sci-fi doomsday box (the Death Star) without any
+ulterior motives for social critique.14 Pastiche art does not “reinvent a picture of the past in its
+lived totality” but reuses the artifacts of culture production to produce objects of consumption,
+whose success relies on audiences experiencing a feeling of nostalgia. 15 Similarly, music groups
+like Joy Division and Arctic Monkeys are nestled in an overwhelming sense of nostalgia that is
+symptomatic of a stagnant culture.
+Differing from what Fisher terms “psychological nostalgia,” which relies on a coherent historical
+sense and is inherently modernist.16 Even though the narrative order is shuffled in modernist
+writers like Proust, Joyce, and Faulkner, their reminiscences are still retrospectively established
+as the past proper. The mémoire involontaire illuminates itself by appearing in the present, but
+it does not formally haunt the narrative. Formal nostalgia, on the other hand, relies on
+technology to refurbish the past; history haunts it by masking itself as the present. For example,
+The Weeknd's “Blinding Light” offers an astounding sample of nostalgia for the 80s with its use
+of a synthesizer, evoking a haunting presence of the past in the present through technological
+necromancy. Such regurgitation of cultural templates is essentially postmodern to Fisher
+because music genres like vaporwave showcase “a consequence of a retreat from the modernist
+challenge of innovating cultural forms adequate to contemporary experience.” 17
+For formal nostalgia, the impossibility to conceive cultural novelty leads to a generation
+“whose every move was anticipated, tracked, bought and sold before it had even happened.” 18
+Even the need for protest and hope for revolutionary change cannot escape “the pre-emptive
+formatting and shaping of desires, aspirations, and hopes by capitalist culture.” 19 No rebellious
+spirit can escape the container of postmodern formal nostalgia, because to rebel requires
+critiquing or overthrowing the entrenched notions or system, which is an evolutionary process
+of creation, either in the form of transformation or negation. “Nostalgia mode” liquidates such
+possibility by mediating and resolving the anticipated urge for revolt in capitalism through
+12 Fredric Jameson, “Postmodernism, or, the Cultural Logic of Late Capitalism.” in Literary Theory: an Anthology, ed. Julie
+Rivkin and Michael Rya (Malden, Massachusetts: Wiley Blackwell, 2017), 1761.
+13 J.M. Tyree and Ben Walters, “The Big Lebowski”(London: Bloomsbury, 2020), 43.
+14 Jameson, “Postmodernism”, 1763.
+15 ibid.
+16 Fisher, “Ghost of My Life”, 11.
+17 ibid, 11-12.
+18 Mark Fisher, “Capitalist Realism: Is There No Alternative?” (Winchester: Zero Books, 2009), 9.
+19 ibid.participation in spectacles of resistance: [It] performs our anti-capitalism for us, allowing us to
+continue to consume with impunity.”20 The formal repetition of the artistic genre not only
+infinitely conjures successful cultural templates from the past and refurbishes it with
+technology into marketable form, but it also opens onto the anticipated emergence and
+imaginary resolution of resistance. Henceforth, Fisher’s read of hauntology shows itself to be a
+theoretical symptomization of an unattainable future whose derivative malady is cultural
+ossification – what Fisher terms as “the slow cancellation of the future.”
+5. “Postmodernism” Diagnosis:
+Postmodernism, a term that gained traction in the later half of the 20th century and
+reached its peak in the 1980s, is discontent with modernism’s projects. However, the term
+“postmodern” is controversial due to its lack of a clear definition even among theorists who label
+themselves “postmodernists.” While some theorists argued that it is therefore a dialectical
+reaction to modernism, Jean-François Lyotard argued otherwise. For him, postmodernism
+should not be interpreted as a separate intellectual and aesthetic movement distinct from
+modernism, which would fall back on the modernist logic of separation and distinction.
+Postmodernism is not interested in distinguishing itself from modernism as a theoretical
+breakthrough, not “modernism at its end but in the nascent state, and this state is constant”
+(Lyotard, What, 44). Postmodernism understands modernism’s arbitrariness in creating a
+principle of equivalent exchange, but instead of endorsing such axiomatic, it tries to expose the
+unrepresentable, the qualitative duration that is omitted by necessity. Therefore, while
+modernism “allows the unpresentable to be put forward only as the missing contents,”
+postmodernism “puts forward the unpresentable in the presentation itself” and “searches for
+new presentations, not to enjoy them but to impart a stronger sense of the unpresentable”
+(Lyotard, What 46). The rebellion of post-structuralism against structuralism, the deconstruction
+of stable forms and metanarratives, and post-colonial study, these disciplines and schools
+prospered under the banner of postmodernism, and what is recognizable in all of them is a desire
+to point out the excessive, rupture in a coherent narrative, and, in essence, the heterogeneous
+quality masked by homogeneous quantity.
+Postmodernism thus is an “opening up” of “a vast landscape,” a broadening of the
+horizon to the point of its disappearance, where “there is no longer any horizon of universality,
+universalization, or general emancipation” (Lyotard, Meaning 47). It does not resemble what
+modernism and its aesthetic traditions have done, which is a self-elevation on a linear
+temporality as the “progressive” or “emancipated.” The postmodern mode of engaging critique is
+an immanent one: it “evokes what it wishes to surpass or suppress” by techniques like pastiche
+and parody (Hassan 149). It takes modernist avant-garde to the extreme by fully embracing
+what modernity tried to harness—“the ephemerality, fragmentation, discontinuity” thus
+achieving a sort of reductio ad absurdum (Harvey 44). This is because, by exposing the leaky
+nature of the great modernism’s theoretical edifice, postmodernism points out the impossibility
+20 Fisher, “Capitalist Realism”, 12.of structures to completely harness the content subsumed under them. If modernism, with its
+adoption of homogeneous time as the mechanism to “suppress any notion of ‘difference’ which
+might challenge the dominant model of subjectivity,” postmodernism unearths “the
+heterogeneous and intermittent” of unanalyzable time to disrupt modernity’s discourse
+“founded on an idea of time which follows a sequence and rhythm” (Richard 464).
+The main criticism of postmodernism usually gathers around the lack of definition and
+clear contour that such a cluster of loose theoretical speculation has. However, if the task of
+postmodernism is to point out the existence of an unrepresentable in a system dominated by
+representation, it is unfair to fault it for not giving a representation of the unrepresentable.
+Instead of wishing postmodern theory to aspire to the same distinctness and clarity as
+modernism, it would be more compelling to “accept the fragmentation, the pluralism, and the
+authenticity of other voices and other worlds” while acknowledging this movement toward
+quality, by necessity, requires a lessening of the quantitative actuality, which indeed “poses the
+acute problem of communication and the means of exercising power through command thereof”
+(Harvey 49). Modernism and postmodernism are therefore in a perpetual tension due to their
+emphasis on two different understandings of time, but by this tension, they are incapable of
+total separation: modernism is the necessity to represent the unrepresentable, while
+postmodernism is the haunting awareness of the leaky nature of such representation.
+[need to elaborate on the symptomatic parts, especially in regard to cultural production]
+6. The Works of Gilles Deleuze:
+[not sure if i should add this part yet, because this is just my proposal, but in short it is a
+proposal that there is a metaphysical solution to the problem of traumatic modernity and
+perpetuation of trauma in postmodernity in Deleuze’s work. I think it is better if I do it as a
+separate project.]
+His reading of Freud’s Beyond the Pleasure Principle
+How do we reconceive that repetition might be the problem
+Projects and Future Directions:

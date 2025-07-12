@@ -12,8 +12,8 @@ class WeArtDashboard {
     }
 
     setupEventListeners() {
-        // Navigation items
-        document.querySelectorAll('.nav-item').forEach(item => {
+        // Navigation items - only for items without onclick handlers
+        document.querySelectorAll('.nav-item:not([onclick])').forEach(item => {
             item.addEventListener('click', (e) => {
                 this.handleNavigation(e.currentTarget);
             });
@@ -148,16 +148,17 @@ class WeArtDashboard {
     }
 
     setupNavigation() {
-        // Add active state management for navigation
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach((item, index) => {
-            if (index === 0) { // Dashboard is active by default
-                item.classList.add('active');
-            }
-        });
+        // Navigation active states are now handled by navigation-fix.js
+        // This prevents conflicts between multiple navigation handlers
     }
 
     handleNavigation(navItem) {
+        // Check if the nav item has an onclick handler
+        if (navItem.hasAttribute('onclick')) {
+            // Let the onclick handler work normally
+            return;
+        }
+        
         // Remove active class from all nav items
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
@@ -330,9 +331,240 @@ class WeArtDashboard {
     }
 }
 
+// WeArt AI Chat Integration
+class WeArtAI {
+    constructor() {
+        this.chatHistory = [];
+        this.isLoading = false;
+        this.initializeElements();
+        this.bindEvents();
+        this.loadChatHistory();
+        this.showWelcomeMessage();
+    }
+
+    initializeElements() {
+        this.chatContainer = document.querySelector('.ai-chat-messages');
+        this.inputBox = document.querySelector('.ai-input-box');
+        this.sendBtn = document.querySelector('.ai-send-btn');
+    }
+
+    bindEvents() {
+        if (!this.sendBtn || !this.inputBox) return;
+
+        this.sendBtn.addEventListener('click', () => this.sendMessage());
+        this.inputBox.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.sendMessage();
+            }
+        });
+
+        // Auto-resize textarea
+        this.inputBox.addEventListener('input', () => {
+            this.inputBox.style.height = 'auto';
+            this.inputBox.style.height = Math.min(this.inputBox.scrollHeight, 80) + 'px';
+        });
+    }
+
+    showWelcomeMessage() {
+        if (!this.chatContainer) return;
+        
+        // Check if we already have messages
+        if (this.chatContainer.children.length > 0) return;
+
+        this.addMessage("Hello! I'm your AI art mentor. I can help you with art techniques, history, course recommendations, and creative guidance. What would you like to explore today?", 'ai');
+    }
+
+    async sendMessage() {
+        if (!this.inputBox || !this.chatContainer) return;
+        
+        const message = this.inputBox.value.trim();
+        if (!message || this.isLoading) return;
+
+        // Clear input
+        this.inputBox.value = '';
+        this.inputBox.style.height = 'auto';
+
+        // Add user message to chat
+        this.addMessage(message, 'user');
+
+        // Show loading state
+        this.setLoadingState(true);
+
+        try {
+            // Send to DeepSeek API
+            const response = await this.callDeepSeekAPI(message);
+            this.addMessage(response, 'ai');
+            
+            // Update chat history
+            this.chatHistory.push(
+                { role: 'user', content: message },
+                { role: 'assistant', content: response }
+            );
+            
+            // Keep only last 20 messages
+            if (this.chatHistory.length > 20) {
+                this.chatHistory = this.chatHistory.slice(-20);
+            }
+
+            this.saveChatHistory();
+            
+        } catch (error) {
+            console.error('Error sending message:', error);
+            this.addMessage('Sorry, I\'m having trouble connecting. Please try again.', 'ai');
+        } finally {
+            this.setLoadingState(false);
+        }
+    }
+
+    async callDeepSeekAPI(message) {
+        try {
+            const response = await fetch('/api/ai/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    chatHistory: this.chatHistory,
+                    maxTokens: 1000,
+                    temperature: 0.7
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                return data.response;
+            } else {
+                throw new Error(data.error || 'Failed to get AI response');
+            }
+        } catch (error) {
+            console.error('DeepSeek API error:', error);
+            throw error;
+        }
+    }
+
+    addMessage(content, type) {
+        if (!this.chatContainer) return;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${type}-message`;
+
+        const messageContent = document.createElement('div');
+        messageContent.innerHTML = this.formatMessage(content);
+
+        const messageTime = document.createElement('div');
+        messageTime.className = 'message-time';
+        messageTime.textContent = this.getCurrentTime();
+
+        messageDiv.appendChild(messageContent);
+        messageDiv.appendChild(messageTime);
+
+        this.chatContainer.appendChild(messageDiv);
+        this.scrollToBottom();
+    }
+
+    formatMessage(content) {
+        // Simple markdown-like formatting
+        if (typeof marked !== 'undefined') {
+            return marked.parse(content);
+        } else {
+            // Fallback formatting
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        }
+    }
+
+    getCurrentTime() {
+        const now = new Date();
+        return now.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
+    }
+
+    setLoadingState(loading) {
+        if (!this.sendBtn || !this.inputBox) return;
+
+        this.isLoading = loading;
+        this.sendBtn.disabled = loading;
+        this.inputBox.disabled = loading;
+
+        if (loading) {
+            this.sendBtn.innerHTML = '<i class="ri-loader-4-line" style="animation: spin 1s linear infinite;"></i>';
+            this.addTypingIndicator();
+        } else {
+            this.sendBtn.innerHTML = '<i class="ri-send-plane-fill"></i>';
+            this.removeTypingIndicator();
+        }
+    }
+
+    addTypingIndicator() {
+        if (!this.chatContainer) return;
+
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'ai-message typing-indicator';
+        typingDiv.innerHTML = `
+            <div>
+                <span class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+        `;
+
+        this.chatContainer.appendChild(typingDiv);
+        this.scrollToBottom();
+    }
+
+    removeTypingIndicator() {
+        const typingIndicator = document.querySelector('.typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+
+    scrollToBottom() {
+        setTimeout(() => {
+            const chatContainer = document.querySelector('.ai-chat-container');
+            if (chatContainer) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }, 100);
+    }
+
+    saveChatHistory() {
+        localStorage.setItem('weart-ai-chat-history', JSON.stringify(this.chatHistory));
+    }
+
+    loadChatHistory() {
+        try {
+            const saved = localStorage.getItem('weart-ai-chat-history');
+            if (saved) {
+                this.chatHistory = JSON.parse(saved);
+                
+                // Restore previous messages (show last 5 for space)
+                const recentHistory = this.chatHistory.slice(-10);
+                recentHistory.forEach(msg => {
+                    this.addMessage(msg.content, msg.role === 'user' ? 'user' : 'ai');
+                });
+            }
+        } catch (error) {
+            console.error('Error loading chat history:', error);
+            this.chatHistory = [];
+        }
+    }
+}
+
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.weArtDashboard = new WeArtDashboard();
+    window.weArtAI = new WeArtAI();
 });
 
 // Handle window resize for responsive behavior
@@ -352,7 +584,7 @@ window.addEventListener('resize', () => {
 
 // Add some interactive mouse effects for enhanced UX
 document.addEventListener('mousemove', (e) => {
-    const cards = document.querySelectorAll('.journey-card, .category-card, .learning-card, .trending-sidebar');
+    const cards = document.querySelectorAll('.journey-card, .category-card, .learning-card, .ai-chat-card');
     
     cards.forEach(card => {
         const rect = card.getBoundingClientRect();
@@ -374,5 +606,5 @@ document.addEventListener('mousemove', (e) => {
 
 // Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = WeArtDashboard;
+    module.exports = { WeArtDashboard, WeArtAI };
 }

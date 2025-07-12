@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Art Education Platform - Cosmic Intro</title>
+    <title data-i18n="welcome_artmind">AI Art Education Platform - Cosmic Intro</title>
     <style>
         /* Reset and base styles */
         * {
@@ -69,60 +69,56 @@
         
         .ui-card h1 {
             font-size: 2.5rem;
+            font-weight: 600;
             margin-bottom: 1rem;
-            background: linear-gradient(90deg, #23E8FF, #9586FF);
+            background: linear-gradient(135deg, #00FFE0, #0099CC);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .ui-card p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.8);
+            opacity: 0.9;
         }
         
         .start-button {
-            background: linear-gradient(90deg, #00FFC6, #23E8FF);
+            background: linear-gradient(135deg, #00FFE0, #0099CC);
             border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            color: #111827;
-            font-weight: bold;
-            font-size: 1.1rem;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #000;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .start-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 255, 198, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 255, 224, 0.3);
         }
         
-        /* Animation states */
-        .cosmic-intro.complete .platform-ui {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        /* Skip button */
+        /* Skip intro button */
         .skip-intro {
             position: absolute;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
             padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
+            cursor: pointer;
             transition: all 0.3s ease;
             z-index: 20;
         }
         
         .skip-intro:hover {
             background: rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 1);
         }
         
         /* Loading indicator */
@@ -155,7 +151,7 @@
         }
     </style>
 </head>
-<body>
+<body data-page-title="welcome_artmind">
     <div class="cosmic-intro">
         <!-- Animation frames -->
         <div class="cosmic-frame frame-1" id="frame-1"></div>
@@ -171,20 +167,21 @@
         <!-- Platform UI that appears at the end -->
         <div class="platform-ui">
             <div class="ui-card">
-                <h1>Welcome to ArtMind</h1>
-                <p>Your journey into the universe of AI-powered art education begins here</p>
-                <button class="start-button" id="enter-platform">Begin Your Journey</button>
+                <h1 data-i18n="welcome_artmind">Welcome to ArtMind</h1>
+                <p data-i18n="journey_universe">Your journey into the universe of AI-powered art education begins here</p>
+                <button class="start-button" id="enter-platform" data-i18n="begin_journey">Begin Your Journey</button>
             </div>
         </div>
         
         <!-- Skip button -->
-        <div class="skip-intro" id="skip-intro">Skip Intro</div>
+        <div class="skip-intro" id="skip-intro" data-i18n="skip_intro">Skip Intro</div>
         
         <!-- Loading indicator -->
-        <div class="loading-indicator">Loading cosmic universe...</div>
+        <div class="loading-indicator" data-i18n="loading_cosmic">Loading cosmic universe...</div>
     </div>
 
-
+    <!-- Include i18n system -->
+    <script src="js/i18n.js"></script>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
@@ -208,176 +205,145 @@
             
             // Preload images
             let loadedImages = 0;
-            const preloadImages = () => {
+            
+            function preloadImages() {
                 frameImages.forEach((src, index) => {
                     const img = new Image();
                     img.onload = () => {
                         loadedImages++;
+                        console.log(`Loaded image ${loadedImages}/${frameImages.length}`);
+                        
+                        // Set the background image for the corresponding frame
                         frames[index].style.backgroundImage = `url(${src})`;
                         
-                        if (loadedImages === frameImages.length) {
-                            loadingIndicator.style.display = 'none';
+                        // Start animation when first few images are loaded (don't wait for all)
+                        if (loadedImages >= 3) {
                             startAnimation();
                         }
+                        
+                        // Hide loading indicator when enough images are loaded
+                        if (loadedImages >= 2) {
+                            loadingIndicator.style.opacity = '0';
+                        }
                     };
+                    
                     img.onerror = () => {
-                        console.error(`Failed to load image: ${src}`);
-                        // Use fallback or continue anyway
+                        console.warn(`Failed to load image: ${src}`);
                         loadedImages++;
-                        if (loadedImages === frameImages.length) {
-                            loadingIndicator.style.display = 'none';
+                        
+                        // Continue even if some images fail to load
+                        if (loadedImages >= 3 || loadedImages === frameImages.length) {
                             startAnimation();
                         }
+                        
+                        if (loadedImages >= 2) {
+                            loadingIndicator.style.opacity = '0';
+                        }
                     };
+                    
                     img.src = src;
                 });
-            };
+            }
             
-            // Animation sequence
-            const startAnimation = () => {
-                // Frame 1: Initial faint cosmic dust
+            let animationStarted = false;
+            
+            function startAnimation() {
+                if (animationStarted) return;
+                animationStarted = true;
+                
+                console.log('🎬 Starting cosmic intro animation...');
+                
+                // Start with first frame
                 setTimeout(() => {
-                    frames[0].style.opacity = '1';
                     cosmicIntro.classList.add('frame-1');
+                    frames[0].style.opacity = '1';
                 }, 500);
                 
-                // Frame 2: Small bright star appears
-                setTimeout(() => {
-                    frames[0].style.opacity = '0';
-                    frames[1].style.opacity = '1';
-                    cosmicIntro.classList.remove('frame-1');
-                    cosmicIntro.classList.add('frame-2');
-                }, 3000);
+                // Animate through frames
+                const frameDuration = 2000; // 2 seconds per frame
                 
-                // Frame 3: Star begins to expand
+                frameImages.forEach((_, index) => {
                 setTimeout(() => {
-                    frames[1].style.opacity = '0';
-                    frames[2].style.opacity = '1';
-                    cosmicIntro.classList.remove('frame-2');
-                    cosmicIntro.classList.add('frame-3');
-                    initParticles(); // Initialize particle effect
-                }, 5500);
+                        // Hide previous frame
+                        if (index > 0) {
+                            frames[index - 1].style.opacity = '0';
+                        }
+                        
+                        // Show current frame
+                        frames[index].style.opacity = '1';
+                        cosmicIntro.className = `cosmic-intro frame-${index + 1}`;
+                        
+                        console.log(`🖼️ Showing frame ${index + 1}`);
                 
-                // Frame 4: Star continues expanding
+                        // Show platform UI on last frame
+                        if (index === frameImages.length - 1) {
                 setTimeout(() => {
-                    frames[2].style.opacity = '0';
-                    frames[3].style.opacity = '1';
-                    cosmicIntro.classList.remove('frame-3');
-                    cosmicIntro.classList.add('frame-4');
-                }, 8000);
-                
-                // Frame 5: Maximum brightness
-                setTimeout(() => {
-                    frames[3].style.opacity = '0';
-                    frames[4].style.opacity = '1';
-                    cosmicIntro.classList.remove('frame-4');
-                    cosmicIntro.classList.add('frame-5');
-                }, 10500);
-                
-                // Frame 6: Final cosmic scene with UI
-                setTimeout(() => {
-                    frames[4].style.opacity = '0';
-                    frames[5].style.opacity = '1';
-                    cosmicIntro.classList.remove('frame-5');
-                    cosmicIntro.classList.add('frame-6');
-                }, 13000);
-                
-                // Show UI
-                setTimeout(() => {
-                    cosmicIntro.classList.add('complete');
-                }, 15000);
-            };
+                                showPlatformUI();
+                            }, frameDuration / 2);
+                        }
+                    }, 500 + index * frameDuration);
+                });
+            }
             
-            // Initialize particles.js
-            const initParticles = () => {
+            function showPlatformUI() {
+                console.log('🎨 Showing platform UI...');
+                
+                const platformUI = document.querySelector('.platform-ui');
+                platformUI.style.opacity = '1';
+                platformUI.style.transform = 'translate(-50%, -50%) scale(1)';
+            
+                // Initialize particles effect
+                if (window.particlesJS) {
                 particlesJS('particles-js', {
                     particles: {
-                        number: {
-                            value: 120,
-                            density: {
-                                enable: true,
-                                value_area: 800
-                            }
-                        },
-                        color: {
-                            value: ['#23E8FF', '#4BA4FF', '#2634FF', '#6C1AFF']
-                        },
-                        shape: {
-                            type: 'circle',
-                        },
-                        opacity: {
-                            value: 0.6,
-                            random: true,
-                            anim: {
-                                enable: true,
-                                speed: 1,
-                                opacity_min: 0.1,
-                                sync: false
-                            }
-                        },
-                        size: {
-                            value: 3,
-                            random: true,
-                            anim: {
+                            number: { value: 80 },
+                            color: { value: "#00FFE0" },
+                            shape: { type: "circle" },
+                            opacity: { value: 0.5 },
+                            size: { value: 3 },
+                            move: {
                                 enable: true,
                                 speed: 2,
-                                size_min: 0.1,
-                                sync: false
-                            }
-                        },
-                        line_linked: {
-                            enable: false
-                        },
-                        move: {
-                            enable: true,
-                            speed: 1,
-                            direction: 'none',
-                            random: true,
+                                direction: "none",
+                                random: false,
                             straight: false,
-                            out_mode: 'out',
+                                out_mode: "out",
                             bounce: false,
                         }
                     },
                     interactivity: {
-                        detect_on: 'canvas',
+                            detect_on: "canvas",
                         events: {
-                            onhover: {
-                                enable: true,
-                                mode: 'bubble'
-                            },
-                            onclick: {
-                                enable: false
-                            },
+                                onhover: { enable: true, mode: "repulse" },
+                                onclick: { enable: true, mode: "push" },
                             resize: true
-                        },
-                        modes: {
-                            bubble: {
-                                distance: 100,
-                                size: 5,
-                                duration: 2,
-                                opacity: 0.8,
-                                speed: 3
                             }
                         }
-                    },
-                    retina_detect: true
                 });
-            };
+                }
+            }
             
-            // Skip intro handler
+            // Skip intro functionality
             skipIntro.addEventListener('click', () => {
-                // Navigate directly to register page
-                window.location.href = 'register.html';
+                console.log('⏭️ Skipping intro animation...');
+                
+                // Fade out the intro immediately
+                cosmicIntro.style.opacity = '0';
+                
+                // Navigate to register page
+                setTimeout(() => {
+                    window.location.href = 'register.html?fromIntro=true';
+                }, 500);
             });
             
-            // Enter platform button handler
+            // Enter platform functionality
             enterPlatform.addEventListener('click', () => {
                 // Fade out the intro
                 cosmicIntro.style.opacity = '0';
                 
                 // Navigate to register page
                 setTimeout(() => {
-                    window.location.href = 'register.html';
+                    window.location.href = 'register.html?fromIntro=true';
                 }, 1000);
             });
             

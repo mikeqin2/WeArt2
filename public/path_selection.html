@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>选择你的路径 | WeArt</title>
+    <title data-i18n="choose_your_path">选择你的路径 | WeArt</title>
     <style>
         /* Base styles */
         * {
@@ -540,7 +540,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1 class="title">选择你的路径</h1>
+            <h1 class="title" data-i18n="choose_your_path">选择你的路径</h1>
         </div>
         
         <!-- Left section - Upload -->
@@ -554,17 +554,17 @@
                 <div class="wormhole-glow"></div>
                 <div class="upload-area">
                     <div class="upload-icon">⬆</div>
-                    <div class="upload-text">点击或拖拽文件至此处</div>
+                    <div class="upload-text" data-i18n="upload_file">点击或拖拽文件至此处</div>
                 </div>
                 <input type="file" id="file-input" class="file-input" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
             </div>
-            <button class="upload-button">上传简历</button>
+            <button class="upload-button" data-i18n="upload_resume">上传简历</button>
         </div>
         
         <!-- Divider -->
         <div class="divider">
             <div class="divider-line"></div>
-            <div class="divider-text">或</div>
+            <div class="divider-text" data-i18n="or">或</div>
             <div class="divider-line"></div>
         </div>
         
@@ -576,37 +576,37 @@
                     <div class="planet planet-elementary">
                         <div class="planet-glow"></div>
                     </div>
-                    <div class="planet-label">小学生</div>
+                    <div class="planet-label" data-i18n="elementary_student">Elementary Student / 小学生</div>
                 </div>
                 <div class="planet-option" data-value="middle">
                     <div class="planet planet-middle">
                         <div class="planet-glow"></div>
                     </div>
-                    <div class="planet-label">初中生</div>
+                    <div class="planet-label" data-i18n="middle_student">Middle School Student / 初中生</div>
                 </div>
                 <div class="planet-option" data-value="high">
                     <div class="planet planet-high">
                         <div class="planet-glow"></div>
                     </div>
-                    <div class="planet-label">高中生</div>
+                    <div class="planet-label" data-i18n="high_student">High School Student / 高中生</div>
                 </div>
                 <div class="planet-option" data-value="parent">
                     <div class="planet planet-parent">
                         <div class="planet-glow"></div>
                     </div>
-                    <div class="planet-label">家长</div>
+                    <div class="planet-label" data-i18n="parent">Parent / 家长</div>
                 </div>
                 <div class="planet-option" data-value="elderly">
                     <div class="planet planet-elderly">
                         <div class="planet-glow"></div>
                     </div>
-                    <div class="planet-label">中老年人</div>
+                    <div class="planet-label" data-i18n="elderly">Senior / 中老年人</div>
                 </div>
                 <div class="planet-option" data-value="boss">
                     <div class="planet planet-boss">
                         <div class="planet-glow"></div>
                     </div>
-                    <div class="planet-label">老板</div>
+                    <div class="planet-label" data-i18n="professional">Professional / 老板</div>
                 </div>
             </div>
         </div>
@@ -621,23 +621,25 @@
     </div>
     
     <!-- Continue button -->
-    <button class="continue-button" id="continue-btn">Continue</button>
+    <button class="continue-button" id="continue-btn" data-i18n="continue">Continue</button>
     
-    <script src="js/auth.js"></script>
+    <!-- Include user management and i18n systems -->
+    <script src="js/user-manager.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/onboarding.js"></script>
     <script>
-        // Add at the top of script section
+        // Initialize user manager and onboarding data
         const onboardingData = new OnboardingData();
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication first
-            if (!window.weartAuth || !window.weartAuth.isAuthenticated()) {
+            // Check if user is authenticated
+            if (!userManager.isLoggedIn()) {
                 console.log('Not authenticated, redirecting to register');
                 window.location.href = 'register.html';
                 return;
             }
 
-            console.log('User authenticated:', window.weartAuth.getUser());
+            console.log('User authenticated:', userManager.getUserProfile());
 
             const particlesContainer = document.getElementById('particles');
             const particleCount = 100;
@@ -698,7 +700,7 @@
                     
                     // Get selected value
                     selectedRole = this.getAttribute('data-value');
-                    console.log('Selected role:', selectedRole);
+                    console.log('🚀 Selected role:', selectedRole);
                     
                     // Check if we can enable continue button
                     checkContinueButton();
@@ -720,7 +722,7 @@
                 }
             }
             
-            // File upload functionality
+            // File upload functionality (simplified - no backend needed for demo)
             uploadArea.addEventListener('click', function() {
                 fileInput.click();
             });
@@ -754,28 +756,10 @@
                 }
             });
             
-            // Planet/Role selection handling
-            planetOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remove selected class from all options
-                    planetOptions.forEach(opt => opt.classList.remove('selected'));
-                    
-                    // Add selected class to clicked option
-                    this.classList.add('selected');
-                    
-                    // Get selected value
-                    selectedRole = this.getAttribute('data-value');
-                    console.log('Selected role:', selectedRole);
-                    
-                    // Check if we can enable continue button
-                    checkContinueButton();
-                });
-            });
-            
-            // Replace the continue button click handler:
+            // Save path selection and navigate to learning goals
             continueBtn.addEventListener('click', async function() {
                 if (selectedRole) {
-                    console.log('Continuing with role:', selectedRole);
+                    console.log('🚀 Continuing with role:', selectedRole);
                     
                     // Show loading state
                     this.innerHTML = 'Saving...';
@@ -785,14 +769,14 @@
                         // Save to onboarding data
                         onboardingData.updatePathSelection(selectedRole);
                         
-                        // Also save to user preferences if authenticated
-                        if (window.weartAuth && window.weartAuth.isAuthenticated()) {
-                            await window.weartAuth.updatePreferences({
-                                pathSelection: selectedRole
-                            });
-                        }
+                        // Save path selection to user manager
+                        userManager.saveOnboardingData('pathSelection', { 
+                            pathSelection: selectedRole,
+                            uploadedFile: uploadedFile,
+                            timestamp: new Date().toISOString()
+                        });
                         
-                        console.log('Path selection saved successfully');
+                        console.log('✅ Path selection saved successfully');
                         
                         // Navigate to learning goal selection
                         window.location.href = 'learning_goal_selection.html';
@@ -800,7 +784,7 @@
                     } catch (error) {
                         console.error('Error saving path selection:', error);
                         
-                        // Save locally even if API fails
+                        // Save locally even if there's an error
                         onboardingData.updatePathSelection(selectedRole);
                         
                         // Still continue to next page
@@ -809,8 +793,8 @@
                 }
             });
             
-            async function handleFileUpload(file) {
-                console.log('File selected:', file.name);
+            function handleFileUpload(file) {
+                console.log('📁 File selected:', file.name);
                 
                 // Validate file type
                 const allowedTypes = ['application/pdf', 'application/msword', 
@@ -828,52 +812,26 @@
                     return;
                 }
                 
-                // Create FormData for upload
-                const formData = new FormData();
-                formData.append('resume', file);
-                
-                // Show upload progress
+                // For demo purposes, just simulate successful upload
                 uploadButton.textContent = '上传中...';
                 uploadButton.disabled = true;
                 
-                try {
-                    const response = await window.weartAuth.makeAuthenticatedRequest('/api/upload/resume', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {} // Don't set Content-Type, let browser set it for FormData
-                    });
+                setTimeout(() => {
+                    uploadedFile = {
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        uploadedAt: new Date().toISOString()
+                    };
                     
-                    const data = await response.json();
+                    uploadButton.textContent = '上传成功!';
+                    uploadButton.style.background = 'linear-gradient(90deg, #00D97E, #00A896)';
                     
-                    if (response.ok) {
-                        uploadedFile = data.file;
-                        uploadButton.textContent = '上传成功!';
-                        uploadButton.style.background = 'linear-gradient(90deg, #00D97E, #00A896)';
-                        
-                        console.log('File uploaded successfully:', data);
-                        
-                        // Check if we can enable continue button
-                        checkContinueButton();
-                        
-                    } else {
-                        throw new Error(data.error || 'Upload failed');
-                    }
+                    console.log('📄 File upload simulated successfully:', uploadedFile);
                     
-                } catch (error) {
-                    console.error('File upload error:', error);
-                    uploadButton.textContent = '上传失败，请重试';
-                    uploadButton.style.background = 'linear-gradient(90deg, #FF3B5C, #FF6F91)';
-                    uploadButton.disabled = false;
-                    
-                    let errorMessage = 'File upload failed. Please try again.';
-                    if (error.message.includes('Invalid file type')) {
-                        errorMessage = 'Invalid file type. Please upload PDF, DOC, DOCX, or image files only.';
-                    } else if (error.message.includes('File too large')) {
-                        errorMessage = 'File is too large. Please upload files smaller than 10MB.';
-                    }
-                    
-                    alert(errorMessage);
-                }
+                    // Check if we can enable continue button
+                    checkContinueButton();
+                }, 1000);
             }
             
             function checkContinueButton() {

@@ -603,17 +603,23 @@ app.post('/api/ai/chat', async (req, res) => {
 
     console.log('Making request to DeepSeek API...');
 
-    // Make request to DeepSeek API with timeout
+    // Make request to DeepSeek API with timeout and explicit proxy bypass
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased to 30 seconds for longer responses
+    const timeoutId = setTimeout(() => controller.abort(), 45000); // Increased timeout
 
-    const deepseekResponse = await axios.post(
-      process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/chat/completions',
+    // Create axios instance with no proxy
+    const axiosInstance = axios.create({
+      proxy: false,
+      timeout: 45000
+    });
+
+    const deepseekResponse = await axiosInstance.post(
+      process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/v1/chat/completions',
       {
         model: 'deepseek-chat',
         messages: messages,
-        max_tokens: finalMaxTokens,     // Now uses frontend parameter!
-        temperature: finalTemperature,  // Now uses frontend parameter!
+        max_tokens: finalMaxTokens,     
+        temperature: finalTemperature,  
         stream: false
       },
       {
@@ -621,9 +627,7 @@ app.post('/api/ai/chat', async (req, res) => {
           'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
           'Content-Type': 'application/json'
         },
-        timeout: 30000, // Increased timeout for longer responses
-        signal: controller.signal,
-        proxy: false // Bypass proxy settings
+        signal: controller.signal
       }
     );
 
@@ -759,13 +763,13 @@ app.get('/mentor.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'mentor.html'));
 });
 
-// AI Assistant page routes
-app.get('/ai', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'ai.html'));
+// Explore page routes
+app.get('/explore', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'explore.html'));
 });
 
-app.get('/ai.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'ai.html'));
+app.get('/explore.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'explore.html'));
 });
 
 // Page routes for the onboarding flow

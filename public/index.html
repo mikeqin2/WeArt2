@@ -3,14 +3,691 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeArt - Dashboard</title>
+    <title data-i18n="dashboard">WeArt - Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* New Dashboard Layout Styles */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 280px;
+            gap: 24px;
+            height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+
+        /* Left Sidebar Styles */
+        .left-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .journey-card.compact {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .journey-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .journey-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+        }
+
+        .progress-circle-small {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 3;
+        }
+
+        .progress-ring-progress {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 157;
+            stroke-dashoffset: 63;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .progress-text-small {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-icon {
+            color: #4EF1FF;
+        }
+
+        .stat-text {
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Categories Compact */
+        .categories-compact {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title-small {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .category-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+
+        .category-icon-small {
+            color: #4EF1FF;
+        }
+
+        .category-item span {
+            font-size: 13px;
+            color: #fff;
+        }
+
+        /* Learning Card Compact */
+        .learning-card-compact {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .learning-card-compact:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .learning-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .learning-title-small {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0 8px 0;
+        }
+
+        .learning-course {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 0 8px 0;
+        }
+
+        .progress-bar-small {
+            width: 120px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill-small {
+            height: 100%;
+            background: linear-gradient(90deg, #4EF1FF, #188DF7);
+            width: 60%;
+            transition: width 0.3s ease;
+        }
+
+        .learning-icon {
+            color: #4EF1FF;
+        }
+
+        /* Main AI Chat Area */
+        .main-ai-chat {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: calc(100vh - 160px);
+        }
+
+        .ai-chat-header-main {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-header-content {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .ai-avatar-large {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4EF1FF, #188DF7);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #070B28;
+            flex-shrink: 0;
+        }
+
+        .ai-info-main h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0 8px 0;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: #00FF88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .ai-status span {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .ai-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .ai-chat-container-main {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 8px;
+            min-height: 0; /* Important for flexbox scrolling */
+            max-height: calc(100vh - 300px); /* Ensure proper height constraints */
+        }
+
+        .ai-chat-messages-main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-bottom: 16px; /* Add bottom padding for better scrolling */
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .message.ai-message {
+            background: rgba(78, 241, 255, 0.1);
+            border: 1px solid rgba(78, 241, 255, 0.2);
+            align-self: flex-start;
+            color: #fff;
+        }
+
+        .message.user-message {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            align-self: flex-end;
+            color: #fff;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 8px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #4EF1FF;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .ai-input-container-main {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .ai-input-box-main {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            color: #fff;
+            font-size: 14px;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .ai-input-box-main:focus {
+            outline: none;
+            border-color: #4EF1FF;
+            box-shadow: 0 0 0 2px rgba(78, 241, 255, 0.2);
+        }
+
+        .ai-input-box-main::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ai-send-btn-main {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4EF1FF, #188DF7);
+            border: none;
+            border-radius: 12px;
+            color: #070B28;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .ai-send-btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(78, 241, 255, 0.4);
+        }
+
+        .ai-send-btn-main:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Right Quick Actions */
+        .right-quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .quick-actions-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
+        }
+
+        .action-btn i {
+            color: #4EF1FF;
+            font-size: 16px;
+        }
+
+        /* Trending Compact */
+        .trending-compact {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .trending-item {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trending-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* AI Message Markdown Styling */
+        .message.ai-message h1,
+        .message.ai-message h2,
+        .message.ai-message h3,
+        .message.ai-message h4,
+        .message.ai-message h5,
+        .message.ai-message h6 {
+            color: #4EF1FF;
+            margin: 16px 0 8px 0;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .message.ai-message h1 { font-size: 18px; }
+        .message.ai-message h2 { font-size: 16px; }
+        .message.ai-message h3 { font-size: 14px; }
+
+        .message.ai-message ul,
+        .message.ai-message ol {
+            margin: 8px 0 8px 16px;
+            padding: 0;
+        }
+
+        .message.ai-message li {
+            margin: 4px 0;
+            line-height: 1.4;
+        }
+
+        .message.ai-message strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .message.ai-message em {
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+        }
+
+        .message.ai-message code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #4EF1FF;
+        }
+
+        .message.ai-message pre {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #4EF1FF;
+            margin: 8px 0;
+            overflow-x: auto;
+        }
+
+        .message.ai-message pre code {
+            background: none;
+            padding: 0;
+            color: #fff;
+        }
+
+        .message.ai-message blockquote {
+            border-left: 3px solid #4EF1FF;
+            margin: 8px 0;
+            padding-left: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        .message.ai-message p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .message.ai-message p:first-child {
+            margin-top: 0;
+        }
+
+        .message.ai-message p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 280px 1fr 260px;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr auto;
+                height: calc(100vh - 100px);
+            }
+
+            .left-sidebar {
+                flex-direction: row;
+                gap: 16px;
+                overflow-x: auto;
+            }
+
+            .left-sidebar > * {
+                min-width: 250px;
+            }
+
+            .right-quick-actions {
+                flex-direction: row;
+                gap: 16px;
+                overflow-x: auto;
+            }
+
+            .right-quick-actions > * {
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .main-ai-chat {
+                padding: 16px;
+            }
+
+            .ai-chat-header-main {
+                margin-bottom: 16px;
+                padding-bottom: 16px;
+            }
+
+            .ai-header-content {
+                gap: 12px;
+            }
+
+            .ai-avatar-large {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .ai-info-main h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* Additional translations for new elements */
+        [data-i18n="explore_categories"] { color: #fff; }
+        [data-i18n="quick_actions"] { color: #fff; }
+        [data-i18n="view_courses"] { color: #fff; }
+        [data-i18n="find_mentors"] { color: #fff; }
+        [data-i18n="explore_art"] { color: #fff; }
+        [data-i18n="personalized_guidance"] { color: rgba(255, 255, 255, 0.7); }
+
+        /* Scroll to bottom button */
+        .scroll-to-bottom {
+            position: absolute;
+            bottom: 80px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4EF1FF, #188DF7);
+            border: none;
+            border-radius: 50%;
+            color: #070B28;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(78, 241, 255, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .scroll-to-bottom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(78, 241, 255, 0.4);
+        }
+
+        .scroll-to-bottom.show {
+            display: flex;
+        }
+    </style>
 </head>
-<body>
+<body data-page-title="dashboard">
     <!-- Cosmic background -->
     <div class="cosmic-background">
         <div class="stars-layer"></div>
@@ -22,7 +699,7 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
-                <h2>WeArt</h2>
+                <h2 data-i18n="weart">WeArt</h2>
             </div>
             
             <div class="nav-menu">
@@ -31,32 +708,32 @@
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9,22 9,12 15,12 15,22"/>
                     </svg>
-                    <span>Dashboard</span>
+                    <span data-i18n="dashboard">Dashboard</span>
                 </div>
                 
-                <div class="nav-item" data-page="explore">
+                <div class="nav-item" data-page="community" onclick="window.location.href='/explore.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="11" cy="11" r="8"/>
                         <path d="m21 21-4.35-4.35"/>
                     </svg>
-                    <span>Explore</span>
+                    <span data-i18n="community">Community</span>
                 </div>
                 
                 <div class="nav-item" data-page="courses" onclick="window.location.href='/course.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                     </svg>
-                    <span>Courses</span>
+                    <span data-i18n="courses">Courses</span>
                 </div>
                 
-                <div class="nav-item" data-page="community" onclick="window.location.href='/mentor.html'">
+                <div class="nav-item" data-page="mentors" onclick="window.location.href='/mentor.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                         <circle cx="9" cy="7" r="4"/>
                         <path d="m22 21-3-3"/>
                         <circle cx="16" cy="11" r="3"/>
                     </svg>
-                    <span>Community</span>
+                    <span data-i18n="mentors">Mentors</span>
                 </div>
             </div>
         </nav>
@@ -66,17 +743,17 @@
             <!-- Header -->
             <header class="header">
                 <div class="header-left">
-                    <h1 class="weart-title">WeArt</h1>
+                    <h1 class="weart-title" data-i18n="weart">WeArt</h1>
                     <div class="search-container">
                         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <circle cx="11" cy="11" r="8"/>
                             <path d="m21 21-4.35-4.35"/>
                         </svg>
-                        <input type="text" class="search-bar" placeholder="Search" id="searchInput">
+                        <input type="text" class="search-bar" data-i18n-placeholder="search" placeholder="Search" id="searchInput">
                     </div>
                 </div>
                 <div class="header-right">
-                    <button class="create-prompt-btn" id="createPromptBtn">Create Prompt</button>
+                    <button class="create-prompt-btn" id="createPromptBtn" data-i18n="create_prompt">Create Prompt</button>
                     <button class="profile-btn" id="profileBtn">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -88,126 +765,167 @@
 
             <!-- Content Grid -->
             <div class="content-grid">
-                <!-- Left Content -->
-                <div class="left-content">
-                    <!-- Journey Card -->
-                    <div class="journey-card">
-                        <div class="journey-left">
-                            <h2 class="journey-title">Your Creative Journey Today</h2>
-                            <div class="stats">
+                <!-- Left Sidebar - Compact Stats & Navigation -->
+                <div class="left-sidebar">
+                    <!-- Journey Card - Compact -->
+                    <div class="journey-card compact">
+                        <div class="journey-header">
+                            <h2 class="journey-title" data-i18n="your_creative_journey">Your Creative Journey Today</h2>
+                            <div class="progress-circle-small">
+                                <svg class="progress-ring" width="60" height="60">
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="progress-ring-bg" cx="30" cy="30" r="25"/>
+                                    <circle class="progress-ring-progress" cx="30" cy="30" r="25" id="progressRing"/>
+                                </svg>
+                                <div class="progress-text-small" id="progressText">60%</div>
+                            </div>
+                        </div>
+                        <div class="stats-row">
                                 <div class="stat-item">
                                     <div class="stat-icon">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1.5-2s-1.5.62-1.5 2a2.5 2.5 0 0 0 2.5 2.5z"/>
                                             <path d="M12 1L9 9l8 3-8 3 3 8z"/>
                                         </svg>
                                     </div>
-                                    <span class="stat-text" id="dayStreak">3 DAY STREAK</span>
+                                <span class="stat-text" id="dayStreak">3 <span data-i18n="day_streak">DAY STREAK</span></span>
                                 </div>
                                 <div class="stat-item">
                                     <div class="stat-icon">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                             <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
                                         </svg>
                                     </div>
-                                    <span class="stat-text" id="xpPoints">1,290 XP</span>
+                                <span class="stat-text" id="xpPoints">1,290 <span data-i18n="xp_points">XP</span></span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="progress-circle">
-                            <svg class="progress-ring" width="140" height="140">
-                                <defs>
-                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                                    </linearGradient>
-                                </defs>
-                                <circle class="progress-ring-bg" cx="70" cy="70" r="60"/>
-                                <circle class="progress-ring-progress" cx="70" cy="70" r="60" id="progressRing"/>
-                            </svg>
-                            <div class="progress-text" id="progressText">60%</div>
                         </div>
                     </div>
 
-                    <!-- Categories -->
-                    <div class="categories">
-                        <div class="category-card" data-category="commercial">
-                            <div class="category-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <!-- Categories - Compact -->
+                    <div class="categories-compact">
+                        <h3 class="section-title-small" data-i18n="explore_categories">Explore Categories</h3>
+                        <div class="category-list">
+                            <div class="category-item" data-category="commercial">
+                                <div class="category-icon-small">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <rect x="3" y="3" width="5" height="5"/>
                                     <rect x="16" y="3" width="5" height="5"/>
                                     <rect x="3" y="16" width="5" height="5"/>
                                     <rect x="16" y="16" width="5" height="5"/>
                                 </svg>
                             </div>
-                            <h3 class="category-title">Commercial<br>Illustration</h3>
+                                <span data-i18n="commercial_illustration">Commercial Illustration</span>
                         </div>
-                        <div class="category-card" data-category="environment">
-                            <div class="category-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <div class="category-item" data-category="environment">
+                                <div class="category-icon-small">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
                                     <rect x="8" y="6" width="8" height="2"/>
                                     <rect x="8" y="10" width="8" height="2"/>
                                     <rect x="8" y="14" width="8" height="2"/>
                                 </svg>
                             </div>
-                            <h3 class="category-title">Environment &<br>Architecture</h3>
+                                <span data-i18n="environment_architecture">Environment & Architecture</span>
                         </div>
-                        <div class="category-card" data-category="global">
-                            <div class="category-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <div class="category-item" data-category="global">
+                                <div class="category-icon-small">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <circle cx="12" cy="12" r="10"/>
                                     <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
                                     <path d="M2 12h20"/>
                                 </svg>
                             </div>
-                            <h3 class="category-title">Global Art<br>Styles</h3>
+                                <span data-i18n="global_art_styles">Global Art Styles</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Trending Prompts -->
-                    <div class="trending-section">
-                        <h2 class="section-title">Trending Prompts</h2>
-                        <div class="trending-grid" id="trendingGrid">
-                            <div class="trending-card">
-                                <h3>A futuristic cityscape</h3>
+                    <!-- Continue Learning - Compact -->
+                    <div class="learning-card-compact" onclick="window.location.href='/course.html'" style="cursor: pointer;">
+                        <div class="learning-content">
+                            <div class="learning-info">
+                                <h4 class="learning-title-small" data-i18n="continue_learning">Continue Learning</h4>
+                                <p class="learning-course" id="courseTitle" data-i18n="landscape_painting_basics">Landscape Painting Basics</p>
+                                <div class="progress-bar-small">
+                                    <div class="progress-fill-small" id="courseProgress"></div>
                             </div>
-                            <div class="trending-card">
-                                <h3>Portrait of a young woman</h3>
                             </div>
-                            <div class="trending-card">
-                                <h3>A serene mountain lake</h3>
-                            </div>
-                            <div class="trending-card">
-                                <h3>An enchanted forest</h3>
+                            <div class="learning-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Sidebar -->
-                <div class="right-sidebar">
-                    <!-- Continue Learning -->
-                    <div class="learning-card" onclick="window.location.href='/course.html'" style="cursor: pointer;">
-                        <h3 class="section-title">Continue Learning</h3>
-                        <div class="learning-image">
-                            <img src="assets/images/landscape-course.jpg" alt="Landscape Painting Course" onerror="this.style.display='none'">
+                <!-- Main AI Chat Area -->
+                <div class="main-ai-chat">
+                    <div class="ai-chat-header-main">
+                            <div class="ai-header-content">
+                            <div class="ai-avatar-large">
+                                    <i class="ri-robot-line"></i>
+                                </div>
+                            <div class="ai-info-main">
+                                <h2 data-i18n="ai_assistant">AI Art Mentor</h2>
+                                    <div class="ai-status">
+                                        <div class="status-indicator"></div>
+                                    <span data-i18n="personalized_guidance">Personalized Guidance • </span>
+                                    <span data-i18n="online">Online</span>
+                                    </div>
+                                <p class="ai-description">Your personal AI mentor trained on art history, techniques, and pedagogical methods. Ask me about your learning path, get technique advice, or explore art history.</p>
+                                </div>
+                            </div>
                         </div>
-                        <h4 class="learning-title" id="courseTitle">Landscape Painting Basics</h4>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="courseProgress"></div>
+                    <div class="ai-chat-container-main" id="aiChatContainer">
+                        <div class="ai-chat-messages-main" id="aiChatMessages">
+                                <!-- Messages will be populated by JavaScript -->
+                            </div>
+                        <button class="scroll-to-bottom" id="scrollToBottomBtn">
+                            <i class="ri-arrow-down-line"></i>
+                        </button>
+                        </div>
+                    <div class="ai-input-container-main">
+                        <textarea class="ai-input-box-main" id="aiInputBox" data-i18n-placeholder="ask_art_techniques" placeholder="Ask about art techniques, learning paths, or get personalized guidance..." rows="2"></textarea>
+                        <button class="ai-send-btn-main" id="aiSendBtn">
+                                <i class="ri-send-plane-fill"></i>
+                            </button>
+                    </div>
+                </div>
+
+                <!-- Right Quick Actions -->
+                <div class="right-quick-actions">
+                    <div class="quick-actions-card">
+                        <h3 class="section-title-small" data-i18n="quick_actions">Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="window.location.href='/course.html'">
+                                <i class="ri-book-open-line"></i>
+                                <span data-i18n="view_courses">View Courses</span>
+                            </button>
+                            <button class="action-btn" onclick="window.location.href='/mentor.html'">
+                                <i class="ri-group-line"></i>
+                                <span data-i18n="find_mentors">Find Mentors</span>
+                            </button>
+                            <button class="action-btn" onclick="window.location.href='/explore.html'">
+                                <i class="ri-compass-3-line"></i>
+                                <span data-i18n="explore_art">Explore Art</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Trending Prompts Sidebar -->
-                    <div class="trending-sidebar">
-                        <div class="trending-sidebar-title">
-                            Trending Prompts
-                            <span class="arrow-right">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M5 12h14m-7-7 7 7-7 7"/>
-                                </svg>
-                            </span>
+                    <!-- Trending Prompts - Compact -->
+                    <div class="trending-compact">
+                        <h3 class="section-title-small" data-i18n="trending_prompts">Trending Prompts</h3>
+                        <div class="trending-list">
+                            <div class="trending-item">A futuristic cityscape</div>
+                            <div class="trending-item">Portrait of a young woman</div>
+                            <div class="trending-item">A serene mountain lake</div>
+                            <div class="trending-item">An enchanted forest</div>
                         </div>
                     </div>
                 </div>
@@ -220,13 +938,1040 @@
         <div class="loading-spinner"></div>
     </div>
 
+    <!-- Include user management and i18n systems -->
+    <script src="js/user-manager.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/onboarding.js"></script>
     <script src="js/script.js"></script>
     <script src="navigation-fix.js"></script>
     
     <script>
-        // Create floating particles
+        // Authentication Check and User Data Loading
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is authenticated
+            if (!userManager.requireAuth()) {
+                return; // User will be redirected to register page
+            }
+            
+            // Check if user has completed onboarding
+            if (!userManager.requireOnboarding()) {
+                return; // User will be redirected to onboarding
+            }
+            
+            // Load user-specific data
+            loadUserData();
+            
+            // Initialize enhanced AI with user context
+            setTimeout(() => {
+                window.enhancedAI = new EnhancedAI();
+                console.log('🤖 Enhanced AI initialized with user context');
+            }, 500);
+            
+            // Create cosmic particles
+            createCosmicParticles();
+        });
+        
+        // Load user-specific data and personalize dashboard
+        function loadUserData() {
+            const user = userManager.getUserProfile();
+            
+            if (user) {
+                // Update UI with user data
+                updateUserSpecificContent(user);
+                
+                // Track dashboard visit
+                userManager.trackUserAction('dashboard_visit');
+                
+                console.log('👤 Dashboard loaded for user:', user.name);
+            }
+        }
+        
+        // Update dashboard content based on user preferences and progress
+        function updateUserSpecificContent(user) {
+            // Update day streak based on user activity
+            const daysSinceRegistration = Math.floor(
+                (new Date() - new Date(user.registeredAt)) / (1000 * 60 * 60 * 24)
+            );
+            const dayStreak = Math.min(daysSinceRegistration + 1, 7); // Cap at 7 days for demo
+            document.getElementById('dayStreak').innerHTML = `${dayStreak} <span data-i18n="day_streak">DAY STREAK</span>`;
+            
+            // Update XP based on chat history length and user activity
+            const chatHistory = userManager.getChatHistory();
+            const baseXP = 1000;
+            const chatXP = chatHistory.length * 15;
+            const xpPoints = baseXP + chatXP;
+            document.getElementById('xpPoints').innerHTML = `${xpPoints.toLocaleString()} <span data-i18n="xp_points">XP</span>`;
+            
+            // Update progress circle
+            const progressPercentage = Math.min(60 + chatHistory.length * 2, 95); // Progress based on activity
+            updateProgressCircle(progressPercentage);
+            
+            // Update course progress
+            const courseProgress = userManager.getPreference('courseProgress', 35);
+            document.getElementById('courseProgress').style.width = courseProgress + '%';
+        }
+        
+        // Update progress circle
+        function updateProgressCircle(percentage) {
+            const progressRing = document.getElementById('progressRing');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressRing && progressText) {
+                const circumference = 2 * Math.PI * 25; // radius = 25
+                const strokeDashoffset = circumference - (percentage / 100) * circumference;
+                
+                progressRing.style.strokeDashoffset = strokeDashoffset;
+                progressText.textContent = Math.round(percentage) + '%';
+            }
+        }
+        
+        // Enhanced AI Chat System with DeepSeek API Integration
+        class EnhancedAI {
+            constructor() {
+                this.chatHistory = userManager.getChatHistory(10); // Load last 10 messages
+                this.isLoading = false;
+                this.onboardingData = null;
+                this.apiEndpoint = '/api/chat'; // We'll need to set up this endpoint
+                this.initializeElements();
+                this.bindEvents();
+                this.loadOnboardingData();
+                this.initializeChat();
+                this.setupUserEventListeners();
+            }
+
+            initializeElements() {
+                this.chatContainer = document.getElementById('aiChatMessages');
+                this.chatScrollContainer = document.getElementById('aiChatContainer');
+                this.inputBox = document.getElementById('aiInputBox');
+                this.sendBtn = document.getElementById('aiSendBtn');
+                this.scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+            }
+
+            bindEvents() {
+                if (this.sendBtn) {
+                    this.sendBtn.addEventListener('click', () => this.sendMessage());
+                }
+
+                if (this.inputBox) {
+                    this.inputBox.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            this.sendMessage();
+                        }
+                    });
+
+                    this.inputBox.addEventListener('input', () => {
+                        this.adjustTextareaHeight();
+                    });
+                }
+
+                // Scroll to bottom button
+                if (this.scrollToBottomBtn) {
+                    this.scrollToBottomBtn.addEventListener('click', () => {
+                        this.scrollToBottom();
+                        this.scrollToBottomBtn.classList.remove('show');
+                    });
+                }
+
+                // Scroll detection
+                if (this.chatScrollContainer) {
+                    this.chatScrollContainer.addEventListener('scroll', () => {
+                        this.handleScroll();
+                    });
+                }
+            }
+
+            handleScroll() {
+                if (!this.chatScrollContainer || !this.scrollToBottomBtn) return;
+
+                const container = this.chatScrollContainer;
+                const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 100;
+
+                if (isNearBottom) {
+                    this.scrollToBottomBtn.classList.remove('show');
+                } else {
+                    this.scrollToBottomBtn.classList.add('show');
+                }
+            }
+            
+            setupUserEventListeners() {
+                // Listen for chat history updates
+                window.addEventListener('chatHistoryUpdated', (e) => {
+                    console.log('💬 Chat history updated:', e.detail);
+                });
+                
+                // Listen for user updates
+                window.addEventListener('userUpdated', (e) => {
+                    console.log('👤 User profile updated:', e.detail);
+                });
+            }
+
+            adjustTextareaHeight() {
+                if (this.inputBox) {
+                    this.inputBox.style.height = 'auto';
+                    this.inputBox.style.height = Math.min(this.inputBox.scrollHeight, 120) + 'px';
+                }
+            }
+
+            loadOnboardingData() {
+                // Try both onboarding storage systems
+                let onboardingData = {};
+                
+                // First try the user manager system
+                const userManagerData = userManager.loadOnboardingData();
+                if (userManagerData && Object.keys(userManagerData).length > 0) {
+                    onboardingData = userManagerData;
+                    console.log('📊 Loaded from user manager:', userManagerData);
+                }
+                
+                // Then try the OnboardingData class system
+                const onboardingClassData = localStorage.getItem('weart-onboarding-data');
+                if (onboardingClassData) {
+                    try {
+                        const parsedClassData = JSON.parse(onboardingClassData);
+                        // Merge or override with class data if it's more complete
+                        if (parsedClassData && Object.keys(parsedClassData).length > 0) {
+                            onboardingData = { ...onboardingData, ...parsedClassData };
+                            console.log('📊 Loaded from onboarding class:', parsedClassData);
+                        }
+                    } catch (error) {
+                        console.warn('Failed to parse onboarding class data:', error);
+                    }
+                }
+                
+                this.onboardingData = onboardingData;
+                console.log('📊 Final loaded onboarding data:', this.onboardingData);
+                return this.onboardingData;
+            }
+
+            async initializeChat() {
+                if (!this.chatContainer) return;
+
+                // Load existing chat history first
+                this.loadChatHistory();
+
+                // Initialize scroll handling
+                setTimeout(() => {
+                    this.handleScroll();
+                    this.scrollToBottom();
+                }, 100);
+
+                // Check if we should show personalized learning plan
+                const user = userManager.getUserProfile();
+                console.log('🔍 Checking if personalized learning plan should be generated...');
+                console.log('- User:', user ? `${user.name} (registered: ${user.registeredAt})` : 'No user');
+                console.log('- Onboarding data keys:', this.onboardingData ? Object.keys(this.onboardingData) : 'No onboarding data');
+                console.log('- Chat history length:', this.chatHistory.length);
+                
+                if (user && this.onboardingData && Object.keys(this.onboardingData).length >= 2) {
+                    const lastShownPlan = userManager.getPreference('learningPlanLastShown');
+                    const onboardingCompleteDate = user.registeredAt;
+                    
+                    console.log('- Last shown plan:', lastShownPlan);
+                    console.log('- Onboarding complete date:', onboardingCompleteDate);
+                    console.log('- Should generate plan:', lastShownPlan !== onboardingCompleteDate && this.chatHistory.length === 0);
+                    
+                    if (lastShownPlan !== onboardingCompleteDate && this.chatHistory.length === 0) {
+                        console.log('🎨 Generating personalized learning plan via AI...');
+                        await this.generatePersonalizedLearningPlan();
+                        userManager.setPreference('learningPlanLastShown', onboardingCompleteDate);
+                        return;
+                    }
+                }
+
+                // Show default welcome if no chat history
+                if (this.chatHistory.length === 0) {
+                    console.log('💬 No chat history found, showing default welcome...');
+                    this.showDefaultWelcome();
+                }
+            }
+
+            async generatePersonalizedLearningPlan() {
+                // Show typing indicator
+                this.addTypingIndicator();
+
+                try {
+                    const user = userManager.getUserProfile();
+                    const learningPlanPrompt = this.createLearningPlanPrompt(user, this.onboardingData);
+                    
+                    console.log('🤖 Sending learning plan request to DeepSeek API...');
+                    const response = await this.callDeepSeekAPI(learningPlanPrompt);
+                    
+                    // Remove typing indicator
+                    this.removeTypingIndicator();
+                    
+                    // Add AI response to chat
+                    this.addMessage(response, 'ai');
+                    
+                    // Add follow-up message
+                    setTimeout(() => {
+                        this.addMessage(
+                            "Feel free to ask me any questions about your learning plan, or if you'd like me to adjust it based on your specific interests! What aspect would you like to explore first? 🎨",
+                            'ai'
+                        );
+                    }, 1500);
+                    
+                    console.log('✅ Personalized learning plan generated successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to generate personalized learning plan:', error);
+                    this.removeTypingIndicator();
+                    
+                    // Even if there's an error, ensure we show a learning plan
+                    console.log('🔄 Error occurred, generating fallback learning plan...');
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    const user = userManager.getUserProfile();
+                    const fallbackPlan = this.generateMockLearningPlan(this.createLearningPlanPrompt(user, this.onboardingData));
+                    
+                    this.addMessage(fallbackPlan, 'ai');
+                    
+                    setTimeout(() => {
+                        this.addMessage(
+                            "Note: I'm currently running in demo mode, but I'd still love to help you with your artistic journey! Feel free to ask me anything about art techniques, history, or learning paths. 🎨",
+                            'ai'
+                        );
+                    }, 1500);
+                }
+            }
+
+            getSelectedMedium() {
+                if (!this.onboardingData || !this.onboardingData.artMediums) return 'various art forms';
+                const mediums = this.extractArray(this.onboardingData.artMediums);
+                return mediums.length > 0 ? mediums.join(', ') : 'various art forms';
+            }
+
+            getSelectedGoals() {
+                if (!this.onboardingData || !this.onboardingData.learningGoals) return 'artistic development';
+                const goals = this.extractArray(this.onboardingData.learningGoals);
+                return goals.length > 0 ? goals.join(', ') : 'artistic development';
+            }
+
+            getSelectedBackground() {
+                if (!this.onboardingData || !this.onboardingData.pathSelection) return 'student';
+                return this.extractValue(this.onboardingData.pathSelection, 'student');
+            }
+
+            createLearningPlanPrompt(user, onboardingData) {
+                // Extract onboarding data safely
+                const colorSelection = this.extractValue(onboardingData.colorSelection, 'exploration');
+                const pathSelection = this.extractValue(onboardingData.pathSelection, 'student');
+                const learningGoals = this.extractArray(onboardingData.learningGoals);
+                const artMediums = this.extractArray(onboardingData.artMediums);
+
+                return `You are WeArt's AI Art Mentor. Create a personalized learning plan for ${user.name}.
+
+USER PROFILE:
+- Name: ${user.name}
+- Creative Vision: ${colorSelection}
+- Background/Level: ${pathSelection}
+- Learning Goals: ${learningGoals.join(', ') || 'general artistic development'}
+- Preferred Art Mediums: ${artMediums.join(', ') || 'exploring various mediums'}
+
+IMPORTANT: This user specifically selected "${artMediums.join(', ')}" as their art medium(s). Your learning plan MUST be tailored to this specific medium, not generic art advice.
+
+INSTRUCTIONS:
+Create a warm, personalized 8-week learning roadmap that includes:
+
+1. A personalized greeting acknowledging their specific medium choice
+2. A customized 8-week plan with:
+   - Week-by-week breakdown specific to ${artMediums.join('/')} 
+   - Specific techniques for ${artMediums.join('/')}
+   - Recommended practices for ${artMediums.join('/')}
+   - Milestone goals relevant to ${artMediums.join('/')}
+3. Medium-specific recommendations (NOT generic art advice)
+4. Practical next steps for ${artMediums.join('/')}
+5. Equipment/tools specific to ${artMediums.join('/')}
+
+EXAMPLES:
+- If music: focus on instruments, music theory, composition, performance
+- If photography: focus on camera settings, composition, editing, portfolio
+- If digital art: focus on software, digital techniques, online platforms
+- If painting: focus on paint types, brushwork, color theory, canvas prep
+- If writing: focus on writing techniques, voice, editing, publishing
+
+Make it specific to their selected medium "${artMediums.join(', ')}" and goals "${learningGoals.join(', ')}"!
+
+Format with clear sections, bullet points, and emojis. Keep it encouraging and specific to their choices.`;
+            }
+
+            extractValue(data, fallback) {
+                // Handle null/undefined
+                if (!data) return fallback;
+                
+                // Handle direct string values
+                if (typeof data === 'string') return data;
+                
+                // Handle objects with timestamp structure from user manager
+                if (data && typeof data === 'object') {
+                    // Check for common value properties
+                    if (data.value) return data.value;
+                    if (data.selection) return data.selection;
+                    if (data.choice) return data.choice;
+                    
+                    // For timestamp-based data, look for non-timestamp properties
+                    const keys = Object.keys(data);
+                    for (const key of keys) {
+                        if (key !== 'timestamp' && typeof data[key] === 'string' && 
+                            !data[key].includes('T') && !data[key].includes('Z')) {
+                            return data[key];
+                        }
+                    }
+                    
+                    // If all else fails, return first non-timestamp value
+                    const nonTimestampValues = Object.values(data).filter(v => 
+                        typeof v === 'string' && !v.includes('T') && !v.includes('Z') && v !== 'timestamp'
+                    );
+                    if (nonTimestampValues.length > 0) return nonTimestampValues[0];
+                }
+                
+                return fallback;
+            }
+
+            extractArray(data) {
+                // Handle null/undefined
+                if (!data) return [];
+                
+                // Handle direct arrays
+                if (Array.isArray(data)) return data;
+                
+                // Handle objects with array values
+                if (data && typeof data === 'object') {
+                    // Check for common array properties
+                    if (Array.isArray(data.values)) return data.values;
+                    if (Array.isArray(data.selections)) return data.selections;
+                    if (Array.isArray(data.choices)) return data.choices;
+                    if (Array.isArray(data.items)) return data.items;
+                    
+                    // For timestamp-based data, look for non-timestamp array values
+                    const values = Object.values(data);
+                    for (const value of values) {
+                        if (Array.isArray(value)) return value;
+                    }
+                    
+                    // Convert object values to array (filter out timestamps)
+                    const nonTimestampValues = Object.values(data).filter(v => 
+                        typeof v === 'string' && !v.includes('T') && !v.includes('Z') && v !== 'timestamp'
+                    );
+                    if (nonTimestampValues.length > 0) return nonTimestampValues;
+                }
+                
+                // Handle single string as array
+                if (typeof data === 'string') return [data];
+                
+                return [];
+            }
+
+            async callDeepSeekAPI(prompt) {
+                try {
+                    console.log('🤖 Calling DeepSeek API...');
+                    console.log('📤 Sending prompt:', prompt.substring(0, 200) + '...');
+                    
+                    // Make API call to existing backend endpoint
+                    const response = await fetch('/api/ai/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: prompt,
+                            chatHistory: this.chatHistory.slice(-6).map(msg => ({
+                                role: msg.sender === 'user' ? 'user' : 'assistant',
+                                content: msg.content
+                            })),
+                            maxTokens: 2000,
+                            temperature: 0.7,
+                            isOnboardingIntro: prompt.includes('personalized learning plan')
+                        })
+                    });
+
+                    if (!response.ok) {
+                        console.log(`❌ HTTP Error: ${response.status}`);
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log('✅ DeepSeek API response received');
+                    
+                    // Check if the response contains an error (backend fallback response)
+                    if (data.error) {
+                        console.log('⚠️ Backend returned error, using fallback:', data.error);
+                        throw new Error(data.error);
+                    }
+                    
+                    // If we got a real response from DeepSeek, use it
+                    if (data.response && data.response.length > 100 && !data.demo) {
+                        console.log('✅ Using real DeepSeek API response');
+                        return data.response;
+                    }
+                    
+                    // Only use hardcoded fallback if API truly failed
+                    console.log('⚠️ API response too short or demo mode, using simple fallback');
+                    throw new Error('API response insufficient');
+                    
+                } catch (error) {
+                    console.error('❌ DeepSeek API Error:', error);
+                    
+                    // Simple fallback message encouraging to try again
+                    console.log('🔄 Using minimal fallback response...');
+                    return `I apologize, but I'm having trouble connecting to generate your personalized learning plan right now. 
+
+Here's what I can tell you based on your selections:
+- You're interested in **${this.getSelectedMedium()}**
+- Your goals focus on **${this.getSelectedGoals()}**
+- Your background is **${this.getSelectedBackground()}**
+
+I'd love to create a detailed 8-week learning plan specifically for you once my connection is restored. In the meantime, feel free to ask me any specific questions about ${this.getSelectedMedium()}!
+
+Would you like to try generating your personalized plan again, or ask me something specific about your artistic journey? 🎨`;
+                }
+            }
+
+            generateMockLearningPlan(prompt) {
+                // Extract user data from prompt for personalized response
+                const nameMatch = prompt.match(/Name: (.+)/);
+                const goalsMatch = prompt.match(/Learning Goals: (.+)/);
+                const mediumsMatch = prompt.match(/Preferred Art Mediums: (.+)/);
+                const backgroundMatch = prompt.match(/Background\/Level: (.+)/);
+                
+                const name = nameMatch ? nameMatch[1] : 'there';
+                const goals = goalsMatch ? goalsMatch[1] : 'general art learning';
+                const mediums = mediumsMatch ? mediumsMatch[1] : 'various mediums';
+                const background = backgroundMatch ? backgroundMatch[1] : 'student';
+
+                // Ensure safe string handling
+                const safeName = name.split(',')[0].trim();
+                const safeGoals = goals === 'undefined' || goals === '' ? 'general art learning' : goals;
+                const safeMediums = mediums === 'undefined' || mediums === '' ? 'various mediums' : mediums;
+                const safeBackground = background === 'undefined' || background === '' ? 'student' : background;
+
+                // Determine primary medium for specialized plan
+                const primaryMedium = this.getPrimaryMedium(safeMediums);
+                const learningPlan = this.generateMediumSpecificPlan(primaryMedium, safeGoals, safeBackground);
+
+                return `Hello ${safeName}! 🎨 Welcome to your personalized WeArt learning journey!
+
+Based on your interests in **${safeMediums}** and goals around **${safeGoals}**, I've created a customized learning plan just for you:
+
+${learningPlan}
+
+## 🎯 Immediate Next Steps
+
+${this.getImmediateSteps(primaryMedium)}
+
+## 💡 Personalized Recommendations
+
+Given your ${safeBackground} background, I recommend:
+${this.getPersonalizedRecommendations(primaryMedium, safeGoals, safeBackground)}
+
+Your artistic journey is unique, and I'm here to guide you every step of the way! What part of this plan excites you most? 🌟`;
+            }
+
+            getPrimaryMedium(mediums) {
+                const mediumsLower = mediums.toLowerCase();
+                
+                // Music and performing arts
+                if (mediumsLower.includes('music')) return 'music';
+                if (mediumsLower.includes('singing') || mediumsLower.includes('vocal')) return 'music';
+                if (mediumsLower.includes('instrument') || mediumsLower.includes('piano') || mediumsLower.includes('guitar')) return 'music';
+                
+                // Visual arts
+                if (mediumsLower.includes('photography')) return 'photography';
+                if (mediumsLower.includes('digital')) return 'digital';
+                if (mediumsLower.includes('painting')) return 'painting';
+                if (mediumsLower.includes('drawing')) return 'drawing';
+                if (mediumsLower.includes('sculpture')) return 'sculpture';
+                if (mediumsLower.includes('watercolor')) return 'watercolor';
+                if (mediumsLower.includes('oil')) return 'oil';
+                if (mediumsLower.includes('acrylic')) return 'acrylic';
+                
+                // Other art forms
+                if (mediumsLower.includes('dance') || mediumsLower.includes('choreography')) return 'dance';
+                if (mediumsLower.includes('writing') || mediumsLower.includes('poetry')) return 'writing';
+                if (mediumsLower.includes('theater') || mediumsLower.includes('acting')) return 'theater';
+                
+                return 'general'; // fallback
+            }
+
+            generateMediumSpecificPlan(medium, goals, background) {
+                const plans = {
+                    music: `## 📚 Your 8-Week Music Learning Roadmap
+
+**Week 1-2: Musical Fundamentals**
+• Learn basic music theory (notes, scales, rhythm)
+• Practice daily listening exercises (15-20 minutes)
+• Start with basic instrument techniques or vocal exercises
+• *Milestone: Play/sing a simple melody confidently*
+
+**Week 3-4: Technique & Expression**
+• Develop proper technique for your chosen instrument/voice
+• Learn about different musical styles and genres
+• Practice sight-reading or ear training
+• *Milestone: Learn and perform 3 complete songs*
+
+**Week 5-6: Creative Development**
+• Try composing or arranging simple pieces
+• Explore improvisation and personal expression
+• Study musicians who inspire you
+• *Milestone: Create your first original composition*
+
+**Week 7-8: Performance & Sharing**
+• Practice performing for others (even virtually)
+• Record yourself playing/singing
+• Plan your musical journey and set goals
+• *Milestone: Share a performance with friends or online*`,
+
+                    dance: `## 📚 Your 8-Week Dance Learning Roadmap
+
+**Week 1-2: Movement Fundamentals**
+• Learn basic body awareness and posture
+• Practice fundamental movements and stretching
+• Study rhythm and musicality basics
+• *Milestone: Master basic dance positions and movements*
+
+**Week 3-4: Style Exploration**
+• Choose a dance style that resonates with you
+• Learn basic choreography and combinations
+• Practice coordination and fluidity
+• *Milestone: Perform a 1-minute choreographed routine*
+
+**Week 5-6: Expression & Creativity**
+• Develop your personal movement style
+• Try creating your own choreography
+• Study dancers and choreographers who inspire you
+• *Milestone: Choreograph an original 2-minute piece*
+
+**Week 7-8: Performance & Growth**
+• Practice performing with confidence
+• Record your progress and improvements
+• Connect with dance communities
+• *Milestone: Share your dance journey and plan next steps*`,
+
+                    writing: `## 📚 Your 8-Week Creative Writing Roadmap
+
+**Week 1-2: Writing Foundations**
+• Establish a daily writing practice (15-30 minutes)
+• Learn about different writing forms and styles
+• Practice observation and description exercises
+• *Milestone: Complete 10 short writing exercises*
+
+**Week 3-4: Craft Development**
+• Study character development, plot, or poetic techniques
+• Read works in your chosen genre actively
+• Practice specific writing techniques
+• *Milestone: Complete 3 polished short pieces*
+
+**Week 5-6: Voice & Style**
+• Develop your unique writing voice
+• Experiment with different perspectives and tones
+• Study authors whose work inspires you
+• *Milestone: Write one significant piece (story, poem, essay)*
+
+**Week 7-8: Sharing & Growth**
+• Revise and edit your best work
+• Share your writing with others for feedback
+• Plan your continued writing journey
+• *Milestone: Publish or share your work publicly*`,
+
+                    theater: `## 📚 Your 8-Week Theater Learning Roadmap
+
+**Week 1-2: Acting Fundamentals**
+• Learn basic acting techniques and exercises
+• Practice voice projection and clear speech
+• Study character development basics
+• *Milestone: Perform a simple monologue*
+
+**Week 3-4: Scene Work**
+• Practice working with scene partners
+• Learn about staging and movement
+• Explore different acting methods
+• *Milestone: Perform a scene with dialogue*
+
+**Week 5-6: Character & Performance**
+• Develop complex character portrayals
+• Study plays and performances that inspire you
+• Practice improvisation and spontaneity
+• *Milestone: Create and perform an original character*
+
+**Week 7-8: Production & Showcase**
+• Put together a small performance or showcase
+• Learn about all aspects of theater production
+• Connect with local theater communities
+• *Milestone: Participate in a live performance*`,
+
+                    photography: `## 📚 Your 8-Week Photography Learning Roadmap
+
+**Week 1-2: Camera Fundamentals**
+• Master camera settings: aperture, shutter speed, ISO
+• Practice daily with manual mode (15-20 minutes)
+• Study natural lighting and golden hour photography
+• *Milestone: Take 50 photos using only manual mode*
+
+**Week 3-4: Composition & Visual Storytelling**
+• Learn rule of thirds, leading lines, and framing
+• Practice different photography styles (portrait, landscape, street)
+• Study color harmony and mood in photography
+• *Milestone: Create 3 themed photo series*
+
+**Week 5-6: Post-Processing & Style Development**
+• Learn photo editing basics (Lightroom/Photoshop)
+• Develop your personal editing style
+• Study famous photographers' techniques
+• *Milestone: Edit and publish a cohesive portfolio*
+
+**Week 7-8: Portfolio & Sharing**
+• Build a professional photography portfolio
+• Learn about printing and presentation
+• Plan your photography niche and future projects
+• *Milestone: Launch your photography showcase*`,
+
+                    digital: `## 📚 Your 8-Week Digital Art Learning Roadmap
+
+**Week 1-2: Software Fundamentals**
+• Master your chosen software (Procreate, Photoshop, etc.)
+• Practice basic brush techniques and layer management
+• Study digital color theory and blending modes
+• *Milestone: Complete 10 digital sketches*
+
+**Week 3-4: Technique Development**
+• Learn digital painting techniques and texturing
+• Practice character design or concept art basics
+• Experiment with different digital art styles
+• *Milestone: Create 3 finished digital artworks*
+
+**Week 5-6: Advanced Skills & Style**
+• Develop personal artistic style in digital medium
+• Learn advanced techniques (lighting, effects, composition)
+• Study digital artists who inspire you
+• *Milestone: Complete one detailed digital illustration*
+
+**Week 7-8: Portfolio & Presentation**
+• Build a cohesive digital art portfolio
+• Learn about art sharing platforms and social media
+• Plan your artistic direction and specialization
+• *Milestone: Launch your online art presence*`,
+
+                    painting: `## 📚 Your 8-Week Painting Learning Roadmap
+
+**Week 1-2: Fundamentals & Materials**
+• Learn about paint types, brushes, and surfaces
+• Practice basic brush techniques and color mixing
+• Study color theory and value relationships
+• *Milestone: Complete 10 color studies*
+
+**Week 3-4: Technique Development**
+• Practice wet-on-wet and wet-on-dry techniques
+• Learn about composition and focal points
+• Experiment with different painting styles
+• *Milestone: Paint 3 small landscapes or still lifes*
+
+**Week 5-6: Style & Expression**
+• Develop your personal painting style
+• Study master painters' techniques
+• Work on larger, more complex compositions
+• *Milestone: Complete one significant painting*
+
+**Week 7-8: Refinement & Portfolio**
+• Refine your technique and artistic voice
+• Build a cohesive body of work
+• Learn about art presentation and framing
+• *Milestone: Prepare work for exhibition or sharing*`,
+
+                    drawing: `## 📚 Your 8-Week Drawing Learning Roadmap
+
+**Week 1-2: Foundation Skills**
+• Master basic drawing fundamentals and observation
+• Practice daily sketching exercises (15-20 minutes)
+• Study light, shadow, and basic perspective
+• *Milestone: Complete 20 observational sketches*
+
+**Week 3-4: Technique Expansion**
+• Learn different drawing media (pencil, charcoal, ink)
+• Practice figure drawing and proportions
+• Study texture rendering and detail work
+• *Milestone: Create 5 detailed drawings*
+
+**Week 5-6: Style Development**
+• Develop your personal drawing style
+• Study artists whose work inspires you
+• Practice storytelling through illustration
+• *Milestone: Complete an illustrated story or series*
+
+**Week 7-8: Mastery & Portfolio**
+• Refine your strongest drawing skills
+• Build a portfolio showcasing your range
+• Plan advanced drawing challenges
+• *Milestone: Create a comprehensive drawing portfolio*`
+                };
+
+                return plans[medium] || plans.drawing; // fallback to drawing if medium not found
+            }
+
+            getImmediateSteps(medium) {
+                const steps = {
+                    music: `1. **Today**: Choose your instrument or decide on vocal training, set up practice space
+2. **This Week**: Practice basic scales or vocal exercises for 15-30 minutes daily
+3. **Connect**: Find local music teachers, online tutorials, or music communities`,
+
+                    dance: `1. **Today**: Clear a practice space and choose a dance style to focus on
+2. **This Week**: Follow beginner dance tutorials online for 20-30 minutes daily
+3. **Connect**: Find local dance studios or online dance communities`,
+
+                    writing: `1. **Today**: Set up a dedicated writing space and choose your writing tools
+2. **This Week**: Write for 15-30 minutes daily, even if it's just journaling
+3. **Connect**: Join writing groups, workshops, or online writing communities`,
+
+                    theater: `1. **Today**: Practice basic vocal exercises and find monologues to work on
+2. **This Week**: Spend 20-30 minutes daily on voice, movement, or character work
+3. **Connect**: Look for local theater groups, classes, or online acting communities`,
+
+                    photography: `1. **Today**: Check your camera settings and practice manual mode
+2. **This Week**: Take photos during different times of day to study lighting
+3. **Connect**: Join photography communities and share your work for feedback`,
+
+                    digital: `1. **Today**: Set up your digital art software and explore basic tools
+2. **This Week**: Practice daily digital sketches for 30 minutes
+3. **Connect**: Follow digital artists online and study their techniques`,
+
+                    painting: `1. **Today**: Set up your painting space and organize your materials
+2. **This Week**: Practice color mixing and basic brush strokes daily
+3. **Connect**: Visit local art studios or join painting groups`,
+
+                    drawing: `1. **Today**: Set up your drawing space and gather basic materials
+2. **This Week**: Start with simple observation exercises - draw objects around you
+3. **Connect**: Join sketching groups or online drawing communities`
+                };
+
+                return steps[medium] || steps.drawing;
+            }
+
+            getPersonalizedRecommendations(medium, goals, background) {
+                const timeCommitment = background === 'boss' || background === 'parent' ? '15-30 minutes daily' : '45-60 minutes daily';
+                const approach = background === 'elementary' || background === 'middle' ? 'fun, exploratory exercises' : 'structured skill-building activities';
+                
+                const focusArea = goals.includes('expression') ? 'creative experimentation and personal expression' :
+                               goals.includes('education') ? 'technical skill development and art theory' :
+                               goals.includes('product') ? 'commercial applications and portfolio building' :
+                               goals.includes('sentiment') ? 'emotional storytelling through your art' :
+                               'balanced exploration of techniques and creativity';
+
+                const mediumSpecific = {
+                    music: 'Focus on consistent practice and listening to diverse musical styles',
+                    dance: 'Emphasize body awareness, rhythm, and expressive movement',
+                    writing: 'Develop your unique voice through regular writing practice',
+                    theater: 'Practice vocal projection, character development, and stage presence',
+                    photography: 'Focus on composition and lighting studies',
+                    digital: 'Explore different digital art styles and techniques',
+                    painting: 'Experiment with color relationships and brushwork',
+                    drawing: 'Practice observation skills and mark-making'
+                };
+
+                return `- Starting with ${approach}
+- Focusing on ${focusArea}
+- Dedicating ${timeCommitment} to practice
+- ${mediumSpecific[medium] || 'Explore various artistic approaches'}`;
+            }
+            
+            loadChatHistory() {
+                const history = userManager.getChatHistory(20);
+                
+                // Display recent chat messages
+                history.forEach(msg => {
+                    if (msg.content && msg.sender) {
+                        this.addMessage(msg.content, msg.sender === 'user' ? 'user' : 'ai', false);
+                    }
+                });
+                
+                this.scrollToBottom();
+            }
+
+            showDefaultWelcome() {
+                const user = userManager.getUserProfile();
+                const greeting = user ? `Hello ${user.name}!` : 'Hello!';
+                
+                this.addMessage(
+                    `${greeting} I'm your AI Art Mentor. I'm here to help you with techniques, learning paths, art history, and creative guidance. How can I assist your artistic journey today?`,
+                    'ai'
+                );
+            }
+
+            async sendMessage() {
+                if (!this.inputBox || !this.chatContainer) return;
+                
+                const message = this.inputBox.value.trim();
+                if (!message || this.isLoading) return;
+
+                // Clear input
+                this.inputBox.value = '';
+                this.adjustTextareaHeight();
+
+                // Add user message and save to history
+                this.addMessage(message, 'user');
+
+                // Show typing indicator
+                this.addTypingIndicator();
+
+                try {
+                    // Create context-aware prompt
+                    const contextPrompt = this.createContextPrompt(message);
+                    const response = await this.callDeepSeekAPI(contextPrompt);
+                    
+                    this.removeTypingIndicator();
+                    this.addMessage(response, 'ai');
+                    
+                } catch (error) {
+                    console.error('❌ AI Error:', error);
+                    this.removeTypingIndicator();
+                    this.addMessage('Sorry, I\'m having trouble connecting. Please try again in a moment.', 'ai');
+                }
+            }
+
+            createContextPrompt(userMessage) {
+                const user = userManager.getUserProfile();
+                const recentHistory = this.chatHistory.slice(-6); // Last 6 messages for context
+                
+                let contextPrompt = `You are WeArt's AI Art Mentor helping ${user?.name || 'a student'}.`;
+                
+                if (this.onboardingData) {
+                    const colorSelection = this.extractValue(this.onboardingData.colorSelection, 'exploration');
+                    const pathSelection = this.extractValue(this.onboardingData.pathSelection, 'student');
+                    const learningGoals = this.extractArray(this.onboardingData.learningGoals);
+                    const artMediums = this.extractArray(this.onboardingData.artMediums);
+                    
+                    contextPrompt += `\n\nUser Context:
+- Background: ${pathSelection}
+- Goals: ${learningGoals.join(', ')}
+- Preferred mediums: ${artMediums.join(', ')}
+- Creative vision: ${colorSelection}`;
+                }
+                
+                if (recentHistory.length > 0) {
+                    contextPrompt += `\n\nRecent conversation:`;
+                    recentHistory.forEach(msg => {
+                        contextPrompt += `\n${msg.sender}: ${msg.content}`;
+                    });
+                }
+                
+                contextPrompt += `\n\nUser's current question: ${userMessage}
+                
+Please provide a helpful, encouraging, and specific response as an art mentor. Keep it conversational and actionable.`;
+                
+                return contextPrompt;
+            }
+
+            addMessage(content, type, saveToHistory = true) {
+                if (!this.chatContainer) return;
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}-message`;
+
+                const messageContent = document.createElement('div');
+                
+                // Use markdown parsing for AI messages, plain text for user messages
+                if (type === 'ai' && typeof marked !== 'undefined') {
+                    messageContent.innerHTML = marked.parse(content);
+                } else {
+                    messageContent.textContent = content;
+                }
+
+                const messageTime = document.createElement('div');
+                messageTime.className = 'message-time';
+                messageTime.textContent = this.getCurrentTime();
+
+                messageDiv.appendChild(messageContent);
+                messageDiv.appendChild(messageTime);
+
+                this.chatContainer.appendChild(messageDiv);
+                
+                // Ensure scrolling happens after content is rendered
+                this.scrollToBottom();
+                
+                // Save to user's chat history
+                if (saveToHistory) {
+                    userManager.addChatMessage({
+                        content: content,
+                        sender: type === 'user' ? 'user' : 'assistant',
+                        type: 'text'
+                    });
+                    
+                    // Update user XP for engagement
+                    if (type === 'user') {
+                        updateUserSpecificContent(userManager.getUserProfile());
+                    }
+                }
+            }
+
+            addTypingIndicator() {
+                if (!this.chatContainer) return;
+
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message ai-message typing-indicator';
+                typingDiv.id = 'typing-indicator';
+                
+                const dotsContainer = document.createElement('div');
+                dotsContainer.className = 'typing-dots';
+                
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('span');
+                    dotsContainer.appendChild(dot);
+                }
+                
+                typingDiv.appendChild(dotsContainer);
+                this.chatContainer.appendChild(typingDiv);
+                this.scrollToBottom();
+            }
+
+            removeTypingIndicator() {
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) {
+                    indicator.remove();
+                    // Ensure we scroll after removing typing indicator
+                    setTimeout(() => this.scrollToBottom(), 50);
+                }
+            }
+
+            scrollToBottom() {
+                const container = this.chatScrollContainer || this.chatContainer?.parentElement;
+                if (!container) return;
+                
+                // Use requestAnimationFrame to ensure DOM has updated
+                requestAnimationFrame(() => {
+                    // Scroll to the very bottom
+                    container.scrollTop = container.scrollHeight;
+                    
+                    // Double-check with a slight delay for dynamic content
+                    setTimeout(() => {
+                        container.scrollTop = container.scrollHeight;
+                        
+                        // Hide scroll button if we're at bottom
+                        if (this.scrollToBottomBtn) {
+                            this.scrollToBottomBtn.classList.remove('show');
+                        }
+                    }, 100);
+                });
+            }
+
+            getCurrentTime() {
+                const now = new Date();
+                return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            setLoadingState(loading) {
+                this.isLoading = loading;
+                if (this.sendBtn) {
+                    this.sendBtn.disabled = loading;
+                }
+                if (this.inputBox) {
+                    this.inputBox.disabled = loading;
+                }
+            }
+        }
+
+        // Create floating particles
+        function createCosmicParticles() {
             const particlesContainer = document.getElementById('particles');
+            if (!particlesContainer) return;
+            
             const particleCount = 50;
             
             for (let i = 0; i < particleCount; i++) {
@@ -255,7 +2000,271 @@
                 
                 particlesContainer.appendChild(particle);
             }
+        }
+
+        // Add logout functionality to profile button
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileBtn = document.getElementById('profileBtn');
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        userManager.logout();
+                    }
+                });
+            }
         });
+
+        // Debug functions for testing
+        window.testUserManager = function() {
+            console.log('👤 Current user:', userManager.getUserProfile());
+            console.log('💬 Chat history:', userManager.getChatHistory());
+            console.log('🎯 Onboarding data:', userManager.loadOnboardingData());
+            console.log('🛠️ All user preferences:', {
+                generatedLearningPath: userManager.getPreference('generatedLearningPath'),
+                learningPathLastShown: userManager.getPreference('learningPathLastShown'),
+                learningPathGeneratedAt: userManager.getPreference('learningPathGeneratedAt')
+            });
+        };
+        
+        window.clearUserData = function() {
+            if (confirm('This will clear all user data. Are you sure?')) {
+                userManager.logout();
+            }
+        };
+
+        // Debug function for AI-generated learning plan
+        window.debugLearningPath = function() {
+            if (window.enhancedAI) {
+                console.log('🔍 Debug AI Learning Plan Generation:');
+                console.log('- AI Instance:', window.enhancedAI);
+                console.log('- Onboarding Data:', window.enhancedAI.onboardingData);
+                console.log('- Last Shown Plan:', userManager.getPreference('learningPlanLastShown'));
+                
+                // Try to regenerate plan
+                console.log('🔄 Attempting to regenerate AI learning plan...');
+                window.enhancedAI.generatePersonalizedLearningPlan();
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Force regenerate AI learning plan
+        window.forceRegeneratePlan = function() {
+            if (window.enhancedAI) {
+                console.log('🔄 Force regenerating AI learning plan...');
+                // Clear existing plan preference
+                userManager.setPreference('learningPlanLastShown', null);
+                
+                // Regenerate
+                window.enhancedAI.generatePersonalizedLearningPlan();
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Test API connection
+        window.testDeepSeekAPI = function() {
+            if (window.enhancedAI) {
+                console.log('🧪 Testing DeepSeek API connection...');
+                const testPrompt = 'You are an AI art mentor. Respond with a brief greeting.';
+                window.enhancedAI.callDeepSeekAPI(testPrompt).then(response => {
+                    console.log('✅ API Test Response:', response);
+                }).catch(error => {
+                    console.log('❌ API Test Failed:', error);
+                });
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Direct API test
+        window.directAPITest = function() {
+            fetch('/api/ai/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Hello, can you help me with art?',
+                    chatHistory: [],
+                    maxTokens: 500,
+                    temperature: 0.7
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ Direct API Test Response:', data);
+            })
+            .catch(error => {
+                console.log('❌ Direct API Test Failed:', error);
+            });
+        };
+
+        // Debug function for onboarding data parsing
+        window.debugOnboardingParsing = function() {
+            if (window.enhancedAI) {
+                console.log('🔍 Debug - Onboarding Data Parsing');
+                console.log('================================');
+                
+                const ai = window.enhancedAI;
+                
+                // Check raw onboarding data
+                const userManagerData = userManager.loadOnboardingData();
+                const classData = localStorage.getItem('weart-onboarding-data');
+                const parsedClassData = classData ? JSON.parse(classData) : null;
+                
+                console.log('Raw user manager data:', userManagerData);
+                console.log('Raw onboarding class data:', parsedClassData);
+                console.log('AI loaded data:', ai.onboardingData);
+                
+                // Test extraction functions
+                if (ai.onboardingData) {
+                    console.log('\n🧪 Testing extraction functions:');
+                    console.log('- colorSelection:', ai.extractValue(ai.onboardingData.colorSelection, 'exploration'));
+                    console.log('- pathSelection:', ai.extractValue(ai.onboardingData.pathSelection, 'student'));
+                    console.log('- learningGoals:', ai.extractArray(ai.onboardingData.learningGoals));
+                    console.log('- artMediums:', ai.extractArray(ai.onboardingData.artMediums));
+                }
+                
+                // Test prompt generation
+                const user = userManager.getUserProfile();
+                if (user && ai.onboardingData) {
+                    console.log('\n📝 Generated prompt:');
+                    const prompt = ai.createLearningPlanPrompt(user, ai.onboardingData);
+                    console.log(prompt);
+                }
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Force clear onboarding data and regenerate plan
+        window.resetOnboardingTest = function() {
+            // Clear learning plan preference
+            userManager.setPreference('learningPlanLastShown', null);
+            
+            // Clear chat history
+            userManager.saveChatHistory([]);
+            
+            // Reload page to reinitialize
+            window.location.reload();
+        };
+
+        // Test markdown rendering
+        window.testMarkdownRendering = function() {
+            if (window.enhancedAI) {
+                console.log('🧪 Testing markdown rendering...');
+                const testMarkdown = `## Test Markdown Message
+
+Here's a **bold text** and *italic text* example.
+
+### Learning Plan Example:
+- **Week 1**: Foundation building
+- **Week 2**: Advanced techniques
+- \`code example\`
+
+> This is a blockquote for emphasis
+
+1. Numbered list item 1
+2. Numbered list item 2
+
+That's the test! 🎨`;
+
+                window.enhancedAI.addMessage(testMarkdown, 'ai', false);
+                console.log('✅ Test markdown message added');
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Test music medium detection
+        window.testMusicMedium = function() {
+            if (window.enhancedAI) {
+                console.log('🎵 Testing music medium detection...');
+                const ai = window.enhancedAI;
+                
+                // Test medium detection
+                const testMediums = ['music', 'piano', 'guitar', 'singing', 'vocals'];
+                testMediums.forEach(medium => {
+                    const detected = ai.getPrimaryMedium(medium);
+                    console.log(`"${medium}" -> detected as: "${detected}"`);
+                });
+                
+                // Test full learning plan generation
+                const testPrompt = `You are WeArt's AI Art Mentor. Create a personalized learning plan for jack based on their onboarding responses.
+
+USER PROFILE:
+- Name: jack
+- Creative Vision: exploration
+- Background/Level: high
+- Learning Goals: direction
+- Preferred Art Mediums: music
+
+INSTRUCTIONS: Create a personalized learning plan...`;
+
+                const plan = ai.generateMockLearningPlan(testPrompt);
+                console.log('🎵 Generated music learning plan:');
+                console.log(plan);
+                
+                // Add to chat for visual verification
+                ai.addMessage(plan, 'ai', false);
+                
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Force regenerate learning plan using real DeepSeek API
+        window.regenerateLearningPlan = function() {
+            if (window.enhancedAI) {
+                console.log('🔄 Force regenerating learning plan using real DeepSeek API...');
+                
+                // Clear existing plan preference
+                userManager.setPreference('learningPlanLastShown', null);
+                
+                // Clear chat history to trigger regeneration
+                userManager.saveChatHistory([]);
+                
+                // Force regenerate with real API
+                setTimeout(() => {
+                    window.enhancedAI.generatePersonalizedLearningPlan();
+                }, 500);
+                
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
+
+        // Test the API with a specific medium
+        window.testAPIWithMedium = function(medium = 'music') {
+            if (window.enhancedAI) {
+                console.log(`🧪 Testing API with medium: ${medium}`);
+                
+                const testPrompt = `You are WeArt's AI Art Mentor. Create a personalized learning plan for TestUser.
+
+USER PROFILE:
+- Name: TestUser
+- Creative Vision: exploration
+- Background/Level: intermediate
+- Learning Goals: skill development, creative expression
+- Preferred Art Mediums: ${medium}
+
+IMPORTANT: This user specifically selected "${medium}" as their art medium. Your learning plan MUST be tailored to this specific medium, not generic art advice.
+
+Create a personalized 8-week learning roadmap specific to ${medium}. Include weekly goals, specific techniques, and practical milestones relevant to ${medium}.`;
+
+                window.enhancedAI.callDeepSeekAPI(testPrompt).then(response => {
+                    console.log('✅ API Test Response:');
+                    console.log(response);
+                    window.enhancedAI.addMessage(response, 'ai', false);
+                }).catch(error => {
+                    console.log('❌ API Test Failed:', error);
+                });
+                
+            } else {
+                console.log('❌ Enhanced AI not initialized yet');
+            }
+        };
     </script>
 </body>
 </html> 

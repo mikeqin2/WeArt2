@@ -1,907 +1,351 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>艺术社群 | WeArt</title>
+    <title data-i18n="explore_art">Explore Art - WeArt</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <style>
-        /* Base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-        }
-        
-        body {
-            background-color: #040816;
-            color: #E5F6FF;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        
-        /* Cosmic background */
-        .cosmic-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #040816 0%, #0A1F43 100%);
-            overflow: hidden;
-        }
-        
-        .stars-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('path/to/stars.png'); /* Replace with actual starfield image */
-            background-size: cover;
-            opacity: 0.6;
-        }
-        
-        .nebula-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('path/to/nebula.png'); /* Replace with actual nebula image */
-            background-size: cover;
-            opacity: 0.3;
-        }
-        
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* Navigation bar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            background: rgba(4, 8, 22, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            padding: 0 24px;
-            z-index: 100;
-        }
-        
-        .logo {
-            height: 36px;
-            margin-right: 40px;
-        }
-        
-        .search-container {
-            position: relative;
-            flex: 0 0 300px;
-            margin-right: auto;
-        }
-        
-        .search-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 10px 16px 10px 40px;
-            font-size: 14px;
-            color: #E5F6FF;
-            transition: all 0.3s ease;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #00ABFF;
-            box-shadow: 0 0 0 2px rgba(0, 171, 255, 0.2);
-        }
-        
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            opacity: 0.6;
-        }
-        
-        .nav-links {
-            display: flex;
-            align-items: center;
+        /* Explore Page Specific Styles */
+        .explore-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
             gap: 24px;
+            min-height: calc(100vh - 120px);
         }
-        
-        .nav-link {
-            color: #7BA0C4;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: #E5F6FF;
-        }
-        
-        .nav-link.active {
-            color: #00ABFF;
-        }
-        
-        .notification-icon {
-            position: relative;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .notification-icon:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: scale(1.05);
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 14px;
-            height: 14px;
-            background: #FF3B5C;
-            border-radius: 50%;
-            border: 2px solid #040816;
-        }
-        
-        .create-button {
-            background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
-            border: none;
-            border-radius: 24px;
-            padding: 14px 28px;
-            color: white;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
-        }
-        
-        .create-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(34, 211, 238, 0.4);
-        }
-        
-        .avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .avatar:hover {
-            transform: scale(1.05);
-        }
-        
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* Main content layout */
-        .main-content {
-            margin-left: 220px;
-            padding: 24px 32px;
-        }
-        
-        /* Panel sections for right sidebar */
-        .panel-section {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+
+        /* Sidebar Filters */
+        .explore-sidebar {
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 20px;
             padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
         }
-        
-        .panel-section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+
+        .sidebar-section {
+            margin-bottom: 32px;
         }
-        
-        .panel-title {
-            font-size: 20px;
+
+        .sidebar-title {
+            font-size: 16px;
             font-weight: 600;
+            color: #fff;
             margin-bottom: 16px;
-            color: rgba(255, 255, 255, 0.95);
             display: flex;
             align-items: center;
+            gap: 8px;
         }
-        
-        .panel-title-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            opacity: 0.8;
-        }
-        
-        /* Feed section */
-        .feed-section {
-            flex: 1;
-            padding-right: 24px;
-        }
-        
-        .feed-header {
+
+        .filter-option {
             display: flex;
             align-items: center;
-            margin-bottom: 24px;
-        }
-        
-        .feed-title {
-            font-family: 'Poppins', 'PingFang SC', sans-serif;
-            font-weight: 600;
-            font-size: 24px;
-            color: #E5F6FF;
-            margin-right: auto;
-        }
-        
-        .feed-filter {
-            display: flex;
-            gap: 16px;
-        }
-        
-        .filter-button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
-            color: #7BA0C4;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-bottom: 8px;
         }
-        
-        .filter-button:hover, .filter-button.active {
-            background: rgba(0, 171, 255, 0.1);
-            border-color: #00ABFF;
-            color: #00ABFF;
+
+        .filter-option:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
-        
-        .feed-grid {
+
+        .filter-option.active {
+            background: rgba(78, 241, 255, 0.1);
+            color: #4EF1FF;
+        }
+
+        .filter-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .filter-option.active .filter-checkbox {
+            background: #4EF1FF;
+            border-color: #4EF1FF;
+        }
+
+        .filter-option.active .filter-checkbox::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: #070B28;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Art Gallery Grid */
+        .art-gallery {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 24px;
+            padding: 20px 0;
         }
-        
-        /* Adjust content grid for explore page */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 32px;
-        }
-        
-        /* Override some dashboard styles for explore page */
-        .main-content {
-            margin-left: 220px;
-            padding: 24px 32px;
-        }
-        
-        /* Art card */
-        .art-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
+
+        .art-post {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
         
-        .art-card:hover {
+        .art-post:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 171, 255, 0.1);
-            border-color: rgba(0, 171, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(78, 241, 255, 0.2);
+            border-color: rgba(78, 241, 255, 0.3);
         }
         
         .art-image {
-            position: relative;
             width: 100%;
-            height: 0;
-            padding-bottom: 100%;
-            overflow: hidden;
-        }
-        
-        .art-image img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            height: 280px;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            background: linear-gradient(135deg, rgba(78, 241, 255, 0.1), rgba(24, 141, 247, 0.1));
         }
-        
-        .art-card:hover .art-image img {
-            transform: scale(1.05);
+
+        .art-content {
+            padding: 20px;
         }
-        
-        .art-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(4, 8, 22, 0.8) 0%, rgba(4, 8, 22, 0) 50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            display: flex;
-            align-items: flex-end;
-            padding: 16px;
-        }
-        
-        .art-card:hover .art-overlay {
-            opacity: 1;
-        }
-        
-        .art-actions {
-            display: flex;
-            gap: 16px;
-        }
-        
-        .art-action {
-            width: 36px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
+
+        .art-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
-        .art-action:hover {
-            background: rgba(0, 171, 255, 0.2);
-            transform: scale(1.1);
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(78, 241, 255, 0.3);
+            object-fit: cover;
         }
         
-        .art-action img {
-            width: 18px;
-            height: 18px;
-            opacity: 0.8;
+        .user-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
         }
         
-        .art-info {
-            padding: 16px;
+        .user-info .post-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
         }
         
         .art-title {
             font-size: 18px;
             font-weight: 600;
+            color: #fff;
             margin-bottom: 8px;
-            color: #E5F6FF;
         }
         
-        .art-creator {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .creator-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #00ABFF;
-            margin-right: 8px;
-        }
-        
-        .creator-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .creator-name {
+        .art-description {
             font-size: 14px;
-            color: #7BA0C4;
-        }
-        
-        .art-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
-        .art-tag {
-            background: rgba(0, 171, 255, 0.1);
-            border-radius: 12px;
-            padding: 4px 10px;
-            font-size: 12px;
-            color: #00ABFF;
-        }
-        
-        /* Discussion card */
-        .discussion-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .discussion-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 171, 255, 0.1);
-            border-color: rgba(0, 171, 255, 0.2);
-        }
-        
-        .discussion-header {
-            display: flex;
-            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
             margin-bottom: 16px;
         }
-        
-        .discussion-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #9B5FFF;
-            margin-right: 12px;
-        }
-        
-        .discussion-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .discussion-meta {
-            flex: 1;
-        }
-        
-        .discussion-author {
-            font-size: 16px;
-            font-weight: 600;
-            color: #E5F6FF;
-            margin-bottom: 2px;
-        }
-        
-        .discussion-time {
-            font-size: 12px;
-            color: #7BA0C4;
-        }
-        
-        .discussion-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #E5F6FF;
-        }
-        
-        .discussion-content {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #7BA0C4;
-            margin-bottom: 16px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .discussion-replies {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            padding: 12px;
-        }
-        
-        .reply {
-            display: flex;
-            margin-bottom: 12px;
-        }
-        
-        .reply:last-child {
-            margin-bottom: 0;
-        }
-        
-        .reply-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-        
-        .reply-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .reply-content {
-            flex: 1;
-        }
-        
-        .reply-author {
-            font-size: 14px;
-            font-weight: 500;
-            color: #E5F6FF;
-            margin-bottom: 2px;
-        }
-        
-        .reply-text {
-            font-size: 13px;
-            color: #7BA0C4;
-            line-height: 1.4;
-        }
-        
-        .discussion-footer {
+
+        .art-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 16px;
         }
         
-        .discussion-stats {
+        .action-buttons {
             display: flex;
             gap: 16px;
         }
         
-        .stat {
+        .action-btn {
             display: flex;
             align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
             font-size: 13px;
-            color: #7BA0C4;
+            transition: all 0.3s ease;
         }
         
-        .stat-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 6px;
-            opacity: 0.7;
+        .action-btn:hover {
+            color: #4EF1FF;
         }
-        
 
-        .discussion-action {
-            background: rgba(0, 171, 255, 0.1);
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 13px;
-            color: #00ABFF;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .action-btn.active {
+            color: #4EF1FF;
         }
-        
-        .discussion-action:hover {
-            background: rgba(0, 171, 255, 0.2);
+
+        .comment-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        /* Orbit panel */
-        .orbit-panel {
-            flex: 0 0 30%;
-            padding-left: 24px;
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .trending-tags {
+
+        .comment {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .trending-tag {
-            background: rgba(155, 95, 255, 0.1);
-            border: 1px solid rgba(155, 95, 255, 0.2);
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
-            color: #9B5FFF;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-        }
-        
-        .trending-tag:hover {
-            background: rgba(155, 95, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .tag-count {
-            background: rgba(155, 95, 255, 0.2);
-            border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 11px;
-            margin-left: 6px;
-        }
-        
-        .challenge-card {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .challenge-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 242, 195, 0.2);
-        }
-        
-        .challenge-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #E5F6FF;
-            margin-bottom: 8px;
-        }
-        
-        .challenge-desc {
-            font-size: 13px;
-            color: #7BA0C4;
+            gap: 12px;
             margin-bottom: 12px;
-            line-height: 1.5;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(78, 241, 255, 0.2);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-author {
+            font-size: 13px;
+            font-weight: 500;
+            color: #4EF1FF;
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
         }
         
-        .challenge-meta {
+        /* View Controls */
+        .view-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 24px;
         }
         
-        .challenge-time {
-            font-size: 12px;
-            color: #00F2C3;
+        .view-modes {
             display: flex;
-            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 8px;
         }
-        
-        .time-icon {
-            width: 14px;
-            height: 14px;
-            margin-right: 4px;
-            opacity: 0.8;
-        }
-        
-        .challenge-join {
-            background: rgba(0, 242, 195, 0.1);
-            border-radius: 12px;
-            padding: 4px 10px;
-            font-size: 12px;
-            color: #00F2C3;
+
+        .view-mode {
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            color: rgba(255, 255, 255, 0.6);
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
-        .challenge-join:hover {
-            background: rgba(0, 242, 195, 0.2);
+        .view-mode.active {
+            background: rgba(78, 241, 255, 0.2);
+            color: #4EF1FF;
         }
         
-        .voice-channels {
+        .sort-controls {
             display: flex;
-            flex-direction: column;
             gap: 12px;
-        }
-        
-        .voice-channel {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
         }
-        
-        .voice-channel:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 171, 255, 0.2);
-        }
-        
-        .channel-icon {
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 171, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-        }
-        
-        .channel-icon img {
-            width: 16px;
-            height: 16px;
-            opacity: 0.8;
-        }
-        
-        .channel-info {
-            flex: 1;
-        }
-        
-        .channel-name {
+
+        .sort-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
             font-size: 14px;
-            font-weight: 500;
-            color: #E5F6FF;
-            margin-bottom: 2px;
         }
-        
-        .channel-count {
-            font-size: 12px;
-            color: #7BA0C4;
-        }
-        
-        .channel-join {
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 171, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .channel-join:hover {
-            background: rgba(0, 171, 255, 0.2);
-            transform: scale(1.1);
-        }
-        
-        .channel-join img {
-            width: 16px;
-            height: 16px;
-            opacity: 0.8;
-        }
-        
-        /* Floating action button */
-        .floating-action {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
-            z-index: 90;
-            transition: all 0.3s ease;
-        }
-        
-        .floating-action:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 32px rgba(34, 211, 238, 0.4);
-        }
-        
-        .floating-action img {
-            width: 24px;
-            height: 24px;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 1200px) {
-            .feed-grid {
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .explore-container {
                 grid-template-columns: 1fr;
             }
-        }
-        
-        @media (max-width: 992px) {
-            .main-content {
-                flex-direction: column;
+            
+            .explore-sidebar {
+                position: static;
             }
             
-            .feed-section {
-                flex: 0 0 100%;
-                padding-right: 0;
-                margin-bottom: 40px;
-            }
-            
-            .orbit-panel {
-                flex: 0 0 100%;
-                padding-left: 0;
-                border-left: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.05);
-                padding-top: 24px;
+            .art-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             }
         }
-        
+
         @media (max-width: 768px) {
-            .search-container {
-                display: none;
-            }
-            
-            .nav-links {
+            .art-gallery {
+                grid-template-columns: 1fr;
+        }
+        
+            .view-controls {
+                flex-direction: column;
                 gap: 16px;
-            }
-            
-            .nav-link span {
-                display: none;
+                align-items: stretch;
             }
         }
-        
-        /* Animation for particles */
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-10px) translateX(5px); }
-            100% { transform: translateY(0) translateX(0); }
+
+        /* Art Categories */
+        .category-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: rgba(78, 241, 255, 0.1);
+            color: #4EF1FF;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-right: 8px;
         }
-        
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #00ABFF;
+
+        /* Loading and Empty States */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(78, 241, 255, 0.3);
             border-radius: 50%;
-            opacity: 0.5;
-            animation: float 8s infinite ease-in-out;
+            border-top-color: #4EF1FF;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 16px;
         }
-        
-        /* Entrance animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.8s forwards;
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
-        
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .art-card, .discussion-card {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        .art-card:nth-child(1) { animation: fadeIn 0.5s forwards 0.2s; }
-        .art-card:nth-child(2) { animation: fadeIn 0.5s forwards 0.3s; }
-        .art-card:nth-child(3) { animation: fadeIn 0.5s forwards 0.4s; }
-        .art-card:nth-child(4) { animation: fadeIn 0.5s forwards 0.5s; }
-        .discussion-card:nth-child(5) { animation: fadeIn 0.5s forwards 0.6s; }
-        .discussion-card:nth-child(6) { animation: fadeIn 0.5s forwards 0.7s; }
     </style>
 </head>
-<body>
+<body data-page-title="explore_art">
     <!-- Cosmic background -->
     <div class="cosmic-background">
         <div class="stars-layer"></div>
@@ -913,41 +357,41 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
-                <h2>WeArt</h2>
+                <h2 data-i18n="weart">WeArt</h2>
             </div>
             
             <div class="nav-menu">
-                <div class="nav-item" data-page="dashboard">
+                <div class="nav-item" data-page="dashboard" onclick="window.location.href='/index.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9,22 9,12 15,12 15,22"/>
                     </svg>
-                    <span>Dashboard</span>
+                    <span data-i18n="dashboard">Dashboard</span>
                 </div>
                 
-                <div class="nav-item active" data-page="explore">
+                <div class="nav-item active" data-page="community">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="11" cy="11" r="8"/>
                         <path d="m21 21-4.35-4.35"/>
                     </svg>
-                    <span>Explore</span>
+                    <span data-i18n="community">Community</span>
                 </div>
                 
-                <div class="nav-item" data-page="courses">
+                <div class="nav-item" data-page="courses" onclick="window.location.href='/course.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                     </svg>
-                    <span>Courses</span>
+                    <span data-i18n="courses">Courses</span>
                 </div>
                 
-                <div class="nav-item" data-page="community">
+                <div class="nav-item" data-page="mentors" onclick="window.location.href='/mentor.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                         <circle cx="9" cy="7" r="4"/>
                         <path d="m22 21-3-3"/>
                         <circle cx="16" cy="11" r="3"/>
                     </svg>
-                    <span>Community</span>
+                    <span data-i18n="mentors">Mentors</span>
                 </div>
             </div>
         </nav>
@@ -957,512 +401,551 @@
             <!-- Header -->
             <header class="header">
                 <div class="header-left">
-                    <h1 class="weart-title">艺术社群</h1>
+                    <h1 class="weart-title" data-i18n="explore_art">Explore Art</h1>
                     <div class="search-container">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <circle cx="11" cy="11" r="8"/>
                             <path d="m21 21-4.35-4.35"/>
                         </svg>
-                        <input type="text" class="search-bar" placeholder="搜索艺术作品、讨论、艺术家...">
+                        <input type="text" class="search-bar" data-i18n-placeholder="search_artworks" placeholder="Search artworks, artists..." id="searchInput">
                     </div>
                 </div>
                 <div class="header-right">
-                    <div class="notification-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: rgba(255, 255, 255, 0.7);">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    <button class="create-prompt-btn" id="createPromptBtn" data-i18n="share_artwork">Share Artwork</button>
+                    <button class="profile-btn" id="profileBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
                         </svg>
-                        <div class="notification-badge"></div>
-                    </div>
-                    <button class="create-button">创作</button>
-                    <div class="avatar">
-                        <img src="path/to/user-avatar.jpg" alt="User Avatar">
-                    </div>
+                    </button>
                 </div>
             </header>
 
-            <!-- Content Grid -->
-            <div class="content-grid">
-                <!-- Feed section -->
-                <div class="feed-section">
-                    <div class="feed-header fade-in">
-                        <h2 class="feed-title">艺术社群</h2>
+            <!-- Explore Container -->
+            <div class="explore-container">
+                <!-- Sidebar Filters -->
+                <aside class="explore-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="ri-filter-line"></i>
+                            <span data-i18n="filter_artworks">Filter Artworks</span>
+                        </h3>
                         
-                        <div class="feed-filter">
-                            <div class="filter-button active">全部</div>
-                            <div class="filter-button">作品</div>
-                            <div class="filter-button">讨论</div>
-                            <div class="filter-button">关注</div>
+                        <div class="filter-option active" data-filter="all">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="all_artworks">All Artworks</span>
                         </div>
+                        
+                        <div class="filter-option" data-filter="trending">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="trending">Trending</span>
                     </div>
                     
-                    <div class="feed-grid">
-                        <!-- Art card 1 -->
-                        <div class="art-card">
-                            <div class="art-image">
-                                <img src="path/to/artwork1.jpg" alt="Artwork 1">
-                                <div class="art-overlay">
-                                    <div class="art-actions">
-                                        <div class="art-action">
-                                            <img src="path/to/like-icon.svg" alt="Like">
+                        <div class="filter-option" data-filter="recent">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="recent">Recent</span>
                                         </div>
-                                        <div class="art-action">
-                                            <img src="path/to/comment-icon.svg" alt="Comment">
                                         </div>
-                                        <div class="art-action">
-                                            <img src="path/to/save-icon.svg" alt="Save">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="art-info">
-                                <h3 class="art-title">星空下的梦想家</h3>
-                                <div class="art-creator">
-                                    <div class="creator-avatar">
-                                        <img src="path/to/creator1-avatar.jpg" alt="Creator 1">
-                                    </div>
-                                    <div class="creator-name">林小艺</div>
-                                </div>
-                                <div class="art-tags">
-                                    <div class="art-tag">数字绘画</div>
-                                    <div class="art-tag">星空</div>
-                                    <div class="art-tag">梦幻</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Art card 2 -->
-                        <div class="art-card">
-                            <div class="art-image">
-                                <img src="path/to/artwork2.jpg" alt="Artwork 2">
-                                <div class="art-overlay">
-                                    <div class="art-actions">
-                                        <div class="art-action">
-                                            <img src="path/to/like-icon.svg" alt="Like">
-                                        </div>
-                                        <div class="art-action">
-                                            <img src="path/to/comment-icon.svg" alt="Comment">
-                                        </div>
-                                        <div class="art-action">
-                                            <img src="path/to/save-icon.svg" alt="Save">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="art-info">
-                                <h3 class="art-title">未来城市</h3>
-                                <div class="art-creator">
-                                    <div class="creator-avatar">
-                                        <img src="path/to/creator2-avatar.jpg" alt="Creator 2">
-                                    </div>
-                                    <div class="creator-name">张科技</div>
-                                </div>
-                                <div class="art-tags">
-                                    <div class="art-tag">3D建模</div>
-                                    <div class="art-tag">科幻</div>
-                                    <div class="art-tag">城市</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Art card 3 -->
-                        <div class="art-card">
-                            <div class="art-image">
-                                <img src="path/to/artwork3.jpg" alt="Artwork 3">
-                                <div class="art-overlay">
-                                    <div class="art-actions">
-                                        <div class="art-action">
-                                            <img src="path/to/like-icon.svg" alt="Like">
-                                        </div>
-                                        <div class="art-action">
-                                            <img src="path/to/comment-icon.svg" alt="Comment">
-                                        </div>
-                                        <div class="art-action">
-                                            <img src="path/to/save-icon.svg" alt="Save">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="art-info">
-                                <h3 class="art-title">水墨山水</h3>
-                                <div class="art-creator">
-                                    <div class="creator-avatar">
-                                        <img src="path/to/creator3-avatar.jpg" alt="Creator 3">
-                                    </div>
-                                    <div class="creator-name">王墨香</div>
-                                </div>
-                                <div class="art-tags">
-                                    <div class="art-tag">传统艺术</div>
-                                    <div class="art-tag">水墨</div>
-                                    <div class="art-tag">山水</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Art card 4 -->
-                        <div class="art-card">
-                            <div class="art-image">
-                                <img src="path/to/artwork4.jpg" alt="Artwork 4">
-                                <div class="art-overlay">
-                                    <div class="art-actions">
-                                        <div class="art-action">
-                                            <img src="path/to/like-icon.svg" alt="Like">
-                                        </div>
-                                        <div class="art-action">
-                                            <img src="path/to/comment-icon.svg" alt="Comment">
-                                        </div>
-                                        <div class="art-action">
-                                            <img src="path/to/save-icon.svg" alt="Save">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="art-info">
-                                <h3 class="art-title">霓虹人像</h3>
-                                <div class="art-creator">
-                                    <div class="creator-avatar">
-                                        <img src="path/to/creator4-avatar.jpg" alt="Creator 4">
-                                    </div>
-                                    <div class="creator-name">李霓光</div>
-                                </div>
-                                <div class="art-tags">
-                                    <div class="art-tag">摄影</div>
-                                    <div class="art-tag">人像</div>
-                                    <div class="art-tag">霓虹</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Discussion card 1 -->
-                        <div class="discussion-card">
-                            <div class="discussion-header">
-                                <div class="discussion-avatar">
-                                    <img src="path/to/user1-avatar.jpg" alt="User 1">
-                                </div>
-                                <div class="discussion-meta">
-                                    <div class="discussion-author">陈艺术</div>
-                                    <div class="discussion-time">2小时前</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="discussion-title">AI与传统艺术的融合探讨</h3>
-                            <p class="discussion-content">大家好，我最近在尝试将AI技术与传统国画相结合，创作了一些作品。我发现AI可以帮助我快速生成草图和构图，但保留传统笔墨的韵味仍然是一个挑战。有没有同样在探索这个领域的艺术家，可以分享一下经验？</p>
-                            
-                            <div class="discussion-replies">
-                                <div class="reply">
-                                    <div class="reply-avatar">
-                                        <img src="path/to/user2-avatar.jpg" alt="User 2">
-                                    </div>
-                                    <div class="reply-content">
-                                        <div class="reply-author">王墨香</div>
-                                        <div class="reply-text">我也在做类似的尝试，发现关键是在AI生成后进行手工调整，保留传统笔触的质感。可以线下交流一下。</div>
-                                    </div>
-                                </div>
-                                <div class="reply">
-                                    <div class="reply-avatar">
-                                        <img src="path/to/user3-avatar.jpg" alt="User 3">
-                                    </div>
-                                    <div class="reply-content">
-                                        <div class="reply-author">张科技</div>
-                                        <div class="reply-text">推荐你试试最新的风格迁移算法，我最近开发了一个专门针对国画的模型，效果不错。</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="discussion-footer">
-                                <div class="discussion-stats">
-                                    <div class="stat">
-                                        <img src="path/to/like-icon.svg" alt="Likes" class="stat-icon">
-                                        <span>24</span>
-                                    </div>
-                                    <div class="stat">
-                                        <img src="path/to/comment-icon.svg" alt="Comments" class="stat-icon">
-                                        <span>8</span>
-                                    </div>
-                                    <div class="stat">
-                                        <img src="path/to/view-icon.svg" alt="Views" class="stat-icon">
-                                        <span>142</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="discussion-action">参与讨论</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Discussion card 2 -->
-                        <div class="discussion-card">
-                            <div class="discussion-header">
-                                <div class="discussion-avatar">
-                                    <img src="path/to/user5-avatar.jpg" alt="User 5">
-                                </div>
-                                <div class="discussion-meta">
-                                    <div class="discussion-author">刘创意</div>
-                                    <div class="discussion-time">昨天</div>
-                                </div>
-                            </div>
-                            
-                            <h3 class="discussion-title">分享：我的创作灵感来源</h3>
-                            <p class="discussion-content">作为一名艺术创作者，灵感对我们来说至关重要。我想分享一下我获取灵感的几种方式：1. 大自然观察；2. 城市漫步；3. 音乐冥想；4. 阅读诗歌和小说；5. 观看电影和纪录片。这些方法帮助我突破创作瓶颈，希望对大家有所帮助。</p>
-                            
-                            <div class="discussion-replies">
-                                <div class="reply">
-                                    <div class="reply-avatar">
-                                        <img src="path/to/user6-avatar.jpg" alt="User 6">
-                                    </div>
-                                    <div class="reply-content">
-                                        <div class="reply-author">林小艺</div>
-                                        <div class="reply-text">我也喜欢从音乐中获取灵感，尤其是电影配乐，能够快速带我进入特定的情绪状态。</div>
-                                    </div>
-                                </div>
-                                <div class="reply">
-                                    <div class="reply-avatar">
-                                        <img src="path/to/user7-avatar.jpg" alt="User 7">
-                                    </div>
-                                    <div class="reply-content">
-                                        <div class="reply-author">周梦想</div>
-                                        <div class="reply-text">我会推荐梦境记录，每天早上记录梦境内容，里面有很多奇妙的创意。</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="discussion-footer">
-                                <div class="discussion-stats">
-                                    <div class="stat">
-                                        <img src="path/to/like-icon.svg" alt="Likes" class="stat-icon">
-                                        <span>56</span>
-                                    </div>
-                                    <div class="stat">
-                                        <img src="path/to/comment-icon.svg" alt="Comments" class="stat-icon">
-                                        <span>12</span>
-                                    </div>
-                                    <div class="stat">
-                                        <img src="path/to/view-icon.svg" alt="Views" class="stat-icon">
-                                        <span>238</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="discussion-action">参与讨论</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Right Sidebar (Orbit panel) -->
-                <div class="right-sidebar">
-                    <!-- Trending tags section -->
-                    <div class="panel-section fade-in" style="animation-delay: 0.2s;">
-                        <h3 class="panel-title">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="panel-title-icon" style="color: rgba(255, 255, 255, 0.8);">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                            </svg>
-                            热门话题
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="ri-palette-line"></i>
+                            <span data-i18n="art_categories">Categories</span>
                         </h3>
                         
-                        <div class="trending-tags">
-                            <div class="trending-tag">
-                                <span>#AI艺术</span>
-                                <span class="tag-count">328</span>
+                        <div class="filter-option" data-category="abstract">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="abstract_art">Abstract Art</span>
+                                        </div>
+                        
+                        <div class="filter-option" data-category="photography">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="photography">Photography</span>
+                                    </div>
+                        
+                        <div class="filter-option" data-category="sculpture">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="sculpture">Sculpture</span>
+                                </div>
+                        
+                        <div class="filter-option" data-category="fashion">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="fashion_design">Fashion Design</span>
                             </div>
-                            <div class="trending-tag">
-                                <span>#数字绘画</span>
-                                <span class="tag-count">245</span>
-                            </div>
-                            <div class="trending-tag">
-                                <span>#创意摄影</span>
-                                <span class="tag-count">187</span>
-                            </div>
-                            <div class="trending-tag">
-                                <span>#水彩技法</span>
-                                <span class="tag-count">156</span>
-                            </div>
-                            <div class="trending-tag">
-                                <span>#艺术理论</span>
-                                <span class="tag-count">132</span>
-                            </div>
-                            <div class="trending-tag">
-                                <span>#插画设计</span>
-                                <span class="tag-count">98</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Upcoming challenges section -->
-                    <div class="panel-section fade-in" style="animation-delay: 0.3s;">
-                        <h3 class="panel-title">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="panel-title-icon" style="color: rgba(255, 255, 255, 0.8);">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                            即将开始的挑战
+                        
+                        <div class="filter-option" data-category="traditional">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="traditional_art">Traditional Art</span>
+                                    </div>
+                                </div>
+
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">
+                            <i class="ri-star-line"></i>
+                            <span data-i18n="engagement">Engagement</span>
                         </h3>
                         
-                        <div class="challenge-card">
-                            <h4 class="challenge-title">未来城市设计大赛</h4>
-                            <p class="challenge-desc">设计一座融合科技与自然的未来城市，展示你对2050年城市生活的想象。</p>
-                            <div class="challenge-meta">
-                                <div class="challenge-time">
-                                    <img src="path/to/time-icon.svg" alt="Time" class="time-icon">
-                                    <span>3天后开始</span>
+                        <div class="filter-option" data-engagement="most-liked">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="most_liked">Most Liked</span>
                                 </div>
-                                <div class="challenge-join">参与</div>
+                        
+                        <div class="filter-option" data-engagement="most-commented">
+                            <div class="filter-checkbox"></div>
+                            <span data-i18n="most_commented">Most Commented</span>
+                            </div>
+                        </div>
+                </aside>
+
+                <!-- Main Gallery Area -->
+                <div class="gallery-area">
+                    <!-- View Controls -->
+                    <div class="view-controls">
+                        <div class="view-modes">
+                            <button class="view-mode active" data-view="grid" data-i18n="grid_view">Grid</button>
+                            <button class="view-mode" data-view="list" data-i18n="list_view">List</button>
+                        </div>
+                        
+                        <div class="sort-controls">
+                            <label for="sort-select" data-i18n="sort_by">Sort by:</label>
+                            <select id="sort-select" class="sort-select">
+                                <option value="newest" data-i18n="newest_first">Newest First</option>
+                                <option value="oldest" data-i18n="oldest_first">Oldest First</option>
+                                <option value="popular" data-i18n="most_popular">Most Popular</option>
+                                <option value="commented" data-i18n="most_discussed">Most Discussed</option>
+                            </select>
                             </div>
                         </div>
                         
-                        <div class="challenge-card">
-                            <h4 class="challenge-title">传统与现代艺术融合</h4>
-                            <p class="challenge-desc">创作一件将传统艺术元素与现代艺术风格相结合的作品。</p>
-                            <div class="challenge-meta">
-                                <div class="challenge-time">
-                                    <img src="path/to/time-icon.svg" alt="Time" class="time-icon">
-                                    <span>5天后开始</span>
-                                </div>
-                                <div class="challenge-join">参与</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Voice channels section -->
-                    <div class="panel-section fade-in" style="animation-delay: 0.4s;">
-                        <h3 class="panel-title">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="panel-title-icon" style="color: rgba(255, 255, 255, 0.8);">
-                                <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
-                                <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
-                                <line x1="12" y1="18" x2="12" y2="22"/>
-                                <line x1="8" y1="22" x2="16" y2="22"/>
-                            </svg>
-                            活跃语音频道
-                        </h3>
-                        
-                        <div class="voice-channels">
-                            <div class="voice-channel">
-                                <div class="channel-icon">
-                                    <img src="path/to/palette-icon.svg" alt="Art">
-                                </div>
-                                <div class="channel-info">
-                                    <div class="channel-name">绘画技巧分享</div>
-                                    <div class="channel-count">12人在线</div>
-                                </div>
-                                <div class="channel-join">
-                                    <img src="path/to/join-icon.svg" alt="Join">
-                                </div>
-                            </div>
-                            
-                            <div class="voice-channel">
-                                <div class="channel-icon">
-                                    <img src="path/to/camera-icon.svg" alt="Photography">
-                                </div>
-                                <div class="channel-info">
-                                    <div class="channel-name">摄影构图讨论</div>
-                                    <div class="channel-count">8人在线</div>
-                                </div>
-                                <div class="channel-join">
-                                    <img src="path/to/join-icon.svg" alt="Join">
-                                </div>
-                            </div>
-                            
-                            <div class="voice-channel">
-                                <div class="channel-icon">
-                                    <img src="path/to/ai-icon.svg" alt="AI">
-                                </div>
-                                <div class="channel-info">
-                                    <div class="channel-name">AI艺术工具交流</div>
-                                    <div class="channel-count">15人在线</div>
-                                </div>
-                                <div class="channel-join">
-                                    <img src="path/to/join-icon.svg" alt="Join">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <!-- Art Gallery -->
+                    <div class="art-gallery" id="artGallery">
+                        <!-- Loading State -->
+                        <div class="loading-state" id="loadingState">
+                            <div class="loading-spinner"></div>
+                            <p data-i18n="loading_artworks">Loading amazing artworks...</p>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    </div>
         </main>
-    </div>
-
-    
-    <!-- Floating action button -->
-    <div class="floating-action">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="color: white;">
-            <path d="M12 2v20m10-10H2"/>
-        </svg>
-    </div>
-    
+                        </div>
+                        
+    <!-- Include i18n system -->
+    <script src="js/i18n.js"></script>
+    <script src="js/script.js"></script>
+    <script src="navigation-fix.js"></script>
     <script>
+        // Art Gallery Data and Management
+        class ArtGallery {
+            constructor() {
+                this.artworks = [];
+                this.filteredArtworks = [];
+                this.currentFilters = {
+                    category: 'all',
+                    engagement: null,
+                    search: ''
+                };
+                this.currentSort = 'newest';
+                this.currentView = 'grid';
+                this.init();
+            }
 
+            async init() {
+                await this.loadArtworkData();
+                this.bindEvents();
+                this.renderArtworks();
+                this.createParticles();
+            }
+
+            async loadArtworkData() {
+                // Sample artwork data based on the CSV content and available images
+                this.artworks = [
+                    {
+                        id: 1,
+                        title: "几何色彩实验",
+                        description: "希望表带情绪乐感，大家觉得如何？",
+                        artist: "许言",
+                        profilePic: "assets/discussion_board/weart_profile1.PNG",
+                        image: "assets/discussion_board/circlep_A_vibrant_abstract_painting_in_the_style_of_Kandinsky_3e757a17-5a01-4c82-ac20-3c3e0e2734a1_1.png",
+                        category: "abstract",
+                        likes: 24,
+                        comments: [{
+                            author: "设计爱好者",
+                            profilePic: "assets/discussion_board/weart_profile2.PNG",
+                            text: "想问第4层弧线里的蓝紫色渐变，是偶然流淌还是精心设计的情绪语言？"
+                        }],
+                        timestamp: new Date('2024-01-15'),
+                        tags: ["几何", "色彩", "抽象"]
+                    },
+                    {
+                        id: 2,
+                        title: "柔软的金属",
+                        description: "自然形态与工业纹理是和谐还是碰撞",
+                        artist: "沈简一",
+                        profilePic: "assets/discussion_board/weart_profile3.PNG",
+                        image: "assets/discussion_board/circlep_A_sculpture_in_the_shape_of_an_abstract_flower_carved_9823ee37-6bf3-47a7-8ae6-a0071612f02d_3.png",
+                        category: "sculpture",
+                        likes: 31,
+                        comments: [{
+                            author: "艺术评论家",
+                            profilePic: "assets/discussion_board/weart_profile4.PNG",
+                            text: "质感与光影的碰撞好梦幻"
+                        }],
+                        timestamp: new Date('2024-01-14'),
+                        tags: ["雕塑", "金属", "自然"]
+                    },
+                    {
+                        id: 3,
+                        title: "女性解构主义",
+                        description: "用立体剪裁让褶皱化作流动花瓣，暗红脉络点亮粉紫梦境，求探讨先锋艺术与可穿性平衡",
+                        artist: "韩呈澈",
+                        profilePic: "assets/discussion_board/weart_profile5.PNG",
+                        image: "assets/discussion_board/circlep_A_High_fashion_photoshooting_in_a_photostudio_were_a__34487ba4-d355-42cc-b17a-0934fbe49b69_0.png",
+                        category: "fashion",
+                        likes: 45,
+                        comments: [{
+                            author: "时尚设计师",
+                            profilePic: "assets/discussion_board/weart_profile6.PNG",
+                            text: "焰燃烧的动势！想问设计师用了几层内衬撑起这个结构？"
+                        }],
+                        timestamp: new Date('2024-01-13'),
+                        tags: ["时尚", "解构", "创新"]
+                    },
+                    {
+                        id: 4,
+                        title: "非遗手绣",
+                        description: "深入民族特色，探索传承的力量。欢迎小伙伴加入我们下次深度游。",
+                        artist: "林晏舟",
+                        profilePic: "assets/discussion_board/weart_profile1.PNG",
+                        image: "assets/discussion_board/circlep_Close_up_shot_of_Yi_embroidery_patterns_in_the_hands__5ca8c8c1-a2b0-405a-97e4-8162d3310a80_2.png",
+                        category: "traditional",
+                        likes: 52,
+                        comments: [{
+                            author: "非遗爱好者",
+                            profilePic: "assets/discussion_board/weart_profile2.PNG",
+                            text: "举手举手"
+                        }],
+                        timestamp: new Date('2024-01-11'),
+                        tags: ["非遗", "手工", "传承"]
+                    },
+                    {
+                        id: 5,
+                        title: "秩序迷宫",
+                        description: "受到Brutalism启发，探讨科技将铸成未来圣殿还是废墟？",
+                        artist: "夏昭",
+                        profilePic: "assets/discussion_board/weart_profile3.PNG",
+                        image: "assets/discussion_board/circlep_A_brutalist_surreal_structure_collapsing_in_slow_moti_7fc75f35-0ff7-4e9a-b79d-11faadad47f9_1.png",
+                        category: "abstract",
+                        likes: 29,
+                        comments: [{
+                            author: "建筑评论家",
+                            profilePic: "assets/discussion_board/weart_profile4.PNG",
+                            text: "感受到作者通过反重力延续悬浮主题；通过迷失方向感对应超现实氛围。"
+                        }],
+                        timestamp: new Date('2024-01-10'),
+                        tags: ["建筑", "未来", "科技"]
+                    },
+                    {
+                        id: 6,
+                        title: "将山顶抹红",
+                        description: "摄影作品将大自然作为画布，光作为颜料，即诗意又具体。",
+                        artist: "向允然",
+                        profilePic: "assets/discussion_board/weart_profile5.PNG",
+                        image: "assets/discussion_board/circlep_mountain_at_night_professional_eye-catching_photo_dee_9b0ff39f-0356-4204-bd17-158abde063b5_2.png",
+                        category: "photography",
+                        likes: 67,
+                        comments: [{
+                            author: "风光摄影师",
+                            profilePic: "assets/discussion_board/weart_profile6.PNG",
+                            text: "光影的运用太棒了！"
+                        }],
+                        timestamp: new Date('2024-01-09'),
+                        tags: ["摄影", "自然", "光影"]
+                    }
+                ];
+
+                this.filteredArtworks = [...this.artworks];
+            }
+
+            bindEvents() {
+                // Filter events
+                document.querySelectorAll('.filter-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const filterType = e.currentTarget.dataset.filter || 
+                                         e.currentTarget.dataset.category || 
+                                         e.currentTarget.dataset.engagement;
+                        this.handleFilterChange(e.currentTarget, filterType);
+                    });
+                });
+
+                // Search events
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.currentFilters.search = e.target.value.toLowerCase();
+                        this.applyFilters();
+                    });
+                }
+
+                // Sort events
+                const sortSelect = document.getElementById('sort-select');
+                if (sortSelect) {
+                    sortSelect.addEventListener('change', (e) => {
+                        this.currentSort = e.target.value;
+                        this.applySorting();
+                    });
+                }
+
+                // View mode events
+                document.querySelectorAll('.view-mode').forEach(mode => {
+                    mode.addEventListener('click', (e) => {
+                        const activeMode = document.querySelector('.view-mode.active');
+                        if (activeMode) activeMode.classList.remove('active');
+                        e.currentTarget.classList.add('active');
+                        this.currentView = e.currentTarget.dataset.view;
+                        this.updateViewMode();
+                    });
+                });
+            }
+
+            handleFilterChange(element, filterValue) {
+                const section = element.closest('.sidebar-section');
                 
-    // Create floating particles
-    document.addEventListener('DOMContentLoaded', function() {
+                // Remove active from siblings
+                section.querySelectorAll('.filter-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                
+                // Add active to clicked option
+                element.classList.add('active');
+                
+                // Update filters
+                if (element.dataset.filter) {
+                    this.currentFilters.category = filterValue;
+                } else if (element.dataset.category) {
+                    this.currentFilters.category = filterValue;
+                } else if (element.dataset.engagement) {
+                    this.currentFilters.engagement = filterValue;
+                }
+                
+                this.applyFilters();
+            }
+
+            applyFilters() {
+                this.filteredArtworks = this.artworks.filter(artwork => {
+                    // Category filter
+                    if (this.currentFilters.category !== 'all' && 
+                        artwork.category !== this.currentFilters.category) {
+                        return false;
+                    }
+                    
+                    // Search filter
+                    if (this.currentFilters.search && 
+                        !artwork.title.toLowerCase().includes(this.currentFilters.search) &&
+                        !artwork.description.toLowerCase().includes(this.currentFilters.search) &&
+                        !artwork.artist.toLowerCase().includes(this.currentFilters.search)) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                this.applySorting();
+            }
+
+            applySorting() {
+                this.filteredArtworks.sort((a, b) => {
+                    switch (this.currentSort) {
+                        case 'newest':
+                            return b.timestamp - a.timestamp;
+                        case 'oldest':
+                            return a.timestamp - b.timestamp;
+                        case 'popular':
+                            return b.likes - a.likes;
+                        case 'commented':
+                            return b.comments.length - a.comments.length;
+                        default:
+                            return 0;
+                    }
+                });
+                
+                this.renderArtworks();
+            }
+
+            renderArtworks() {
+                const gallery = document.getElementById('artGallery');
+                const loadingState = document.getElementById('loadingState');
+                
+                if (loadingState) loadingState.style.display = 'none';
+                
+                if (this.filteredArtworks.length === 0) {
+                    gallery.innerHTML = '<div class="empty-state"><h3>No artworks found</h3><p>Try adjusting your filters</p></div>';
+                    return;
+                }
+                
+                gallery.innerHTML = this.filteredArtworks.map(artwork => this.createArtworkHTML(artwork)).join('');
+                this.bindArtworkEvents();
+            }
+
+            createArtworkHTML(artwork) {
+                const commentsHTML = artwork.comments.map(comment => `
+                    <div class="comment">
+                        <img src="${comment.profilePic}" alt="${comment.author}" class="comment-avatar" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiM0RUYxRkYiLz4KPC9zdmc+';">
+                        <div class="comment-content">
+                            <div class="comment-author">${comment.author}</div>
+                            <div class="comment-text">${comment.text}</div>
+                                </div>
+                            </div>
+                `).join('');
+
+                return `
+                    <article class="art-post" data-id="${artwork.id}">
+                        <img src="${artwork.image}" alt="${artwork.title}" class="art-image" 
+                             onerror="this.style.background='linear-gradient(135deg, rgba(78, 241, 255, 0.2), rgba(24, 141, 247, 0.2))'; this.alt='Art placeholder';">
+                        
+                        <div class="art-content">
+                            <div class="art-header">
+                                <img src="${artwork.profilePic}" alt="${artwork.artist}" class="user-avatar"
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM0RUYxRkYiLz4KPC9zdmc+';">
+                                <div class="user-info">
+                                    <h4>${artwork.artist}</h4>
+                                    <div class="post-time">${this.formatDate(artwork.timestamp)}</div>
+                        </div>
+                    </div>
+                    
+                            <h3 class="art-title">${artwork.title}</h3>
+                            <p class="art-description">${artwork.description}</p>
+                            
+                            <div class="art-tags">
+                                ${artwork.tags.map(tag => `<span class="category-tag">${tag}</span>`).join('')}
+                            </div>
+                            
+                            <div class="art-actions">
+                                <div class="action-buttons">
+                                    <button class="action-btn like-btn" data-id="${artwork.id}">
+                                        <i class="ri-heart-line"></i>
+                                        <span>${artwork.likes}</span>
+                                    </button>
+                                    <button class="action-btn comment-btn" data-id="${artwork.id}">
+                                        <i class="ri-chat-3-line"></i>
+                                        <span>${artwork.comments.length}</span>
+                                    </button>
+                                    <button class="action-btn share-btn" data-id="${artwork.id}">
+                                        <i class="ri-share-line"></i>
+                                        <span>Share</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            ${artwork.comments.length > 0 ? `
+                                <div class="comment-section">
+                                    ${commentsHTML}
+                                </div>
+                            ` : ''}
+                                </div>
+                    </article>
+                `;
+            }
+
+            bindArtworkEvents() {
+                // Like button events
+                document.querySelectorAll('.like-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const artId = parseInt(e.currentTarget.dataset.id);
+                        this.toggleLike(artId, e.currentTarget);
+                    });
+                });
+
+                // Art post click events
+                document.querySelectorAll('.art-post').forEach(post => {
+                    post.addEventListener('click', (e) => {
+                        if (!e.target.closest('.action-btn')) {
+                            const artId = e.currentTarget.dataset.id;
+                            this.openArtworkModal(artId);
+                        }
+                    });
+                });
+            }
+
+            toggleLike(artId, button) {
+                const artwork = this.artworks.find(art => art.id === artId);
+                if (artwork) {
+                    const isLiked = button.classList.contains('active');
+                    
+                    if (isLiked) {
+                        artwork.likes--;
+                        button.classList.remove('active');
+                        button.querySelector('i').className = 'ri-heart-line';
+                    } else {
+                        artwork.likes++;
+                        button.classList.add('active');
+                        button.querySelector('i').className = 'ri-heart-fill';
+                    }
+                    
+                    button.querySelector('span').textContent = artwork.likes;
+                }
+            }
+
+            openArtworkModal(artId) {
+                const artwork = this.artworks.find(art => art.id === artId);
+                if (artwork) {
+                    console.log('Opening artwork:', artwork.title);
+                    // TODO: Implement modal functionality
+                }
+            }
+
+            updateViewMode() {
+                const gallery = document.getElementById('artGallery');
+                gallery.className = `art-gallery ${this.currentView}-view`;
+            }
+
+            formatDate(date) {
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) return '1 day ago';
+                if (diffDays < 7) return `${diffDays} days ago`;
+                if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+                return date.toLocaleDateString();
+            }
+
+            createParticles() {
         const particlesContainer = document.getElementById('particles');
-        const particleCount = 50;
+                if (!particlesContainer) return;
+                
+                const particleCount = 30;
         
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             
-            // Random position
             particle.style.left = Math.random() * 100 + '%';
             particle.style.top = Math.random() * 100 + '%';
             
-            // Random size
-            const size = Math.random() * 3 + 1;
+                    const size = Math.random() * 2 + 1;
             particle.style.width = size + 'px';
             particle.style.height = size + 'px';
             
-            // Random opacity
-            particle.style.opacity = Math.random() * 0.5 + 0.1;
+                    particle.style.opacity = Math.random() * 0.3 + 0.1;
             
-            // Random color
             const colors = ['#00ABFF', '#9B5FFF', '#00F2C3'];
             particle.style.background = colors[Math.floor(Math.random() * colors.length)];
             
-            // Random animation delay
             particle.style.animationDelay = Math.random() * 8 + 's';
             particle.style.animationDuration = Math.random() * 12 + 8 + 's';
             
             particlesContainer.appendChild(particle);
         }
-        
-        // Check if coming from registration page
-        const params = new URLSearchParams(window.location.search);
-        const fromRegistration = params.get('fromRegistration');
-        
-        if (fromRegistration === 'true') {
-            // Add welcome message or special animation
-            const welcomeMessage = document.createElement('div');
-            welcomeMessage.classList.add('success-message', 'show');
-            welcomeMessage.textContent = '欢迎加入 WeArt 艺术社群！';
-            document.body.appendChild(welcomeMessage);
+            }
         }
-    });
 
-
-    // Hover effect for art cards
-    document.querySelectorAll('.art-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-4px)';
-            this.style.boxShadow = '0 10px 30px rgba(0, 171, 255, 0.2)';
-            this.style.borderColor = 'rgba(0, 171, 255, 0.3)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-            this.style.boxShadow = '';
-            this.style.borderColor = '';
-        });
-    });
-
-
-    // Filter buttons
-    document.querySelectorAll('.filter-button').forEach(button => {
-        button.addEventListener('click', function() {
-            document.querySelectorAll('.filter-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            this.classList.add('active');
-            
-            // Here you would add logic to filter content
-        });
+        // Initialize gallery when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            window.artGallery = new ArtGallery();
     });
     </script>
-    <script src="navigation-fix.js"></script>
 </body>
 </html> 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Your Art Medium | WeArt</title>
+    <title data-i18n="select_art_medium">Select Your Art Medium | WeArt</title>
     <style>
         /* Base styles */
         * {
@@ -80,9 +80,9 @@
         .medium-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 60px;
+            gap: 40px;
             margin-bottom: 80px;
-            max-width: 900px;
+            max-width: 1000px;
         }
         
         .medium-option {
@@ -151,12 +151,28 @@
             background: linear-gradient(135deg, #06B6D4, #67E8F9);
         }
         
-        .medium-sculpture2 {
+        .medium-literature {
             background: linear-gradient(135deg, #10B981, #34D399);
         }
         
-        .medium-mixed {
+        .medium-fashion {
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        }
+        
+        .medium-cinema {
+            background: linear-gradient(135deg, #EF4444, #F87171);
+        }
+        
+        .medium-theatre {
+            background: linear-gradient(135deg, #7C3AED, #A855F7);
+        }
+        
+        .medium-dance {
+            background: linear-gradient(135deg, #EC4899, #F472B6);
+        }
+        
+        .medium-mixed {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6);
         }
         
         /* Selection state */
@@ -228,7 +244,7 @@
         @media (max-width: 1024px) {
             .medium-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 40px;
+                gap: 35px;
             }
             
             .medium-sphere {
@@ -256,7 +272,7 @@
             
             .medium-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 30px;
+                gap: 25px;
             }
             
             .medium-sphere {
@@ -326,8 +342,8 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="weart-logo">WeArt</div>
-            <h1 class="title">Select Your Art Medium</h1>
+            <div class="weart-logo" data-i18n="weart">WeArt</div>
+            <h1 class="title" data-i18n="select_art_medium">Select Your Art Medium</h1>
         </div>
         
         <!-- Medium grid -->
@@ -336,49 +352,77 @@
                 <div class="medium-sphere medium-painting">
                     <div class="medium-icon">🖌️</div>
                 </div>
-                <div class="medium-label">Traditional Painting</div>
+                <div class="medium-label" data-i18n="traditional_painting">Traditional Painting</div>
             </div>
             
             <div class="medium-option" data-medium="digital">
                 <div class="medium-sphere medium-digital">
                     <div class="medium-icon">🖊️</div>
                 </div>
-                <div class="medium-label">Digital Art</div>
+                <div class="medium-label" data-i18n="digital_art">Digital Art</div>
             </div>
             
             <div class="medium-option" data-medium="photography">
                 <div class="medium-sphere medium-photography">
                     <div class="medium-icon">📷</div>
                 </div>
-                <div class="medium-label">Photography</div>
+                <div class="medium-label" data-i18n="photography">Photography</div>
             </div>
             
             <div class="medium-option" data-medium="music">
                 <div class="medium-sphere medium-music">
                     <div class="medium-icon">🎵</div>
                 </div>
-                <div class="medium-label">Music</div>
+                <div class="medium-label" data-i18n="music">Music</div>
             </div>
             
             <div class="medium-option" data-medium="sculpture">
                 <div class="medium-sphere medium-sculpture">
                     <div class="medium-icon">🔨</div>
                 </div>
-                <div class="medium-label">Sculpture</div>
+                <div class="medium-label" data-i18n="sculpture">Sculpture</div>
             </div>
             
-            <div class="medium-option" data-medium="sculpture2">
-                <div class="medium-sphere medium-sculpture2">
-                    <div class="medium-icon">⚒️</div>
+            <div class="medium-option" data-medium="literature">
+                <div class="medium-sphere medium-literature">
+                    <div class="medium-icon">📚</div>
                 </div>
-                <div class="medium-label">Sculpture</div>
+                <div class="medium-label" data-i18n="literature">Literature</div>
+            </div>
+            
+            <div class="medium-option" data-medium="fashion">
+                <div class="medium-sphere medium-fashion">
+                    <div class="medium-icon">👗</div>
+                </div>
+                <div class="medium-label" data-i18n="fashion_design">Fashion Design</div>
+            </div>
+            
+            <div class="medium-option" data-medium="cinema">
+                <div class="medium-sphere medium-cinema">
+                    <div class="medium-icon">🎬</div>
+                </div>
+                <div class="medium-label" data-i18n="cinema">Cinema</div>
+            </div>
+            
+            <div class="medium-option" data-medium="theatre">
+                <div class="medium-sphere medium-theatre">
+                    <div class="medium-icon">🎭</div>
+                </div>
+                <div class="medium-label" data-i18n="theatre">Theatre</div>
+            </div>
+            
+            <div class="medium-option" data-medium="dance">
+                <div class="medium-sphere medium-dance">
+                    <div class="medium-icon">💃</div>
+                </div>
+                <div class="medium-label" data-i18n="dance">Dance</div>
             </div>
             
             <div class="medium-option" data-medium="mixed">
                 <div class="medium-sphere medium-mixed">
                     <div class="medium-icon">∞</div>
                 </div>
-                <div class="medium-label">Mixed Media</div>
+                <div class="medium-label" data-i18n="mixed_media">Mixed Media</div>
             </div>
         </div>
         
@@ -391,15 +435,24 @@
         </div>
         
         <!-- Continue button -->
-        <button class="continue-button" id="continue-btn">Continue</button>
+        <button class="continue-button" id="continue-btn" data-i18n="continue">Continue</button>
     </div>
     
+    <!-- Include user management and i18n systems -->
+    <script src="js/user-manager.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/onboarding.js"></script>
     <script>
-        // Add at the top of script section
+        // Initialize user manager and onboarding data
         const onboardingData = new OnboardingData();
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is authenticated
+            if (!userManager.isLoggedIn()) {
+                window.location.href = 'register.html';
+                return;
+            }
+
             const particlesContainer = document.getElementById('particles');
             const particleCount = 60;
             
@@ -454,29 +507,36 @@
                 });
             });
             
-            // continueBtn.addEventListener('click', function() {
-            //     if (selectedMediums.length > 0) {
-            //         console.log('Selected mediums:', selectedMediums);
-            //         // Navigate to next page or dashboard
-            //         window.location.href = 'index.html';
-            //     }
-            // });
-            // Add at the top of script section
-            const onboardingData = new OnboardingData();
-
-            // Replace the continue button click handler:
+            // Complete onboarding and navigate to dashboard
             continueBtn.addEventListener('click', function() {
                 if (selectedMediums.length > 0) {
-                    console.log('Selected mediums:', selectedMediums);
+                    console.log('🎨 Selected mediums:', selectedMediums);
                     
-                    // Save to onboarding data and mark as complete
+                    // Save art mediums to onboarding data
                     onboardingData.updateArtMediums(selectedMediums);
-                    onboardingData.completeOnboarding();
+                    const completedOnboardingData = onboardingData.completeOnboarding();
                     
-                    console.log('Onboarding completed! Data:', onboardingData.getData());
+                    // Save onboarding data to user manager
+                    userManager.saveOnboardingData('artMediums', { 
+                        artMediums: selectedMediums,
+                        completedAt: new Date().toISOString()
+                    });
                     
-                    // Navigate to AI chat page
-                    window.location.href = 'ai.html';
+                    // Mark user onboarding as complete in user manager
+                    userManager.completeOnboarding();
+                    
+                    console.log('✅ Onboarding completed successfully!');
+                    console.log('👤 Updated user:', userManager.getUserProfile());
+                    console.log('🎯 Final onboarding data:', completedOnboardingData);
+                    
+                    // Add a small delay for user feedback then redirect to dashboard
+                    continueBtn.textContent = 'Completing...';
+                    continueBtn.style.opacity = '0.7';
+                    
+                    setTimeout(() => {
+                        // Navigate to main dashboard
+                        window.location.href = 'index.html';
+                    }, 1000);
                 }
             });
         });

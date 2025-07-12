@@ -123,8 +123,8 @@ class WeArtAuth {
         }
 
         if (user.onboardingCompleted) {
-            // Onboarding complete, go to AI chat
-            window.location.href = 'ai.html';
+            // Onboarding complete, go to main dashboard with AI chat integrated
+            window.location.href = 'index.html';
         } else {
             // Continue onboarding
             window.location.href = 'color_selection.html';
