@@ -713,28 +713,11 @@
                             <input type="email" id="email" name="email" class="form-input" data-i18n-placeholder="enter_email" placeholder="请输入您的邮箱" required>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="phone" class="form-label" data-i18n="phone">电话</label>
-                            <input type="tel" id="phone" name="phone" class="form-input" data-i18n-placeholder="enter_phone" placeholder="请输入您的电话号码" inputmode="tel" required>
-                        </div>
-                        
                         <button type="submit" class="submit-button">
                             <span class="button-text" data-i18n="send_verification">发送验证码</span>
                             <span class="spinner"></span>
                         </button>
                     </form>
-                    
-                    <div class="social-login">
-                        <div class="social-icon">
-                            <i class="ri-wechat-line"></i>
-                        </div>
-                        <div class="social-icon">
-                            <i class="ri-weibo-line"></i>
-                        </div>
-                        <div class="social-icon">
-                            <i class="ri-qq-line"></i>
-                        </div>
-                    </div>
                     
                     <div class="login-link">
                         <span data-i18n="have_account">已有账号？</span><a href="#" id="show-login" data-i18n="login_now">立即登录</a>
@@ -1131,12 +1114,11 @@
             
             const userData = {
                 name: formData.get('name'),
-                email: formData.get('email'),
-                phone: formData.get('phone')
+                email: formData.get('email')
             };
 
             // Basic validation
-            if (!userData.name || !userData.email || !userData.phone) {
+            if (!userData.name || !userData.email) {
                 alert(t('fill_required_fields', 'Please fill in all required fields'));
                 return;
             }

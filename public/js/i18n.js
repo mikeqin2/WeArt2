@@ -12,13 +12,14 @@ class WeArtI18n {
         return localStorage.getItem('weart-language');
     }
 
-    // Detect language from browser or page lang attribute
+    // Detect language from browser or page lang attribute  
     detectLanguage() {
         const htmlLang = document.documentElement.lang;
         if (htmlLang === 'zh-CN') return 'zh';
         if (htmlLang === 'en') return 'en';
         
         const browserLang = navigator.language || navigator.userLanguage;
+        // Default to English to prevent Chinese flash
         return browserLang.startsWith('zh') ? 'zh' : 'en';
     }
 
@@ -758,12 +759,23 @@ class WeArtI18n {
     }
 }
 
-// Initialize i18n system when DOM is loaded
+// Initialize i18n system immediately when script loads (before DOM ready)
 let weartI18n;
-document.addEventListener('DOMContentLoaded', () => {
+
+// Initialize immediately to prevent Chinese flash
+function initializeI18n() {
     weartI18n = new WeArtI18n();
     window.weartI18n = weartI18n;
-});
+}
+
+// Try to initialize immediately
+if (document.readyState === 'loading') {
+    // Script is loaded during parsing, wait for DOM ready but start early
+    document.addEventListener('DOMContentLoaded', initializeI18n);
+} else {
+    // DOM is already ready, initialize immediately
+    initializeI18n();
+}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {

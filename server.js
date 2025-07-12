@@ -128,13 +128,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // User Authentication Routes
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body;
+    const { name, email, password } = req.body;
 
     // Validation
-    if (!name || !email || !phone) {
+    if (!name || !email) {
       return res.status(400).json({ 
-        error: 'Name, email, and phone are required',
-        details: { name: !name, email: !email, phone: !phone }
+        error: 'Name and email are required',
+        details: { name: !name, email: !email }
       });
     }
 
@@ -149,7 +149,6 @@ app.post('/api/auth/register', async (req, res) => {
       id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
       name: name.trim(),
       email: email.toLowerCase().trim(),
-      phone: phone.trim(),
       password: password ? await bcrypt.hash(password, 10) : null, // Hash password if provided
       preferences: {
         colorSelection: null,
@@ -571,9 +570,30 @@ app.post('/api/ai/chat', async (req, res) => {
 
     // Check if API key is available
     if (!process.env.DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY === 'test-key' || process.env.DEEPSEEK_API_KEY === 'test-key-placeholder') {
-      console.log('No valid DeepSeek API key found, using fallback response');
+      console.log('No valid DeepSeek API key found, using intelligent fallback response');
+      
+      // Create contextual responses based on keywords
+      const lowerMessage = message.toLowerCase();
+      let response = "Hello! I'm your WeArt AI Assistant. ";
+      
+      if (lowerMessage.includes('color') || lowerMessage.includes('colour')) {
+        response += "Color theory is fundamental to art! The primary colors are red, blue, and yellow. When mixed, they create secondary colors: orange (red+yellow), green (blue+yellow), and purple (red+blue). Understanding warm vs cool colors can greatly improve your artwork composition.";
+      } else if (lowerMessage.includes('painting') || lowerMessage.includes('paint')) {
+        response += "There are many painting techniques to explore! For beginners, I recommend starting with acrylic paints as they're easier to work with than oils. Key techniques include wet-on-wet, dry brush, glazing, and impasto. Practice basic brush strokes and color mixing first.";
+      } else if (lowerMessage.includes('drawing') || lowerMessage.includes('sketch')) {
+        response += "Drawing is the foundation of all visual art! Start with basic shapes and practice gesture drawing to capture movement. Focus on observation skills, understanding light and shadow, and proportions. Regular practice with different subjects will improve your skills significantly.";
+      } else if (lowerMessage.includes('digital') || lowerMessage.includes('photoshop') || lowerMessage.includes('tablet')) {
+        response += "Digital art opens up amazing possibilities! Popular software includes Photoshop, Procreate, and Clip Studio Paint. Start with basic brush settings and layer management. The fundamentals of traditional art still apply - composition, color theory, and form are just as important in digital mediums.";
+      } else if (lowerMessage.includes('beginner') || lowerMessage.includes('start') || lowerMessage.includes('learn')) {
+        response += "Starting your art journey is exciting! I recommend beginning with basic drawing exercises, studying fundamental concepts like perspective and proportion, and practicing regularly. Don't worry about making perfect art immediately - focus on learning and enjoying the process.";
+      } else if (lowerMessage.includes('artist') || lowerMessage.includes('famous')) {
+        response += "Art history is rich with inspiring artists! Some masters to study include Leonardo da Vinci (Renaissance), Van Gogh (Post-Impressionism), Picasso (Cubism), and Monet (Impressionism). Each brought unique techniques and perspectives that changed art forever.";
+      } else {
+        response += "I'm here to help with all your art-related questions! I can assist with techniques, color theory, art history, composition, and creative guidance. What specific aspect of art would you like to explore?";
+      }
+      
       return res.json({
-        response: "Hello! I'm your WeArt AI Assistant. I notice you haven't set up a DeepSeek API key yet, so I'm running in demo mode. To get real AI responses, please set up your DEEPSEEK_API_KEY in the environment variables. In the meantime, I'd be happy to help you with any art-related questions - just know that I'm giving you a sample response right now!",
+        response: response,
         timestamp: new Date().toISOString(),
         demo: true
       });
