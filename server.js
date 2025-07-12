@@ -18,36 +18,75 @@ const PORT = process.env.PORT || 3000;
 // JWT Secret (in production, use a secure random string from environment variables)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here-change-in-production';
 
-// Initialize user database
+// Initialize user database with better persistence handling
 const usersDbPath = path.join(__dirname, 'data', 'users.json');
 let users = [];
 
 // Load users from file or create empty array
-try {
-  if (fs.existsSync(usersDbPath)) {
-    users = JSON.parse(fs.readFileSync(usersDbPath, 'utf8'));
-  } else {
+function loadUsers() {
+  try {
     // Create data directory if it doesn't exist
     const dataDir = path.join(__dirname, 'data');
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
-    // Create empty users file
-    fs.writeFileSync(usersDbPath, JSON.stringify([], null, 2));
+
+    if (fs.existsSync(usersDbPath)) {
+      const userData = fs.readFileSync(usersDbPath, 'utf8');
+      users = JSON.parse(userData);
+      console.log(`📊 Loaded ${users.length} users from database`);
+    } else {
+      // Create empty users file
+      users = [];
+      saveUsers();
+      console.log('📊 Created new users database');
+    }
+  } catch (error) {
+    console.error('❌ Error loading user data:', error);
+    users = [];
+    // Try to save empty array to create the file
+    try {
+      saveUsers();
+    } catch (saveError) {
+      console.error('❌ Could not create users file:', saveError);
+    }
   }
-} catch (error) {
-  console.error('Error loading user data:', error);
-  users = [];
 }
 
-// Save users to file
+// Save users to file with better error handling
 const saveUsers = () => {
   try {
+    const dataDir = path.join(__dirname, 'data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    
+    // Create backup of existing data
+    if (fs.existsSync(usersDbPath)) {
+      const backupPath = usersDbPath + '.backup';
+      fs.copyFileSync(usersDbPath, backupPath);
+    }
+    
     fs.writeFileSync(usersDbPath, JSON.stringify(users, null, 2));
+    console.log(`💾 Saved ${users.length} users to database`);
   } catch (error) {
-    console.error('Error saving user data:', error);
+    console.error('❌ Error saving user data:', error);
+    
+    // Try to restore from backup if save failed
+    const backupPath = usersDbPath + '.backup';
+    if (fs.existsSync(backupPath)) {
+      try {
+        fs.copyFileSync(backupPath, usersDbPath);
+        console.log('🔄 Restored users from backup');
+      } catch (restoreError) {
+        console.error('❌ Could not restore from backup:', restoreError);
+      }
+    }
   }
 };
+
+// Initialize users on startup
+loadUsers();
 
 // Load mentor data
 let mentorData = [];
@@ -204,17 +243,33 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(400).json({ error: 'Email is required' });
     }
 
-    // Find user
-    const user = users.find(u => u.email === email.toLowerCase().trim());
+    console.log(`🔐 Login attempt for: ${email}`);
+    console.log(`📊 Current users in database: ${users.length}`);
+
+    // Find user (case insensitive)
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase().trim());
+    
     if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      console.log(`❌ User not found: ${email}`);
+      
+      // Check if this looks like a valid registration attempt
+      if (email.includes('@') && email.includes('.')) {
+        return res.status(404).json({ 
+          error: 'No account found with this email. Would you like to register instead?',
+          suggestion: 'register',
+          email: email.toLowerCase().trim()
+        });
+      }
+      
+      return res.status(401).json({ error: 'Invalid email format' });
     }
 
     // Check password if provided
     if (password && user.password) {
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
-        return res.status(401).json({ error: 'Invalid email or password' });
+        console.log(`❌ Invalid password for: ${email}`);
+        return res.status(401).json({ error: 'Invalid password' });
       }
     }
 
@@ -239,6 +294,8 @@ app.post('/api/auth/login', async (req, res) => {
     // Return user data without password
     const { password: _, ...userWithoutPassword } = user;
 
+    console.log(`✅ Login successful for: ${email}`);
+
     res.json({
       success: true,
       message: 'Login successful',
@@ -246,10 +303,8 @@ app.post('/api/auth/login', async (req, res) => {
       token: token
     });
 
-    console.log(`User logged in: ${user.email}`);
-
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('❌ Login error:', error);
     res.status(500).json({ error: 'Internal server error during login' });
   }
 });
@@ -413,7 +468,36 @@ app.post('/api/upload/resume', authenticateToken, upload.single('resume'), async
 
 // API Routes
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'WeArt Dashboard API is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'WeArt Dashboard API is running',
+    userCount: users.length,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Debug endpoint to check users (remove in production)
+app.get('/api/debug/users', (req, res) => {
+  res.json({
+    count: users.length,
+    users: users.map(u => ({ id: u.id, name: u.name, email: u.email, createdAt: u.createdAt }))
+  });
+});
+
+// Get all users (admin only - for debugging)
+app.get('/api/users', (req, res) => {
+  const userSummary = users.map(user => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    onboardingCompleted: user.onboardingCompleted,
+    createdAt: user.createdAt
+  }));
+  
+  res.json({
+    total: users.length,
+    users: userSummary
+  });
 });
 
 // Mentor API endpoints
@@ -568,34 +652,84 @@ app.post('/api/ai/chat', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
+    console.log('🤖 AI Chat Request received:', { 
+      messageLength: message.length, 
+      hasHistory: chatHistory.length > 0,
+      isOnboarding: isOnboardingIntro
+    });
+
     // Check if API key is available
     if (!process.env.DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY === 'test-key' || process.env.DEEPSEEK_API_KEY === 'test-key-placeholder') {
-      console.log('No valid DeepSeek API key found, using intelligent fallback response');
+      console.log('📝 No valid DeepSeek API key found, using intelligent fallback response');
       
       // Create contextual responses based on keywords
       const lowerMessage = message.toLowerCase();
       let response = "Hello! I'm your WeArt AI Assistant. ";
       
-      if (lowerMessage.includes('color') || lowerMessage.includes('colour')) {
-        response += "Color theory is fundamental to art! The primary colors are red, blue, and yellow. When mixed, they create secondary colors: orange (red+yellow), green (blue+yellow), and purple (red+blue). Understanding warm vs cool colors can greatly improve your artwork composition.";
+      // Check for onboarding/learning plan requests
+      if (lowerMessage.includes('learning plan') || lowerMessage.includes('personalized') || isOnboardingIntro) {
+        response = `🎨 **Welcome to Your Personalized WeArt Journey!**
+
+Based on your interests and goals, here's your customized learning path:
+
+## 📚 Your 8-Week Art Learning Roadmap
+
+**Week 1-2: Foundation Building**
+• Master fundamental techniques and basic principles
+• Practice daily exercises (15-30 minutes)
+• Study inspiring artists in your chosen medium
+• *Milestone: Complete 10 foundational exercises*
+
+**Week 3-4: Skill Development** 
+• Learn intermediate techniques and methods
+• Experiment with different styles and approaches
+• Build your artistic vocabulary and visual library
+• *Milestone: Create 3 complete artworks*
+
+**Week 5-6: Personal Style Discovery**
+• Develop your unique artistic voice
+• Study artists who inspire your direction
+• Practice advanced techniques and composition
+• *Milestone: Complete one significant personal project*
+
+**Week 7-8: Portfolio & Sharing**
+• Refine your best work and build a portfolio
+• Learn about presentation and critique
+• Connect with art communities and share your progress
+• *Milestone: Launch your artistic showcase*
+
+## 🎯 Immediate Next Steps
+
+1. **Today**: Set up your creative workspace and gather materials
+2. **This Week**: Practice fundamental exercises daily (20-30 minutes)
+3. **Connect**: Join art communities and find inspiration
+
+Your artistic journey is unique and exciting! What aspect of this plan interests you most? 🌟`;
+      } else if (lowerMessage.includes('color') || lowerMessage.includes('colour')) {
+        response += "Color theory is fundamental to art! The primary colors are red, blue, and yellow. When mixed, they create secondary colors: orange (red+yellow), green (blue+yellow), and purple (red+blue). Understanding warm vs cool colors, color harmony, and contrast can greatly improve your artwork composition. Would you like to explore specific color techniques or palettes?";
       } else if (lowerMessage.includes('painting') || lowerMessage.includes('paint')) {
-        response += "There are many painting techniques to explore! For beginners, I recommend starting with acrylic paints as they're easier to work with than oils. Key techniques include wet-on-wet, dry brush, glazing, and impasto. Practice basic brush strokes and color mixing first.";
+        response += "There are many painting techniques to explore! For beginners, I recommend starting with acrylic paints as they're easier to work with than oils. Key techniques include wet-on-wet, dry brush, glazing, and impasto. Practice basic brush strokes and color mixing first. What type of painting interests you most - landscapes, portraits, or abstracts?";
       } else if (lowerMessage.includes('drawing') || lowerMessage.includes('sketch')) {
-        response += "Drawing is the foundation of all visual art! Start with basic shapes and practice gesture drawing to capture movement. Focus on observation skills, understanding light and shadow, and proportions. Regular practice with different subjects will improve your skills significantly.";
+        response += "Drawing is the foundation of all visual art! Start with basic shapes and practice gesture drawing to capture movement. Focus on observation skills, understanding light and shadow, and proportions. Regular practice with different subjects will improve your skills significantly. What would you like to draw?";
       } else if (lowerMessage.includes('digital') || lowerMessage.includes('photoshop') || lowerMessage.includes('tablet')) {
-        response += "Digital art opens up amazing possibilities! Popular software includes Photoshop, Procreate, and Clip Studio Paint. Start with basic brush settings and layer management. The fundamentals of traditional art still apply - composition, color theory, and form are just as important in digital mediums.";
+        response += "Digital art opens up amazing possibilities! Popular software includes Photoshop, Procreate, and Clip Studio Paint. Start with basic brush settings and layer management. The fundamentals of traditional art still apply - composition, color theory, and form are just as important in digital mediums. What digital art style interests you?";
       } else if (lowerMessage.includes('beginner') || lowerMessage.includes('start') || lowerMessage.includes('learn')) {
-        response += "Starting your art journey is exciting! I recommend beginning with basic drawing exercises, studying fundamental concepts like perspective and proportion, and practicing regularly. Don't worry about making perfect art immediately - focus on learning and enjoying the process.";
+        response += "Starting your art journey is exciting! I recommend beginning with basic drawing exercises, studying fundamental concepts like perspective and proportion, and practicing regularly. Don't worry about making perfect art immediately - focus on learning and enjoying the process. What art medium would you like to explore first?";
       } else if (lowerMessage.includes('artist') || lowerMessage.includes('famous')) {
-        response += "Art history is rich with inspiring artists! Some masters to study include Leonardo da Vinci (Renaissance), Van Gogh (Post-Impressionism), Picasso (Cubism), and Monet (Impressionism). Each brought unique techniques and perspectives that changed art forever.";
+        response += "Art history is rich with inspiring artists! Some masters to study include Leonardo da Vinci (Renaissance), Van Gogh (Post-Impressionism), Picasso (Cubism), and Monet (Impressionism). Each brought unique techniques and perspectives that changed art forever. Which art movement or style interests you most?";
+      } else if (lowerMessage.includes('technique') || lowerMessage.includes('how to')) {
+        response += "I'd love to help you with specific techniques! Whether you're interested in brush techniques, shading methods, composition rules, or medium-specific skills, there's always something new to learn. What particular technique or skill would you like to master?";
       } else {
-        response += "I'm here to help with all your art-related questions! I can assist with techniques, color theory, art history, composition, and creative guidance. What specific aspect of art would you like to explore?";
+        response += "I'm here to help with all your art-related questions! I can assist with techniques, color theory, art history, composition, and creative guidance. Whether you're a complete beginner or looking to refine your skills, I'm excited to be part of your artistic journey. What specific aspect of art would you like to explore today? 🎨";
       }
+      
+      console.log('✅ Fallback response generated successfully');
       
       return res.json({
         response: response,
         timestamp: new Date().toISOString(),
-        demo: true
+        demo: true,
+        source: 'intelligent_fallback'
       });
     }
 
@@ -658,7 +792,8 @@ app.post('/api/ai/chat', async (req, res) => {
 
     res.json({
       response: aiResponse,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      source: 'deepseek_api'
     });
 
   } catch (error) {
@@ -670,15 +805,16 @@ app.post('/api/ai/chat', async (req, res) => {
     if (error.code === 'ECONNABORTED' || error.name === 'AbortError') {
       fallbackResponse = "The request is taking longer than expected. Please try with a shorter question or try again in a moment.";
     } else if (error.response?.status === 401) {
-      fallbackResponse = "There seems to be an authentication issue with the AI service. Please check the API configuration.";
+      fallbackResponse = "I'm here to help with your art questions! While I'm having some connection issues, feel free to ask me about art techniques, color theory, or creative guidance.";
     } else if (error.response?.status === 429) {
-      fallbackResponse = "The AI service is currently at capacity. Please wait a moment and try again.";
+      fallbackResponse = "I'm quite popular today! Please wait a moment and try again. In the meantime, what art topic interests you most?";
     }
     
     res.status(200).json({
       response: fallbackResponse,
       error: 'AI service temporarily unavailable',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      source: 'error_fallback'
     });
   }
 });
