@@ -87,6 +87,13 @@ class WeArtI18n {
                 'upload_file': 'Click or drag files here',
                 'upload_resume': 'Upload Resume',
                 'or': 'OR',
+                'elementary_student': 'Elementary Student',
+                'middle_student': 'Middle School Student',
+                'high_student': 'High School Student',
+                'university_student': 'University Student',
+                'parent': 'Parent',
+                'elderly': 'Senior',
+                'professional': 'Professional',
 
                 // Learning goals
                 'map_artistic_constellation': 'Map Your Artistic Constellation',
@@ -340,6 +347,13 @@ class WeArtI18n {
                 'upload_file': '点击或拖拽文件至此处',
                 'upload_resume': '上传简历',
                 'or': '或',
+                'elementary_student': '小学生',
+                'middle_student': '初中生',
+                'high_student': '高中生',
+                'university_student': '大学生',
+                'parent': '家长',
+                'elderly': '中老年人',
+                'professional': '老板',
 
                 // Learning goals
                 'map_artistic_constellation': '规划您的艺术星图',

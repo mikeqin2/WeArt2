@@ -15,7 +15,7 @@
         /* New Dashboard Layout Styles */
         .content-grid {
             display: grid;
-            grid-template-columns: 300px 1fr 280px;
+            grid-template-columns: 1fr 280px;
             gap: 24px;
             height: calc(100vh - 120px);
             overflow: hidden;
@@ -775,8 +775,42 @@
 
             <!-- Content Grid -->
             <div class="content-grid">
-                <!-- Left Sidebar - Compact Stats & Navigation -->
-                <div class="left-sidebar">
+                <!-- Main AI Chat Area -->
+                <div class="main-ai-chat">
+                    <div class="ai-chat-header-main">
+                            <div class="ai-header-content">
+                            <div class="ai-avatar-large">
+                                    <i class="ri-robot-line"></i>
+                                </div>
+                            <div class="ai-info-main">
+                                <h2 data-i18n="ai_assistant">AI Art Mentor</h2>
+                                    <div class="ai-status">
+                                        <div class="status-indicator"></div>
+                                    <span data-i18n="personalized_guidance">Personalized Guidance • </span>
+                                    <span data-i18n="online">Online</span>
+                                    </div>
+                                <p class="ai-description">Your personal AI mentor trained on art history, techniques, and pedagogical methods. Ask me about your learning path, get technique advice, or explore art history.</p>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="ai-chat-container-main" id="aiChatContainer">
+                        <div class="ai-chat-messages-main" id="aiChatMessages">
+                                <!-- Messages will be populated by JavaScript -->
+                            </div>
+                        <button class="scroll-to-bottom" id="scrollToBottomBtn">
+                            <i class="ri-arrow-down-line"></i>
+                        </button>
+                        </div>
+                    <div class="ai-input-container-main">
+                        <textarea class="ai-input-box-main" id="aiInputBox" data-i18n-placeholder="ask_art_techniques" placeholder="Ask about art techniques, learning paths, or get personalized guidance..." rows="2"></textarea>
+                        <button class="ai-send-btn-main" id="aiSendBtn">
+                                <i class="ri-send-plane-fill"></i>
+                            </button>
+                    </div>
+                </div>
+
+                <!-- Right Quick Actions -->
+                <div class="right-quick-actions">
                     <!-- Journey Card - Compact -->
                     <div class="journey-card compact">
                         <div class="journey-header">
@@ -872,44 +906,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Main AI Chat Area -->
-                <div class="main-ai-chat">
-                    <div class="ai-chat-header-main">
-                            <div class="ai-header-content">
-                            <div class="ai-avatar-large">
-                                    <i class="ri-robot-line"></i>
-                                </div>
-                            <div class="ai-info-main">
-                                <h2 data-i18n="ai_assistant">AI Art Mentor</h2>
-                                    <div class="ai-status">
-                                        <div class="status-indicator"></div>
-                                    <span data-i18n="personalized_guidance">Personalized Guidance • </span>
-                                    <span data-i18n="online">Online</span>
-                                    </div>
-                                <p class="ai-description">Your personal AI mentor trained on art history, techniques, and pedagogical methods. Ask me about your learning path, get technique advice, or explore art history.</p>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="ai-chat-container-main" id="aiChatContainer">
-                        <div class="ai-chat-messages-main" id="aiChatMessages">
-                                <!-- Messages will be populated by JavaScript -->
-                            </div>
-                        <button class="scroll-to-bottom" id="scrollToBottomBtn">
-                            <i class="ri-arrow-down-line"></i>
-                        </button>
-                        </div>
-                    <div class="ai-input-container-main">
-                        <textarea class="ai-input-box-main" id="aiInputBox" data-i18n-placeholder="ask_art_techniques" placeholder="Ask about art techniques, learning paths, or get personalized guidance..." rows="2"></textarea>
-                        <button class="ai-send-btn-main" id="aiSendBtn">
-                                <i class="ri-send-plane-fill"></i>
-                            </button>
-                    </div>
-                </div>
-
-                <!-- Right Quick Actions -->
-                <div class="right-quick-actions">
                     <div class="quick-actions-card">
                         <h3 class="section-title-small" data-i18n="quick_actions">Quick Actions</h3>
                         <div class="action-buttons">
